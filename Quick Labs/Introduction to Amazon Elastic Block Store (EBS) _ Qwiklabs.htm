@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://www.qwiklabs.com/focuses/14303?parent=catalog -->
+<html lang="en" data-lt-installed="true" class="mdl-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="[]" name="active-experiments">
+<meta content="{&quot;userId&quot;:4265112}" name="help-api-product-data">
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="KgpwO6/4KHFwPg5cMR4ru9CDKuYsXIFFaA6CthWIznqBEn5RBc1fyKjy+6bXmzYdCSiYMPGtN7ky7qivimMdTA==">
+<title>Introduction to Amazon Elastic Block Store (EBS) | Qwiklabs</title>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" name="viewport">
+<meta content="1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0" name="google-site-verification">
+<meta content="#3681E4" property="msapplication-TileColor">
+<meta content="/favicon-144.png" property="msapplication-TileImage">
+<meta content="This lab takes you through how to create an Amazon Elastic Block Store (EBS) volume, attach it to an Amazon EC2 instance, create a file system on the volume, take a snapshot of the volume, and increase the size and IOPS." name="description">
+<meta content="Qwiklabs" name="author">
+<meta content="Introduction to Amazon Elastic Block Store (EBS) | Qwiklabs" property="og:title">
+<meta content="website" property="og:type">
+<meta content="/favicon-144.png" property="og:image">
+<meta content="Qwiklabs" property="og:site_name">
+<meta content="This lab takes you through how to create an Amazon Elastic Block Store (EBS) volume, attach it to an Amazon EC2 instance, create a file system on the volume, take a snapshot of the volume, and increase the size and IOPS." property="og:description">
+<meta content="/qwiklabs_logo_900x887.png" property="og:logo" size="900x887">
+<meta content="/qwiklabs_logo_994x187.png" property="og:logo" size="994x187">
+<link href="https://www.qwiklabs.com/favicon-32.png" rel="shortcut icon">
+<link color="#3681E4" href="https://www.qwiklabs.com/favicon-svg.svg" rel="mask-icon">
+<link href="https://www.qwiklabs.com/favicon-180.png" rel="apple-touch-icon-precomposed">
+<link rel="stylesheet" media="screen" href="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/css">
+
+
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script type="text/javascript" async="" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/js"></script><script type="text/javascript" async="" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/analytics.js"></script><script type="text/javascript" async="" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/analytics.min.js"></script><script type="text/javascript" async="" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-Cx10SI4nRyIf/4CfTL8bj2s8I5ccz18HDscUBxSzsbe1SPnhchceoHtCw2m0nc/h"></script><script type="text/javascript" async="" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-Cx10SI4nRyIf/4CfTL8bj2s8I5ccz18HDscUBxSzsbe1SPnhchceoHtCw2m0nc/h"></script><script type="text/javascript" id="www-widgetapi-script" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/www-widgetapi.js" async=""></script><script>
+//<![CDATA[
+window.gon={};gon.current_user={"firstname":"Ankit","lastname":"Manglik","fullname":"Ankit Manglik","company":"Incedo","email":"amanglik2010@gmail.com","origin":"run, direct","subscriptions":1,"id":"40881afb3090073a11cc87d2eff56386","qlCreatedAt":"2021-02-01 08:29:26 UTC","optIn":true};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run";
+//]]>
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "url": "https://www.qwiklabs.com/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.qwiklabs.com/catalog?keywords={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<script id="ze-snippet" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/snippet.js"></script>
+
+
+
+
+<link rel="stylesheet" media="all" href="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/application-970073e5b46f4630d4ec8cb8a2b1192838eb654177e4e7d2a8a82e4fc31930a8.css">
+<script>
+  EVENT_SOURCE_BASE_URL = "https://run.qwiklabs.com/nchan-sub?id=";
+</script>
+<script src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/webcomponents-loader-408088dc333247a761de5f2b2a4ba1cabd2bc36579f83ba92a559eb3682a9b77.js"></script>
+<script src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/hallofmirrors-31ad91021e55b64d370891210d6e30d3790a1e6f4bf9e3eca92b9dd159bc8a6d.js"></script>
+<custom-style>
+  <style is="custom-style">[hidden] {
+  display: none !important;
+}
+
+</style>
+</custom-style>
+<custom-style>
+  <style is="custom-style">html {
+  --layout_-_display:  flex;;
+
+      --layout-inline_-_display:  inline-flex;;
+
+      --layout-horizontal_-_display:  var(--layout_-_display); --layout-horizontal_-_-ms-flex-direction:  row; --layout-horizontal_-_-webkit-flex-direction:  row; --layout-horizontal_-_flex-direction:  row;;
+
+      --layout-horizontal-reverse_-_display:  var(--layout_-_display); --layout-horizontal-reverse_-_-ms-flex-direction:  row-reverse; --layout-horizontal-reverse_-_-webkit-flex-direction:  row-reverse; --layout-horizontal-reverse_-_flex-direction:  row-reverse;;
+
+      --layout-vertical_-_display:  var(--layout_-_display); --layout-vertical_-_-ms-flex-direction:  column; --layout-vertical_-_-webkit-flex-direction:  column; --layout-vertical_-_flex-direction:  column;;
+
+      --layout-vertical-reverse_-_display:  var(--layout_-_display); --layout-vertical-reverse_-_-ms-flex-direction:  column-reverse; --layout-vertical-reverse_-_-webkit-flex-direction:  column-reverse; --layout-vertical-reverse_-_flex-direction:  column-reverse;;
+
+      --layout-wrap_-_-ms-flex-wrap:  wrap; --layout-wrap_-_-webkit-flex-wrap:  wrap; --layout-wrap_-_flex-wrap:  wrap;;
+
+      --layout-wrap-reverse_-_-ms-flex-wrap:  wrap-reverse; --layout-wrap-reverse_-_-webkit-flex-wrap:  wrap-reverse; --layout-wrap-reverse_-_flex-wrap:  wrap-reverse;;
+
+      --layout-flex-auto_-_-ms-flex:  1 1 auto; --layout-flex-auto_-_-webkit-flex:  1 1 auto; --layout-flex-auto_-_flex:  1 1 auto;;
+
+      --layout-flex-none_-_-ms-flex:  none; --layout-flex-none_-_-webkit-flex:  none; --layout-flex-none_-_flex:  none;;
+
+      --layout-flex_-_-ms-flex:  1 1 0.000000001px; --layout-flex_-_-webkit-flex:  1; --layout-flex_-_flex:  1; --layout-flex_-_-webkit-flex-basis:  0.000000001px; --layout-flex_-_flex-basis:  0.000000001px;;
+
+      --layout-flex-2_-_-ms-flex:  2; --layout-flex-2_-_-webkit-flex:  2; --layout-flex-2_-_flex:  2;;
+
+      --layout-flex-3_-_-ms-flex:  3; --layout-flex-3_-_-webkit-flex:  3; --layout-flex-3_-_flex:  3;;
+
+      --layout-flex-4_-_-ms-flex:  4; --layout-flex-4_-_-webkit-flex:  4; --layout-flex-4_-_flex:  4;;
+
+      --layout-flex-5_-_-ms-flex:  5; --layout-flex-5_-_-webkit-flex:  5; --layout-flex-5_-_flex:  5;;
+
+      --layout-flex-6_-_-ms-flex:  6; --layout-flex-6_-_-webkit-flex:  6; --layout-flex-6_-_flex:  6;;
+
+      --layout-flex-7_-_-ms-flex:  7; --layout-flex-7_-_-webkit-flex:  7; --layout-flex-7_-_flex:  7;;
+
+      --layout-flex-8_-_-ms-flex:  8; --layout-flex-8_-_-webkit-flex:  8; --layout-flex-8_-_flex:  8;;
+
+      --layout-flex-9_-_-ms-flex:  9; --layout-flex-9_-_-webkit-flex:  9; --layout-flex-9_-_flex:  9;;
+
+      --layout-flex-10_-_-ms-flex:  10; --layout-flex-10_-_-webkit-flex:  10; --layout-flex-10_-_flex:  10;;
+
+      --layout-flex-11_-_-ms-flex:  11; --layout-flex-11_-_-webkit-flex:  11; --layout-flex-11_-_flex:  11;;
+
+      --layout-flex-12_-_-ms-flex:  12; --layout-flex-12_-_-webkit-flex:  12; --layout-flex-12_-_flex:  12;;
+
+      
+
+      --layout-start_-_-ms-flex-align:  start; --layout-start_-_-webkit-align-items:  flex-start; --layout-start_-_align-items:  flex-start;;
+
+      --layout-center_-_-ms-flex-align:  center; --layout-center_-_-webkit-align-items:  center; --layout-center_-_align-items:  center;;
+
+      --layout-end_-_-ms-flex-align:  end; --layout-end_-_-webkit-align-items:  flex-end; --layout-end_-_align-items:  flex-end;;
+
+      --layout-baseline_-_-ms-flex-align:  baseline; --layout-baseline_-_-webkit-align-items:  baseline; --layout-baseline_-_align-items:  baseline;;
+
+      
+
+      --layout-start-justified_-_-ms-flex-pack:  start; --layout-start-justified_-_-webkit-justify-content:  flex-start; --layout-start-justified_-_justify-content:  flex-start;;
+
+      --layout-center-justified_-_-ms-flex-pack:  center; --layout-center-justified_-_-webkit-justify-content:  center; --layout-center-justified_-_justify-content:  center;;
+
+      --layout-end-justified_-_-ms-flex-pack:  end; --layout-end-justified_-_-webkit-justify-content:  flex-end; --layout-end-justified_-_justify-content:  flex-end;;
+
+      --layout-around-justified_-_-ms-flex-pack:  distribute; --layout-around-justified_-_-webkit-justify-content:  space-around; --layout-around-justified_-_justify-content:  space-around;;
+
+      --layout-justified_-_-ms-flex-pack:  justify; --layout-justified_-_-webkit-justify-content:  space-between; --layout-justified_-_justify-content:  space-between;;
+
+      --layout-center-center_-_-ms-flex-align:  var(--layout-center_-_-ms-flex-align); --layout-center-center_-_-webkit-align-items:  var(--layout-center_-_-webkit-align-items); --layout-center-center_-_align-items:  var(--layout-center_-_align-items); --layout-center-center_-_-ms-flex-pack:  var(--layout-center-justified_-_-ms-flex-pack); --layout-center-center_-_-webkit-justify-content:  var(--layout-center-justified_-_-webkit-justify-content); --layout-center-center_-_justify-content:  var(--layout-center-justified_-_justify-content);;
+
+      
+
+      --layout-self-start_-_-ms-align-self:  flex-start; --layout-self-start_-_-webkit-align-self:  flex-start; --layout-self-start_-_align-self:  flex-start;;
+
+      --layout-self-center_-_-ms-align-self:  center; --layout-self-center_-_-webkit-align-self:  center; --layout-self-center_-_align-self:  center;;
+
+      --layout-self-end_-_-ms-align-self:  flex-end; --layout-self-end_-_-webkit-align-self:  flex-end; --layout-self-end_-_align-self:  flex-end;;
+
+      --layout-self-stretch_-_-ms-align-self:  stretch; --layout-self-stretch_-_-webkit-align-self:  stretch; --layout-self-stretch_-_align-self:  stretch;;
+
+      --layout-self-baseline_-_-ms-align-self:  baseline; --layout-self-baseline_-_-webkit-align-self:  baseline; --layout-self-baseline_-_align-self:  baseline;;
+
+      
+
+      --layout-start-aligned_-_-ms-flex-line-pack:  start; --layout-start-aligned_-_-ms-align-content:  flex-start; --layout-start-aligned_-_-webkit-align-content:  flex-start; --layout-start-aligned_-_align-content:  flex-start;;
+
+      --layout-end-aligned_-_-ms-flex-line-pack:  end; --layout-end-aligned_-_-ms-align-content:  flex-end; --layout-end-aligned_-_-webkit-align-content:  flex-end; --layout-end-aligned_-_align-content:  flex-end;;
+
+      --layout-center-aligned_-_-ms-flex-line-pack:  center; --layout-center-aligned_-_-ms-align-content:  center; --layout-center-aligned_-_-webkit-align-content:  center; --layout-center-aligned_-_align-content:  center;;
+
+      --layout-between-aligned_-_-ms-flex-line-pack:  justify; --layout-between-aligned_-_-ms-align-content:  space-between; --layout-between-aligned_-_-webkit-align-content:  space-between; --layout-between-aligned_-_align-content:  space-between;;
+
+      --layout-around-aligned_-_-ms-flex-line-pack:  distribute; --layout-around-aligned_-_-ms-align-content:  space-around; --layout-around-aligned_-_-webkit-align-content:  space-around; --layout-around-aligned_-_align-content:  space-around;;
+
+      
+
+      --layout-block_-_display:  block;;
+
+      --layout-invisible_-_visibility:  hidden !important;;
+
+      --layout-relative_-_position:  relative;;
+
+      --layout-fit_-_position:  absolute; --layout-fit_-_top:  0; --layout-fit_-_right:  0; --layout-fit_-_bottom:  0; --layout-fit_-_left:  0;;
+
+      --layout-scroll_-_-webkit-overflow-scrolling:  touch; --layout-scroll_-_overflow:  auto;;
+
+      --layout-fullbleed_-_margin:  0; --layout-fullbleed_-_height:  100vh;;
+
+      
+
+      --layout-fixed-top_-_position:  fixed; --layout-fixed-top_-_top:  0; --layout-fixed-top_-_left:  0; --layout-fixed-top_-_right:  0;;
+
+      --layout-fixed-right_-_position:  fixed; --layout-fixed-right_-_top:  0; --layout-fixed-right_-_right:  0; --layout-fixed-right_-_bottom:  0;;
+
+      --layout-fixed-bottom_-_position:  fixed; --layout-fixed-bottom_-_right:  0; --layout-fixed-bottom_-_bottom:  0; --layout-fixed-bottom_-_left:  0;;
+
+      --layout-fixed-left_-_position:  fixed; --layout-fixed-left_-_top:  0; --layout-fixed-left_-_bottom:  0; --layout-fixed-left_-_left:  0;;
+}
+
+</style>
+</custom-style><style>[hidden] { display: none !important; }</style><custom-style>
+  <style is="custom-style">html {
+  --google-red-100: #f4c7c3;
+      --google-red-300: #e67c73;
+      --google-red-500: #db4437;
+      --google-red-700: #c53929;
+
+      --google-blue-100: #c6dafc;
+      --google-blue-300: #7baaf7;
+      --google-blue-500: #4285f4;
+      --google-blue-700: #3367d6;
+
+      --google-green-100: #b7e1cd;
+      --google-green-300: #57bb8a;
+      --google-green-500: #0f9d58;
+      --google-green-700: #0b8043;
+
+      --google-yellow-100: #fce8b2;
+      --google-yellow-300: #f7cb4d;
+      --google-yellow-500: #f4b400;
+      --google-yellow-700: #f09300;
+
+      --google-grey-100: #f5f5f5;
+      --google-grey-300: #e0e0e0;
+      --google-grey-500: #9e9e9e;
+      --google-grey-700: #616161;
+
+      
+
+      --paper-red-50: #ffebee;
+      --paper-red-100: #ffcdd2;
+      --paper-red-200: #ef9a9a;
+      --paper-red-300: #e57373;
+      --paper-red-400: #ef5350;
+      --paper-red-500: #f44336;
+      --paper-red-600: #e53935;
+      --paper-red-700: #d32f2f;
+      --paper-red-800: #c62828;
+      --paper-red-900: #b71c1c;
+      --paper-red-a100: #ff8a80;
+      --paper-red-a200: #ff5252;
+      --paper-red-a400: #ff1744;
+      --paper-red-a700: #d50000;
+
+      --paper-pink-50: #fce4ec;
+      --paper-pink-100: #f8bbd0;
+      --paper-pink-200: #f48fb1;
+      --paper-pink-300: #f06292;
+      --paper-pink-400: #ec407a;
+      --paper-pink-500: #e91e63;
+      --paper-pink-600: #d81b60;
+      --paper-pink-700: #c2185b;
+      --paper-pink-800: #ad1457;
+      --paper-pink-900: #880e4f;
+      --paper-pink-a100: #ff80ab;
+      --paper-pink-a200: #ff4081;
+      --paper-pink-a400: #f50057;
+      --paper-pink-a700: #c51162;
+
+      --paper-purple-50: #f3e5f5;
+      --paper-purple-100: #e1bee7;
+      --paper-purple-200: #ce93d8;
+      --paper-purple-300: #ba68c8;
+      --paper-purple-400: #ab47bc;
+      --paper-purple-500: #9c27b0;
+      --paper-purple-600: #8e24aa;
+      --paper-purple-700: #7b1fa2;
+      --paper-purple-800: #6a1b9a;
+      --paper-purple-900: #4a148c;
+      --paper-purple-a100: #ea80fc;
+      --paper-purple-a200: #e040fb;
+      --paper-purple-a400: #d500f9;
+      --paper-purple-a700: #aa00ff;
+
+      --paper-deep-purple-50: #ede7f6;
+      --paper-deep-purple-100: #d1c4e9;
+      --paper-deep-purple-200: #b39ddb;
+      --paper-deep-purple-300: #9575cd;
+      --paper-deep-purple-400: #7e57c2;
+      --paper-deep-purple-500: #673ab7;
+      --paper-deep-purple-600: #5e35b1;
+      --paper-deep-purple-700: #512da8;
+      --paper-deep-purple-800: #4527a0;
+      --paper-deep-purple-900: #311b92;
+      --paper-deep-purple-a100: #b388ff;
+      --paper-deep-purple-a200: #7c4dff;
+      --paper-deep-purple-a400: #651fff;
+      --paper-deep-purple-a700: #6200ea;
+
+      --paper-indigo-50: #e8eaf6;
+      --paper-indigo-100: #c5cae9;
+      --paper-indigo-200: #9fa8da;
+      --paper-indigo-300: #7986cb;
+      --paper-indigo-400: #5c6bc0;
+      --paper-indigo-500: #3f51b5;
+      --paper-indigo-600: #3949ab;
+      --paper-indigo-700: #303f9f;
+      --paper-indigo-800: #283593;
+      --paper-indigo-900: #1a237e;
+      --paper-indigo-a100: #8c9eff;
+      --paper-indigo-a200: #536dfe;
+      --paper-indigo-a400: #3d5afe;
+      --paper-indigo-a700: #304ffe;
+
+      --paper-blue-50: #e3f2fd;
+      --paper-blue-100: #bbdefb;
+      --paper-blue-200: #90caf9;
+      --paper-blue-300: #64b5f6;
+      --paper-blue-400: #42a5f5;
+      --paper-blue-500: #2196f3;
+      --paper-blue-600: #1e88e5;
+      --paper-blue-700: #1976d2;
+      --paper-blue-800: #1565c0;
+      --paper-blue-900: #0d47a1;
+      --paper-blue-a100: #82b1ff;
+      --paper-blue-a200: #448aff;
+      --paper-blue-a400: #2979ff;
+      --paper-blue-a700: #2962ff;
+
+      --paper-light-blue-50: #e1f5fe;
+      --paper-light-blue-100: #b3e5fc;
+      --paper-light-blue-200: #81d4fa;
+      --paper-light-blue-300: #4fc3f7;
+      --paper-light-blue-400: #29b6f6;
+      --paper-light-blue-500: #03a9f4;
+      --paper-light-blue-600: #039be5;
+      --paper-light-blue-700: #0288d1;
+      --paper-light-blue-800: #0277bd;
+      --paper-light-blue-900: #01579b;
+      --paper-light-blue-a100: #80d8ff;
+      --paper-light-blue-a200: #40c4ff;
+      --paper-light-blue-a400: #00b0ff;
+      --paper-light-blue-a700: #0091ea;
+
+      --paper-cyan-50: #e0f7fa;
+      --paper-cyan-100: #b2ebf2;
+      --paper-cyan-200: #80deea;
+      --paper-cyan-300: #4dd0e1;
+      --paper-cyan-400: #26c6da;
+      --paper-cyan-500: #00bcd4;
+      --paper-cyan-600: #00acc1;
+      --paper-cyan-700: #0097a7;
+      --paper-cyan-800: #00838f;
+      --paper-cyan-900: #006064;
+      --paper-cyan-a100: #84ffff;
+      --paper-cyan-a200: #18ffff;
+      --paper-cyan-a400: #00e5ff;
+      --paper-cyan-a700: #00b8d4;
+
+      --paper-teal-50: #e0f2f1;
+      --paper-teal-100: #b2dfdb;
+      --paper-teal-200: #80cbc4;
+      --paper-teal-300: #4db6ac;
+      --paper-teal-400: #26a69a;
+      --paper-teal-500: #009688;
+      --paper-teal-600: #00897b;
+      --paper-teal-700: #00796b;
+      --paper-teal-800: #00695c;
+      --paper-teal-900: #004d40;
+      --paper-teal-a100: #a7ffeb;
+      --paper-teal-a200: #64ffda;
+      --paper-teal-a400: #1de9b6;
+      --paper-teal-a700: #00bfa5;
+
+      --paper-green-50: #e8f5e9;
+      --paper-green-100: #c8e6c9;
+      --paper-green-200: #a5d6a7;
+      --paper-green-300: #81c784;
+      --paper-green-400: #66bb6a;
+      --paper-green-500: #4caf50;
+      --paper-green-600: #43a047;
+      --paper-green-700: #388e3c;
+      --paper-green-800: #2e7d32;
+      --paper-green-900: #1b5e20;
+      --paper-green-a100: #b9f6ca;
+      --paper-green-a200: #69f0ae;
+      --paper-green-a400: #00e676;
+      --paper-green-a700: #00c853;
+
+      --paper-light-green-50: #f1f8e9;
+      --paper-light-green-100: #dcedc8;
+      --paper-light-green-200: #c5e1a5;
+      --paper-light-green-300: #aed581;
+      --paper-light-green-400: #9ccc65;
+      --paper-light-green-500: #8bc34a;
+      --paper-light-green-600: #7cb342;
+      --paper-light-green-700: #689f38;
+      --paper-light-green-800: #558b2f;
+      --paper-light-green-900: #33691e;
+      --paper-light-green-a100: #ccff90;
+      --paper-light-green-a200: #b2ff59;
+      --paper-light-green-a400: #76ff03;
+      --paper-light-green-a700: #64dd17;
+
+      --paper-lime-50: #f9fbe7;
+      --paper-lime-100: #f0f4c3;
+      --paper-lime-200: #e6ee9c;
+      --paper-lime-300: #dce775;
+      --paper-lime-400: #d4e157;
+      --paper-lime-500: #cddc39;
+      --paper-lime-600: #c0ca33;
+      --paper-lime-700: #afb42b;
+      --paper-lime-800: #9e9d24;
+      --paper-lime-900: #827717;
+      --paper-lime-a100: #f4ff81;
+      --paper-lime-a200: #eeff41;
+      --paper-lime-a400: #c6ff00;
+      --paper-lime-a700: #aeea00;
+
+      --paper-yellow-50: #fffde7;
+      --paper-yellow-100: #fff9c4;
+      --paper-yellow-200: #fff59d;
+      --paper-yellow-300: #fff176;
+      --paper-yellow-400: #ffee58;
+      --paper-yellow-500: #ffeb3b;
+      --paper-yellow-600: #fdd835;
+      --paper-yellow-700: #fbc02d;
+      --paper-yellow-800: #f9a825;
+      --paper-yellow-900: #f57f17;
+      --paper-yellow-a100: #ffff8d;
+      --paper-yellow-a200: #ffff00;
+      --paper-yellow-a400: #ffea00;
+      --paper-yellow-a700: #ffd600;
+
+      --paper-amber-50: #fff8e1;
+      --paper-amber-100: #ffecb3;
+      --paper-amber-200: #ffe082;
+      --paper-amber-300: #ffd54f;
+      --paper-amber-400: #ffca28;
+      --paper-amber-500: #ffc107;
+      --paper-amber-600: #ffb300;
+      --paper-amber-700: #ffa000;
+      --paper-amber-800: #ff8f00;
+      --paper-amber-900: #ff6f00;
+      --paper-amber-a100: #ffe57f;
+      --paper-amber-a200: #ffd740;
+      --paper-amber-a400: #ffc400;
+      --paper-amber-a700: #ffab00;
+
+      --paper-orange-50: #fff3e0;
+      --paper-orange-100: #ffe0b2;
+      --paper-orange-200: #ffcc80;
+      --paper-orange-300: #ffb74d;
+      --paper-orange-400: #ffa726;
+      --paper-orange-500: #ff9800;
+      --paper-orange-600: #fb8c00;
+      --paper-orange-700: #f57c00;
+      --paper-orange-800: #ef6c00;
+      --paper-orange-900: #e65100;
+      --paper-orange-a100: #ffd180;
+      --paper-orange-a200: #ffab40;
+      --paper-orange-a400: #ff9100;
+      --paper-orange-a700: #ff6500;
+
+      --paper-deep-orange-50: #fbe9e7;
+      --paper-deep-orange-100: #ffccbc;
+      --paper-deep-orange-200: #ffab91;
+      --paper-deep-orange-300: #ff8a65;
+      --paper-deep-orange-400: #ff7043;
+      --paper-deep-orange-500: #ff5722;
+      --paper-deep-orange-600: #f4511e;
+      --paper-deep-orange-700: #e64a19;
+      --paper-deep-orange-800: #d84315;
+      --paper-deep-orange-900: #bf360c;
+      --paper-deep-orange-a100: #ff9e80;
+      --paper-deep-orange-a200: #ff6e40;
+      --paper-deep-orange-a400: #ff3d00;
+      --paper-deep-orange-a700: #dd2c00;
+
+      --paper-brown-50: #efebe9;
+      --paper-brown-100: #d7ccc8;
+      --paper-brown-200: #bcaaa4;
+      --paper-brown-300: #a1887f;
+      --paper-brown-400: #8d6e63;
+      --paper-brown-500: #795548;
+      --paper-brown-600: #6d4c41;
+      --paper-brown-700: #5d4037;
+      --paper-brown-800: #4e342e;
+      --paper-brown-900: #3e2723;
+
+      --paper-grey-50: #fafafa;
+      --paper-grey-100: #f5f5f5;
+      --paper-grey-200: #eeeeee;
+      --paper-grey-300: #e0e0e0;
+      --paper-grey-400: #bdbdbd;
+      --paper-grey-500: #9e9e9e;
+      --paper-grey-600: #757575;
+      --paper-grey-700: #616161;
+      --paper-grey-800: #424242;
+      --paper-grey-900: #212121;
+
+      --paper-blue-grey-50: #eceff1;
+      --paper-blue-grey-100: #cfd8dc;
+      --paper-blue-grey-200: #b0bec5;
+      --paper-blue-grey-300: #90a4ae;
+      --paper-blue-grey-400: #78909c;
+      --paper-blue-grey-500: #607d8b;
+      --paper-blue-grey-600: #546e7a;
+      --paper-blue-grey-700: #455a64;
+      --paper-blue-grey-800: #37474f;
+      --paper-blue-grey-900: #263238;
+
+      
+      --dark-divider-opacity: 0.12;
+      --dark-disabled-opacity: 0.38; 
+      --dark-secondary-opacity: 0.54;
+      --dark-primary-opacity: 0.87;
+
+      
+      --light-divider-opacity: 0.12;
+      --light-disabled-opacity: 0.3; 
+      --light-secondary-opacity: 0.7;
+      --light-primary-opacity: 1.0;
+}
+
+</style>
+</custom-style><custom-style>
+  <style is="custom-style">html {
+  --primary-text-color: var(--light-theme-text-color);
+      --primary-background-color: var(--light-theme-background-color);
+      --secondary-text-color: var(--light-theme-secondary-color);
+      --disabled-text-color: var(--light-theme-disabled-color);
+      --divider-color: var(--light-theme-divider-color);
+      --error-color: var(--paper-deep-orange-a700);
+
+      
+      --primary-color: var(--paper-indigo-500);
+      --light-primary-color: var(--paper-indigo-100);
+      --dark-primary-color: var(--paper-indigo-700);
+
+      --accent-color: var(--paper-pink-a200);
+      --light-accent-color: var(--paper-pink-a100);
+      --dark-accent-color: var(--paper-pink-a400);
+
+
+      
+      --light-theme-background-color: #ffffff;
+      --light-theme-base-color: #000000;
+      --light-theme-text-color: var(--paper-grey-900);
+      --light-theme-secondary-color: #737373;  
+      --light-theme-disabled-color: #9b9b9b;  
+      --light-theme-divider-color: #dbdbdb;
+
+      
+      --dark-theme-background-color: var(--paper-grey-900);
+      --dark-theme-base-color: #ffffff;
+      --dark-theme-text-color: #ffffff;
+      --dark-theme-secondary-color: #bcbcbc;  
+      --dark-theme-disabled-color: #646464;  
+      --dark-theme-divider-color: #3c3c3c;
+
+      
+      --text-primary-color: var(--dark-theme-text-color);
+      --default-primary-color: var(--primary-color);
+}
+
+</style>
+</custom-style><script async="" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/lazy.min.js"></script><script src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/loader.js"></script>
+<script src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/iframe_api"></script>
+<script src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/vendor-45d462772c30000424907184f70c7157e95fb6227698d1671c5051818a6f60d8.js"></script>
+<script src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/application-b0d5869f103bdc15016b8f4a671824262f94c48bd9d5a9cf2645f5c4858a9e2b.js"></script>
+</head>
+<body class="application-new focuses focuses-show l-full lab-show no-nav">
+<div class="header-container light-theme">
+<div class="header">
+<ql-icon-button class="js-nav-toggle header__nav-panel-button l-mrm">menu</ql-icon-button>
+<div class="header__title">
+<a class="icon-button" href="javascript:history.back()"><ql-icon>arrow_back</ql-icon></a>
+
+<h1 class="headline-5">
+Introduction to Amazon Elastic Block Store (EBS)
+</h1>
+</div>
+<div class="header__actions">
+<ql-icon-button class="header__button--search js-header-search-bar-button">search</ql-icon-button>
+<a class="icon-button js-favorite-button favorite-button" id="CatalogItem-14303-favorite-button" data-type="CatalogItem" data-id="14303" data-name="Introduction to Amazon Elastic Block Store (EBS)" href="https://www.qwiklabs.com/favorite.json?item_id=14303&amp;item_type=CatalogItem" tabindex="0"><ql-icon>favorite_border</ql-icon>
+</a><div class="mdl-tooltip js-tooltip" for="CatalogItem-14303-favorite-button" data-upgraded=",MaterialTooltip">
+Add to favorites
+</div>
+
+
+<ql-icon-button id="control-panel-target" style="display: none;">
+dashboard
+</ql-icon-button>
+<ql-menu for="control-panel-target" id="control-panel-menu" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="control-panel-target"></ql-menu>
+
+<ql-icon-button id="help-menu-button" tabindex="0">help</ql-icon-button>
+<div class="mdl-tooltip js-tooltip" data-mdl-for="help-menu-button" data-upgraded=",MaterialTooltip">
+Help
+</div>
+<ql-menu for="help-menu-button" id="help-menu" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="help-menu-button">
+<ql-menu-item>
+<ql-help context="lab" data-analytics-action="opened_help" data-analytics-label="lab" productdata="{&quot;userId&quot;:4265112}">
+Help Center
+</ql-help>
+</ql-menu-item>
+<ql-menu-item>
+<a target="_blank" class="ql-body-1" href="https://support.google.com/qwiklabs/contact/contact_us" tabindex="-1" role="menuitem">Email support</a>
+</ql-menu-item>
+<ql-menu-item>
+<a class="ql-body-1" onclick="ql.chat.open()" tabindex="-1" role="menuitem">Chat support</a>
+</ql-menu-item>
+</ql-menu>
+
+<button class="icon-button" id="my_account" aria-haspopup="true" aria-controls="">
+<ql-avatar></ql-avatar>
+</button>
+<ql-menu for="my_account" open="" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="my_account">
+<div class="my-account-menu">
+<ql-avatar class="l-mtl l-mbl" size="120"></ql-avatar>
+<div class="my-account-menu__user-info l-mbl">
+<h4 class="ql-subhead-1">Ankit Manglik</h4>
+<p class="ql-body-2 text--light">amanglik2010@gmail.com</p>
+<p class="ql-body-2 text--light">
+</p>
+<a class="text--green ql-subhead-2" href="https://www.qwiklabs.com/my_account/payments"><ql-chip positive="">
+Monthly Subscription
+</ql-chip>
+</a></div>
+<div class="buttons l-mbl">
+<a class="button button--hairline" id="settings" href="https://www.qwiklabs.com/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action="clicked_sign_out" href="/users/sign_out" method="delete">
+Sign Out
+</ql-button>
+<div class="privacy l-mtl">
+<a class="ql-caption text--light" href="https://www.qwiklabs.com/privacy_policy">Privacy</a>
+<span class="ql-caption text--light l-mls l-mrs">·</span>
+<a class="ql-caption text--light" href="https://www.qwiklabs.com/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</div>
+<div class="header__search-bar js-header-search-bar">
+<form class="js-search-form-mobile" onsubmit="ql.searchFilter(); return false;" action="https://www.qwiklabs.com/searches/elasticsearch" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="KgpwO6/4KHFwPg5cMR4ru9CDKuYsXIFFaA6CthWIznqBEn5RBc1fyKjy+6bXmzYdCSiYMPGtN7ky7qivimMdTA==">
+<input type="text" name="keywords" id="keywords" placeholder="Search" maxlength="255" aria-label="catalog search bar">
+</form>
+
+<ql-icon-button class="js-close-search-bar">close</ql-icon-button>
+</div>
+</div>
+
+<nav class="nav-bar">
+<a class="nav-bar__item js-navigation-button" href="https://www.qwiklabs.com/"><ql-icon class="nav-bar__item__icon">
+home
+</ql-icon>
+<span class="nav-bar__item__label">
+Home
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button  active" aria-current="page" href="https://www.qwiklabs.com/catalog"><ql-icon class="nav-bar__item__icon">
+school
+</ql-icon>
+<span class="nav-bar__item__label">
+Catalog
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button" href="https://www.qwiklabs.com/my_learning"><ql-icon class="nav-bar__item__icon">
+event_note
+</ql-icon>
+<span class="nav-bar__item__label">
+My Learning
+</span>
+</a>
+</nav>
+
+<nav class="nav-panel js-nav-panel">
+<div class="nav-panel__logo">
+<div class="logo logo--blue"></div>
+</div>
+<a title="Home" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/"><ql-icon class="nav-panel__item__icon">
+home
+</ql-icon>
+<div class="nav-panel__item__label">
+Home
+</div>
+</a>
+<a title="Catalog" tabindex="-1" class="nav-panel__item js-navigation-button active" aria-current="page" href="https://www.qwiklabs.com/catalog"><ql-icon class="nav-panel__item__icon">
+school
+</ql-icon>
+<div class="nav-panel__item__label">
+Catalog
+</div>
+</a>
+<a title="My Learning" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_learning"><ql-icon class="nav-panel__item__icon">
+event_note
+</ql-icon>
+<div class="nav-panel__item__label">
+My Learning
+</div>
+</a>
+<div class="nav-panel__spacer"></div>
+<a title="Profile" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/profile"><ql-icon class="nav-panel__item__icon">
+account_circle
+</ql-icon>
+<div class="nav-panel__item__label">
+Profile
+</div>
+</a>
+<a title="Credits &amp; Subscriptions" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/credits"><ql-icon class="nav-panel__item__icon">
+money
+</ql-icon>
+<div class="nav-panel__item__label">
+Credits &amp; Subscriptions
+</div>
+</a>
+<a title="Security" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/security"><ql-icon class="nav-panel__item__icon">
+security
+</ql-icon>
+<div class="nav-panel__item__label">
+Security
+</div>
+</a>
+<div class="nav-panel__spacer"></div>
+<a class="nav-panel__item" tabindex="-1" href="https://www.qwiklabs.com/focuses/14303?parent=catalog#"><ql-help>
+<div class="nav-panel__help-item">
+<ql-icon class="nav-panel__item__icon">help</ql-icon>
+<div class="nav-panel__item__label">
+Help
+</div>
+</div>
+</ql-help>
+</a><div class="nav-panel__small-links">
+<a tabindex="-1" href="https://www.qwiklabs.com/privacy_policy">Privacy</a>
+<a tabindex="-1" href="https://www.qwiklabs.com/terms_of_service">Terms</a>
+</div>
+</nav>
+<div class="nav-panel__overlay js-nav-toggle"></div>
+
+<main class="js-main">
+<span class="hidden" id="flash-sibling-before"></span>
+
+<div class="l-main-wrapper" id="main-wrapper">
+
+
+
+
+
+
+
+<ql-drawer-container class="js-lab-state" data-analytics-payload="{&quot;label&quot;:&quot;Introduction to Amazon Elastic Block Store (EBS)&quot;,&quot;lab_name&quot;:&quot;Introduction to Amazon Elastic Block Store (EBS)&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;run&quot;}" data-focus-id="14303" data-lab-billing-limit="0.0" data-lab-duration="2700" data-parent="catalog" data-payment-required="" data-recaptcha-enabled="" id="lab-container">
+<ql-drawer id="terminal-drawer" slot="drawer">
+<ql-cloud-terminal class="terminal"></ql-cloud-terminal>
+</ql-drawer>
+<ql-drawer-content class="js-lab-wrapper" id="lab-content" slot="drawer-content">
+<ql-drawer-container id="lab-content-container">
+<ql-drawer id="control-panel-drawer" open="" slot="drawer" width="320" style="width: 320px;">
+<ql-lab-control-panel class="ql-lab-control-panel__max-height control-panel js-lab-control-panel" connectionfiles="[]" labcontrolbutton="{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}" labdetails="[]" labtimer="{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:2700}" studentresources="[]">
+<script src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/api.js"></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+              grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response " value="03AGdBq27_-tsrWtAg-GlYVdzNLXDKBteCvitVsRzsOWMQuPVXvqNEET97MFC7iRPfPIiekUtJTwcJEZucXBlNDzzjYoZ2EiSWxwJNa7CmTAjWK8VzqSHhy7wLOF-FDg17SsWvtFI2k6My63LAGuUqQoce4VlZ_MRN4rOJGgBkAPevINrtn8DMPgKhYXnG9nAuHyZg12iOQCVROKTjjqo9ygKA_tJcf0O_QoRGqJNs7Iy8ZkicI0yRRWy5J4Tgaj5ysRgdeBwA8pS8n89N3Suhw6Lgx1de2lO52kfSqlM7HHvlZh0IRY7oDSDFnRG0fceHIPFPmrP5r6e8MfVH_7uP-j662aGnbCkwGsm1uXYGlInIcAnliJuJguIrH87HN2-VtHZf22KCxw3Fe-C1GwSb8HPan2qFHsBRhF_Gv5CNFqmy21CdU6O84OlbPhn6M1Tm9H8rMH1GQ9fezjNipQ00YPuT3i8Mgq1V1IPq2qYYNxc1nAwYx7DFS0-KCI9aQqe0BZe-7U1a0w0c" style=""><div style="width: 304px; height: 78px;"><div><iframe src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/anchor.html" width="304" height="78" role="presentation" name="a-7dudr7eag4g4" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></input>
+
+<div class="hidden" id="recaptcha-v2-start-lab" slot="recaptcha">
+<script src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/api(1).js" async="" defer=""></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "><div style="width: 304px; height: 78px;"><div><iframe src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/anchor(1).html" width="304" height="78" role="presentation" name="a-w9a9tqr37ty0" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response-1" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/saved_resource(2).html"></iframe></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id="lab-instructions" slot="drawer-content">
+<div class="alert alert--fake js-alert">
+<p class="alert__message js-alert-message"></p>
+<a class="alert__close js-alert-close">
+<i class="fa fa-times"></i>
+</a>
+<iframe class="l-ie-iframe-fix" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/saved_resource(3).html"></iframe>
+</div>
+<div class="js-lab-content lab-content__renderable-instructions">
+<div class="lab-preamble">
+<h1 class="lab-preamble__title">
+Introduction to Amazon Elastic Block Store (EBS)
+</h1>
+<div class="lab-preamble__details subtitle-headline-1">
+<span>45 minutes</span>
+<span>1 Credit</span>
+<div class="lab__rating">
+<a href="https://www.qwiklabs.com/focuses/14303/reviews?parent=catalog"><div class="rateit" data-rateit-readonly="true" data-rateit-value="4.4171"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 70.6736px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+
+</a><a data-target="#lab-review-modal" data-toggle="modal">
+Rate Lab
+</a>
+</div>
+</div>
+</div>
+
+<div class="js-markdown-instructions markdown-lab-instructions no-select" id="markdown-lab-instructions">
+<p><img src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/aws-logo.png" alt=""></p>
+
+
+
+<p><strong>SPL-67 - Version 2.0.3</strong></p>
+
+<p>© 2020 Amazon Web Services, Inc. and its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited.</p>
+
+<p>Errors, corrections or other questions? Contact us at <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank"><em>AWS Training and Certification</em></a>.</p>
+
+<h2 id="step1">Overview</h2>
+
+<p>This lab introduces you to Amazon Elastic Block Store (EBS) using the AWS Management Console.</p>
+
+<p>Amazon EBS offers persistent storage for Amazon Elastic Compute Cloud (Amazon EC2) instances. Amazon EBS volumes are network-attached and persist independently from the life of an instance. Amazon EBS volumes are highly available, highly reliable volumes that can be leveraged as an Amazon EC2 instance boot partition or attached to a running Amazon EC2 instance as a standard block device.</p>
+
+<p>When used as a boot partition, Amazon EC2 instances can be stopped and subsequently restarted, enabling you to pay only for the provisioned storage resources while maintaining the instance's state. Amazon EBS volumes offer greatly improved durability over local Amazon EC2 instance stores because Amazon EBS volumes are automatically replicated within the Availability Zone to prevent data loss due to failure of a single piece of hardware.</p>
+
+<p>For those wanting even more durability, Amazon EBS provides the ability to create point-in-time consistent snapshots of your volumes that are then stored in Amazon Simple Storage Service (Amazon S3) and automatically replicated across multiple Availability Zones. These snapshots can be used as the starting point for new Amazon EBS volumes and can protect your data for long-term durability. You can also easily share these snapshots with co-workers and other AWS developers.</p>
+
+<p>This lab guide explains basic concepts of Amazon EBS in a step-by-step fashion. However, it can only give a brief overview of Amazon EBS concepts. For further information, see the <a href="http://aws.amazon.com/ebs/" target="_blank">Amazon EBS documentation</a>.</p>
+
+<h2 id="step2">Topics covered</h2>
+
+<p>When you finish the lab, you will be able to:</p>
+<ul>
+<li>Create an Amazon EBS volume.</li>
+<li>Attach the EBS volume to an Amazon EC2 instance.</li>
+<li>Create a file system on the EBS volume.</li>
+<li>Create a Snapshot of the EBS volume.</li>
+<li>Restore a snapshot as a new EBS volume.</li>
+<li>Modify an EBS volume.</li>
+</ul>
+<h3>Other AWS services</h3>
+
+<p>AWS services other than the ones needed for this lab are disabled by IAM policy during your access time in this lab. In addition, the capabilities of the services used in this lab are limited to what’s required by the lab and in some cases are even further limited as an intentional aspect of the lab design. Expect errors when accessing other services or performing actions beyond those provided in this lab guide.</p>
+
+<h2 id="step3">Start Lab</h2>
+<ol start="1">
+<li>At the top of your screen, launch your lab by clicking <span style="background-color:#34A853;font-family:Google Sans;font-weight:bold;font-size:90%;color:white;border-color:#34A853;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Start Lab</span>
+</li>
+</ol>
+<p>This will start the process of provisioning your lab resources. An estimated amount of time to provision your lab resources will be displayed. You must wait for your resources to be provisioned before continuing.</p>
+
+<p><i class="fas fa-info-circle"></i> If you are prompted for a token, use the one distributed to you (or credits you have purchased). </p>
+<ol start="2">
+<li>Open your lab by clicking <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span>
+</li>
+</ol>
+<p>This will automatically log you into the AWS Management Console. </p>
+
+<p><i class="fas fa-exclamation-triangle"></i> <strong>Please do not change the Region unless instructed</strong>.</p>
+
+
+
+<h3>Common login errors</h3>
+
+<p><strong>Error : Federated login credentials</strong></p>
+
+<p><img src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/federatedloginerror.png" alt=""></p>
+
+<p>If you see this message:</p>
+<ul>
+<li>Close the browser tab to return to your initial lab window</li>
+<li>Wait a few seconds</li>
+<li>Click <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span> again</li>
+</ul>
+<p>You should now be able to access the AWS Management Console.</p>
+
+
+
+<p><strong>Error: You must first log out</strong></p>
+
+<p><img src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/logouterror.png" alt=""></p>
+
+<p>If you see the message, <strong>You must first log out before logging into a different AWS account:</strong> </p>
+<ul>
+<li>Click <strong>click here</strong>
+</li>
+<li>Close your browser tab to return to your initial Qwiklabs window</li>
+<li>Click <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span> again</li>
+</ul>
+
+
+<h2 id="step4">Task 1: Create an Elastic Block Store volume</h2>
+
+<p>In this task, you create a new Amazon EBS volume. Amazon EBS volumes are like hard drives in a computer. The data on them persists through the lifetime of the volume and can be transported between instances as needed.</p>
+<ol start="3">
+<li><p>In the <strong>AWS Management Console</strong>, on the <strong>Services</strong> menu, choose <strong>EC2</strong>.</p></li>
+<li><p>At the top right of the screen, if you see <strong>New EC2 Experience</strong> toggle to use the new UI, if it is not enabled by default</p></li>
+<li><p>In the left navigation pane, under <strong>ELASTIC BLOCK STORE</strong>, choose <strong>Volumes</strong>.</p></li>
+</ol>
+<p>Notice the existing volume that has a state of <strong>in-use</strong>. This volume is connected to an Amazon EC2 instance that was created for this lab exercise.</p>
+
+<p><i class="fas fa-comment" style="color:#0073bb;"></i> If you do not see the volume, wait 30 seconds and choose the <i class="fas fa-sync-alt"></i> refresh button at the top-right corner of the page. Repeat until it appears.</p>
+<ol start="6">
+<li><p>Point to the <strong>Name</strong> column for the volume being displayed. A pencil <i class="fas fa-pencil-alt" style="color:Grey;"></i> icon appears.</p></li>
+<li><p>Choose the pencil <i class="fas fa-pencil-alt" style="color:Grey;"></i> icon, change the name of the volume to <input readonly="" class="copyable-inline-input" size="3" type="text" value="Lab">, and then press <strong>Enter</strong> or choose the <i class="fas fa-check-circle" style="color:Grey;"></i> checkmark to save your changes.</p></li>
+</ol>
+<p>This adds a name to the EBS Volume. It is recommended that you name and tag your EBS volumes to keep track of their content and purpose.</p>
+<ol start="8">
+<li><p>Take note of the <strong>Availability Zone</strong> of the volume. It will look similar to <em>us-west-2a</em>. You use this value in an upcoming step.</p></li>
+<li><p>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Create Volume</span></p></li>
+</ol>
+<p>You are presented with the <strong>Create Volume</strong> dialog box, which contains various configuration options:</p>
+<ul>
+<li>
+<strong>Volume Type</strong> specifies whether to use magnetic disks or SSD. Each volume type has its own capabilities that can meet specific use-cases.</li>
+<li>
+<strong>Size</strong> can be up to 16TB.</li>
+<li>
+<strong>IOPS</strong> defines the speed of the disk in <em>Inputs/Outputs per Second</em>.</li>
+<li>
+<strong>Availability Zone</strong> identifies where to create the Volume, which should be in the same AZ as the instance that will use the volume.</li>
+<li>
+<strong>Snapshot ID</strong> allows a previous snapshot to be restored onto the new volume.</li>
+<li>
+<strong>Encryption</strong> chooses whether the contents of the volume should be automatically encrypted when stored on disk.</li>
+</ul><ol start="10">
+<li>In the <strong>Create Volume</strong> dialog box, configure:</li>
+</ol><ul>
+<li>
+<strong>Volume Type</strong>: General Purpose SSD (GP2)</li>
+<li>
+<strong>Size (GiB)</strong> : <input readonly="" class="copyable-inline-input" size="2" type="text" value="10">
+</li>
+<li>
+<strong>Availability Zone</strong>: Use the Availability Zone noted in the earlier step</li>
+</ul><ol start="11">
+<li>Choose <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:5px;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Add Tag</span> and then configure:</li>
+</ol><ul>
+<li>
+<strong>Key:</strong> <input readonly="" class="copyable-inline-input" size="4" type="text" value="Name">
+</li>
+<li>
+<strong>Value:</strong> <input readonly="" class="copyable-inline-input" size="9" type="text" value="My volume">
+</li>
+</ul><ol start="12">
+<li>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Create Volume</span>
+</li>
+</ol>
+<p>A <span style="color:#1d8102;background-color:#f2f8f0;"><i class="fas fa-check-circle" style="color:#1d8102;"></i> Volume created successfully</span> message displays.</p>
+<ol start="13">
+<li>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Close</span>
+</li>
+</ol>
+<p>Your new EBS volume appears in the volume list. Wait for the newly created volume to change to a <strong>State</strong> of <em>available</em>.</p>
+
+<p><i class="fas fa-comment" style="color:#0073bb;"></i> If your newly created volume shows the <strong>State</strong> as <em>creating</em> or does not appear, choose the <i class="fas fa-sync-alt"></i> refresh icon at the top-right corner of the page.</p>
+
+<p><i class="fas fa-thumbs-up" style="color:#0073bb;"></i> Congratulations! You have successfully created a new Amazon EBS volume.</p>
+
+<p>You can now attach the volume to an Amazon EC2 instance, which allows the instance to use the volume. Next, you select the Amazon EC2 instance that you want to use the volume.</p>
+
+<h2 id="step5">Task 2: Attach the EBS volume to an Amazon EC2 instance</h2>
+
+<p>In this task, you attach the new EBS volume to a Linux-based Amazon EC2 instance.</p>
+<ol start="14">
+<li><p>Select <i class="fas fa-square" style="color:#0073bb;"></i> your volume named <em>My volume</em>.</p></li>
+<li><p>In the <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:5px;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Actions <i class="fas fa-angle-down"></i></span> drop-down list, choose <strong>Attach Volume</strong>.</p></li>
+<li><p>Choose the <strong>Instance</strong> field and then select the <em>running</em> instance that appears. It should be named <em>Lab</em>.</p></li>
+<li><p>Make a note of the path in the <strong>Device</strong> field. The defuault should be <em>/dev/sdf</em>. You use it in a future task when formatting and mounting the volume.</p></li>
+<li><p>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Attach</span></p></li>
+</ol>
+<p>Notice the <strong>Status</strong> of the volume changes to <em>in-use</em>.</p>
+
+<p>Next, let's examine the two volumes that are now attached to the EC2 instance.</p>
+<ol start="19">
+<li><p>In the left navigation pane, under <strong>INSTANCES</strong>, choose <strong>Instances</strong>.</p></li>
+<li><p>Select the <strong>Lab</strong> instance from the list.</p></li>
+<li><p>Click <strong>Storage</strong> tab and scroll down to the <strong>Block devices</strong> section.</p></li>
+<li><p>Notice <em>Delete on termination</em> is <em>Yes</em> for the device name <strong>/dev/xvda</strong>, which means that this Amazon EBS volume will be permanently deleted if the Amazon EC2 instance is terminated.</p></li>
+<li><p>Notice <em>Delete on termination</em> is <em>No</em> for the device name <strong>/dev/sdf</strong>, which means that this Amazon EBS volume will persist after the Amazon EC2 instance is terminated. The volume could then be attached to a different instance at a later time. Volumes that are not deleted with the termination of an instance can be deleted from the Volumes page.</p></li>
+</ol>
+<p><i class="fas fa-thumbs-up" style="color:#0073bb;"></i> Congratulations! You have successfully attached an Amazon EBS volume to an instance.</p>
+
+<h2 id="step6">Task 3: Create and configure your file system</h2>
+
+<p>In this task, you create an ext3 file system on the EBS volume under the /mnt/data-store mount point.</p>
+<ol start="24">
+<li>To the left of these instructions, copy the <strong>Ec2Instance</strong> URL and paste it into a new web browser window.</li>
+</ol>
+<p>The URL uses EC2 Instance Connect to create an SSH connection to the EC2 instance. Refer to the <em>Additional resources</em> section at the end of the lab for more information.</p>
+<ol start="25">
+<li>In the EC2 Instance Connect session, enter the following command to view the storage available on your instance:</li>
+</ol><pre class="highlight shell"><code>df -h
+</code><button class="button button--text button--small copy-button js-copy-button-0" title="" data-original-title="Copied"><ql-icon>content_copy</ql-icon></button></pre>
+<p>You should see output similar to:</p>
+<pre class="highlight plaintext"><code>[ec2-user@ip-10-10-1-61 ~]$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        462M     0  462M   0% /dev
+tmpfs           479M     0  479M   0% /dev/shm
+tmpfs           479M  392K  479M   1% /run
+tmpfs           479M     0  479M   0% /sys/fs/cgroup
+/dev/nvme0n1p1  8.0G  1.1G  7.0G  14% /
+tmpfs            96M     0   96M   0% /run/user/1000
+</code><button class="button button--text button--small copy-button js-copy-button-1"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The command output shows the 8 GiB disk volume that was created with the Amazon EC2 instance. Your new Amazon EBS volume is not yet shown.</p>
+<ol start="26">
+<li>Enter the following command to create an ext3 file system on the new Amazon EBS volume. Replace <strong>/dev/sdf</strong> with the value of <strong>Device</strong> from the previous task, if it's different.</li>
+</ol><pre class="highlight shell"><code>sudo mkfs -t ext3 /dev/sdf
+</code><button class="button button--text button--small copy-button js-copy-button-2"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The output should look similar to:</p>
+<pre class="highlight plaintext"><code>[ec2-user@ip-10-10-1-61 ~]$ sudo mkfs -t ext3 /dev/sdf
+mke2fs 1.42.9 (28-Dec-2013)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+655360 inodes, 2621440 blocks
+131072 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=2684354560
+80 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks:
+32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information: done
+</code><button class="button button--text button--small copy-button js-copy-button-3"><ql-icon>content_copy</ql-icon></button></pre><ol start="27">
+<li>Enter the following command to create a new directory for mounting the new storage volume:</li>
+</ol><pre class="highlight shell"><code>sudo mkdir /mnt/data-store
+</code><button class="button button--text button--small copy-button js-copy-button-4"><ql-icon>content_copy</ql-icon></button></pre><ol start="28">
+<li>Enter the following command to mount the new storage volume:</li>
+</ol><pre class="highlight shell"><code>sudo mount /dev/sdf /mnt/data-store
+</code><button class="button button--text button--small copy-button js-copy-button-5"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#0073bb;"></i> To configure the Linux instance to mount this volume whenever the instance is started, you must add modify the <em>/etc/fstab</em> configuration file.</p>
+<ol start="29">
+<li>Enter the following command to add the appropriate line to the end of <em>/etc/fstab</em>:</li>
+</ol><pre class="highlight shell"><code><span class="nb">echo</span> <span class="s2">"/dev/sdf   /mnt/data-store ext3 defaults,noatime 1 2"</span> | sudo tee -a /etc/fstab
+</code><button class="button button--text button--small copy-button js-copy-button-6"><ql-icon>content_copy</ql-icon></button></pre><ol start="30">
+<li>Enter the following command to view the <em>/etc/fstab</em> configuration file:</li>
+</ol><pre class="highlight shell"><code>cat /etc/fstab
+</code><button class="button button--text button--small copy-button js-copy-button-7"><ql-icon>content_copy</ql-icon></button></pre>
+<p>Verify the line you entered in the previous command is shown at the end of the file.</p>
+<ol start="31">
+<li>Enter the following command to view the available storage again:</li>
+</ol><pre class="highlight shell"><code>df -h
+</code><button class="button button--text button--small copy-button js-copy-button-8"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The output now contains an additional line, <strong>/dev/nvme1n1</strong>, which is the EBS volume you created. Notice that the <strong>Mounted on</strong> path is the folder you created previously.</p>
+<pre class="highlight plaintext"><code>[ec2-user@ip-10-10-1-61 ~]$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        462M     0  462M   0% /dev
+tmpfs           479M     0  479M   0% /dev/shm
+tmpfs           479M  392K  479M   1% /run
+tmpfs           479M     0  479M   0% /sys/fs/cgroup
+/dev/nvme0n1p1  8.0G  1.1G  7.0G  14% /
+tmpfs            96M     0   96M   0% /run/user/1000
+/dev/nvme1n1    9.8G   23M  9.2G   1% /mnt/data-store
+</code><button class="button button--text button--small copy-button js-copy-button-9"><ql-icon>content_copy</ql-icon></button></pre><ol start="32">
+<li>Enter the following command to create a new text file, containing some sample text, on the newly mounted volume:</li>
+</ol><pre class="highlight shell"><code>sudo sh -c <span class="s2">"echo some text has been written &gt; /mnt/data-store/file.txt"</span>
+</code><button class="button button--text button--small copy-button js-copy-button-10"><ql-icon>content_copy</ql-icon></button></pre><ol start="33">
+<li>Enter the following command to view the contents of the text file you just ceated and verify that the text has been written to your volume.</li>
+</ol><pre class="highlight shell"><code>cat /mnt/data-store/file.txt
+</code><button class="button button--text button--small copy-button js-copy-button-11"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The output of the command should read:</p>
+<pre class="highlight plaintext"><code>some text has been written
+</code><button class="button button--text button--small copy-button js-copy-button-12"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-thumbs-up" style="color:#0073bb;"></i> Congratulations! You have successfully formatted the volume with a file system and written a file to it.</p>
+
+<h2 id="step7">Task 4: Snapshot the EBS volume</h2>
+
+<p>You can back up the data on your Amazon EBS volumes to Amazon S3 by taking point-in-time snapshots. Snapshots are incremental backups, which means that only the blocks on the device that have changed after your most recent snapshot are saved. This minimizes the time required to create the snapshot and saves on storage costs by not duplicating data. Each snapshot contains all of the information needed to restore your data (from the moment when the snapshot was taken) to a new EBS volume.</p>
+
+<p>In this task, you will create a snapshot of your EBS Volume.</p>
+<ol start="34">
+<li><p>Return to your browser tab with the AWS Management Console.</p></li>
+<li><p>In the left navigation pane, under <strong>ELASTIC BLOCK STORE</strong>, choose <strong>Volumes</strong>.</p></li>
+<li><p>Select <i class="fas fa-square" style="color:#0073bb;"></i> your volume named <strong>My volume</strong>.</p></li>
+<li><p>In the <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:5px;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Actions <i class="fas fa-angle-down"></i></span> drop-down list, choose <strong>Create Snapshot</strong>, and then configure:</p></li>
+</ol><ul>
+<li>
+<strong>Description:</strong> <input readonly="" class="copyable-inline-input" size="21" type="text" value="Snapshot of my volume">
+</li>
+</ul><ol start="38">
+<li>Choose <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:5px;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Add Tag</span> and then configure:</li>
+</ol><ul>
+<li>
+<strong>Key:</strong> <input readonly="" class="copyable-inline-input" size="4" type="text" value="Name">
+</li>
+<li>
+<strong>Value:</strong> <input readonly="" class="copyable-inline-input" size="11" type="text" value="My snapshot">
+</li>
+</ul><ol start="39">
+<li>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Create Snapshot</span>
+</li>
+</ol>
+<p>A <span style="color:#1d8102;background-color:#f2f8f0;"><i class="fas fa-check-circle" style="color:#1d8102;"></i> Create Snapshot Request Succeeded</span> message displays.</p>
+<ol start="40">
+<li><p>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Close</span></p></li>
+<li><p>In the left navigation pane, under <strong>ELASTIC BLOCK STORE</strong>, choose <strong>Snapshots</strong>.</p></li>
+</ol>
+<p>Your snapshot appears in the list.</p>
+
+<p>In the future, this snapshot can be used to create a new volume that will have the same contents as when the snapshot was created.</p>
+
+<p><i class="fas fa-thumbs-up" style="color:#0073bb;"></i> Congratulations! You have successfully created a snapshot of an Amazon EBS volume.</p>
+
+<h2 id="step8">Task 5: Restore the Amazon EBS Snapshot</h2>
+
+<p>You can create Amazon EBS volumes from snapshots to clone or restore your volumes. When you create an Amazon EBS volume based on a snapshot, the new volume begins as an exact replica of the original volume that was used to create the snapshot. The replicated volume loads data in the background so that you can begin using it immediately. Amazon EBS snapshots can also be easily shared among AWS users or copied over AWS regions.</p>
+
+<p>To retrieve data stored in a snapshot, you <strong>Restore</strong> the snapshot to a new EBS volume.</p>
+
+<h3>Create a volume using your snapshot</h3>
+<ol start="42">
+<li>Select <i class="fas fa-square" style="color:#0073bb;"></i> <strong>My snapshot</strong>.</li>
+</ol>
+<p><i class="fas fa-info-circle" style="color:#0073bb;"></i> If the snapshot is still creating, wait 30 seconds and then choose the <i class="fas fa-sync-alt"></i> refresh icon at the top-right corner of the page. If necessary, repeat this process until the status of the snapshot changes to <em>completed</em>.</p>
+<ol start="43">
+<li>In the <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:5px;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Actions <i class="fas fa-angle-down"></i></span> menu, choose <strong>Create Volume</strong>.</li>
+</ol>
+<p><i class="fas fa-sticky-note" style="color:#f90;"></i> When restoring a snapshot to a new volume, you can also modify the configuration, such as changing the volume type, size, or Availability Zone.</p>
+<ol start="44">
+<li><p>Change the <strong>Size (GiB)</strong> field to <input readonly="" class="copyable-inline-input" size="2" type="text" value="15">.</p></li>
+<li><p>For <strong>Availability Zone</strong>, select the same availability zone that you used in Task 1.</p></li>
+<li><p>Choose <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:5px;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Add Tag</span> and then configure:</p></li>
+</ol><ul>
+<li>
+<strong>Key:</strong> <input readonly="" class="copyable-inline-input" size="4" type="text" value="Name">
+</li>
+<li>
+<strong>Value:</strong> <input readonly="" class="copyable-inline-input" size="15" type="text" value="Restored volume">
+</li>
+</ul><ol start="47">
+<li>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Create Volume</span>
+</li>
+</ol>
+<p>A <span style="color:#1d8102;background-color:#f2f8f0;"><i class="fas fa-check-circle" style="color:#1d8102;"></i> Create Volume Request Succeeded</span> message displays.</p>
+<ol start="48">
+<li>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Close</span>
+</li>
+</ol>
+<h3>Attach the restored volume to your EC2 instance</h3>
+<ol start="49">
+<li><p>In the left navigation pane, under <strong>ELASTIC BLOCK STORE</strong> choose <strong>Volumes</strong>.</p></li>
+<li><p>Select <i class="fas fa-square" style="color:#0073bb;"></i> <strong>Restored volume</strong>.</p></li>
+</ol>
+<p><i class="fas fa-exclamation-triangle" style="color:#daa520;"></i> Ensure that <em>Restored volume</em> is the only volume selected.</p>
+<ol start="51">
+<li><p>In the <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:5px;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Actions <i class="fas fa-angle-down"></i></span> menu, choose <strong>Attach Volume</strong>.</p></li>
+<li><p>Choose the <strong>Instance</strong> field and then select the <em>running</em> instance that appears. It should be named <em>Lab</em>.</p></li>
+<li><p>Make a note of the path in the <strong>Device</strong> field. The defuault should be <em>/dev/sdg</em>. You use it in a future task to mount the restored volume.</p></li>
+<li><p>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Attach</span></p></li>
+</ol>
+<p>Notice that the volume state changed to <em>in-use</em>.</p>
+
+<h3>Mount the restored volume</h3>
+<ol start="55">
+<li>To the left of these instructions, copy the <strong>Ec2Instance</strong> URL and paste it into a new web browser window.</li>
+</ol>
+<p><i class="fas fa-info-circle" style="color:#0073bb;"></i> If you still have the EC2 Instance Connect window open from a previous task, but it seems to be unresponsive, refresh the page to restore connectivity. The connection will time out after a few minutes of not being used.</p>
+<ol start="56">
+<li>In the EC2 Instance Connect session, enter the following command to create a directory for mounting the restored storage volume:</li>
+</ol><pre class="highlight shell"><code>sudo mkdir /mnt/data-store2
+</code><button class="button button--text button--small copy-button js-copy-button-13"><ql-icon>content_copy</ql-icon></button></pre><ol start="57">
+<li>Enter the following command to mount the new volume. Replace <strong>/dev/sdg</strong> with the value of <strong>Device</strong> from the previous task, if it's different.</li>
+</ol><pre class="highlight shell"><code>sudo mount /dev/sdg /mnt/data-store2
+</code><button class="button button--text button--small copy-button js-copy-button-14"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-sticky-note" style="color:#f90;"></i> Note that you did not have to format the restored volume with a file system prior to mounting it. This is because the volume you restored the snapshot of was already formatted when the snapshot was taken.</p>
+
+<p>Before you can use the additional storage that you allocated to the Amazon EBS volume, you must extend the file system partiion from within the operating system.</p>
+
+<p><i class="fas fa-exclamation-triangle" style="color:#d13212;"></i> Before extending a file system that contains valuable data, it is best practice to create a snapshot of the volume, in case you need to roll back your changes.</p>
+<ol start="58">
+<li>Enter the following command to display information about the block devices attached to your instance:</li>
+</ol><pre class="highlight shell"><code>lsblk
+</code><button class="button button--text button--small copy-button js-copy-button-15"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The output should look similar to this:</p>
+<pre class="highlight plaintext"><code>[ec2-user@ip-10-10-1-61 ~]$ lsblk
+NAME          MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+nvme0n1       259:0    0   8G  0 disk
+├─nvme0n1p1   259:1    0   8G  0 part /
+└─nvme0n1p128 259:2    0   1M  0 part
+nvme1n1       259:3    0  10G  0 disk /mnt/data-store
+nvme2n1       259:4    0  15G  0 disk /mnt/data-store2
+</code><button class="button button--text button--small copy-button js-copy-button-16"><ql-icon>content_copy</ql-icon></button></pre>
+<p>Notice that the size of the restored Amazon EBS volume you attached to the instance (nvme2n1) is 15 GiB, while the original volume (nvme1n1) is 10 GiB.</p>
+<ol start="59">
+<li>Enter the following command to verify the size of the file system for each volume:</li>
+</ol><pre class="highlight shell"><code>df -h
+</code><button class="button button--text button--small copy-button js-copy-button-17"><ql-icon>content_copy</ql-icon></button></pre>
+<p>Notice the size of the file system on the restored volume is still approximately 10 GiB. You must extend the file system to take advantage of the increased volume size.</p>
+<ol start="60">
+<li>Enter the following command to extend the file system to use the additional available capacity of the volume:</li>
+</ol><pre class="highlight shell"><code>sudo resize2fs /dev/nvme2n1
+</code><button class="button button--text button--small copy-button js-copy-button-18"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The output should look similar to this:</p>
+<pre class="highlight plaintext"><code>[ec2-user@ip-10-10-1-61 ~]$ sudo resize2fs /dev/nvme2n1
+resize2fs 1.42.9 (28-Dec-2013)
+Filesystem at /dev/nvme2n1 is mounted on /mnt/data-store2; on-line resizing required
+old_desc_blocks = 1, new_desc_blocks = 1
+The filesystem on /dev/nvme2n1 is now 3932160 blocks long.
+</code><button class="button button--text button--small copy-button js-copy-button-19"><ql-icon>content_copy</ql-icon></button></pre><ol start="61">
+<li>Enter the following command to verify the size of the file system for each volume:</li>
+</ol><pre class="highlight shell"><code>df -h
+</code><button class="button button--text button--small copy-button js-copy-button-20"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The size of the file system should now be approximately 15 GiB.</p>
+
+<p>Next, verify that the file you created on the original volume has been restored with the snapshot.</p>
+<ol start="62">
+<li>Enter the following command to list the contents of the volume you just mounted:</li>
+</ol><pre class="highlight shell"><code>ls /mnt/data-store2/
+</code><button class="button button--text button--small copy-button js-copy-button-21"><ql-icon>content_copy</ql-icon></button></pre>
+<p>Verify that volume you mounted has the file that you created earlier. You should see <em>file.txt</em>.</p>
+<ol start="63">
+<li>Enter the following command to verify the contents of <em>file.txt</em> are intact:</li>
+</ol><pre class="highlight shell"><code>cat /mnt/data-store2/file.txt
+</code><button class="button button--text button--small copy-button js-copy-button-22"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The output should read <em>some text has been written</em>, which is the contents of the file you created in the previous task.</p>
+
+<p><i class="fas fa-thumbs-up" style="color:#0073bb;"></i> Congratulations! You have successfully restored a snapshot of an Amazon EBS volume and attached it to an instance.</p>
+
+<h2 id="step9">Task 6: Modify the EBS volume</h2>
+
+<p>In this task, you modify the volume type and size of an Amazon EBS volume.</p>
+<ol start="64">
+<li><p>Return to the AWS Management Console.</p></li>
+<li><p>In the left navigation pane, under <strong>ELASTIC BLOCK STORE</strong> choose <strong>Volumes</strong>.</p></li>
+<li><p>Select <i class="fas fa-square" style="color:#0073bb;"></i> <strong>My volume</strong>.</p></li>
+</ol>
+<p><i class="fas fa-exclamation-triangle" style="color:#daa520;"></i> Ensure that <em>My volume</em> is the only volume selected.</p>
+<ol start="67">
+<li>In the <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:5px;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Actions <i class="fas fa-angle-down"></i></span> drop-down list, choose <strong>Modify Volume</strong>.</li>
+</ol>
+<p>This dialog box allows you to select a different volume type or change the size of the volume.</p>
+<ol start="68">
+<li><p>Change <strong>Size (GiB)</strong> to: <input readonly="" class="copyable-inline-input" size="2" type="text" value="20"></p></li>
+<li><p>Select the <strong>Volume Type</strong> drop-down menu and review the different volumes types that you could change this volume to, if you desired to do so. For this lab, you can keep the current volume type of <strong>General Purpose SSD (gp2)</strong>.</p></li>
+</ol>
+<p>Refer to the <em>Additional resources</em> section at the end of this lab for more information about Amazon EBS volume types.</p>
+<ol start="70">
+<li>Choose <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:5px;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Modify</span>
+</li>
+</ol>
+<p>A confirmation dialog box appears asking if you are sure you want to modify the volume.</p>
+<ol start="71">
+<li>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Yes</span>
+</li>
+</ol>
+<p>A <span style="color:#1d8102;background-color:#f2f8f0;"><i class="fas fa-check-circle" style="color:#1d8102;"></i> Modify Volume Request Succeeded</span> message displays.</p>
+<ol start="72">
+<li><p>Choose <span style="background-color:#257ACF;font-weight:bold;font-size:90%;color:white;border-radius:5px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Close</span></p></li>
+<li><p>Choose the <i class="fas fa-sync-alt"></i> refresh icon. Your volume should now have a size of <strong>20 GiB</strong>.</p></li>
+</ol>
+<h3>Extend the volume parition on the EC2 instance</h3>
+
+<p>Before you can use the additional storage that you allocated to the Amazon EBS volume, you must extend the file system partiion from within the operating system.</p>
+
+<p><i class="fas fa-exclamation-triangle" style="color:#d13212;"></i> Before extending a file system that contains valuable data, it is best practice to create a snapshot of the volume, in case you need to roll back your changes.</p>
+<ol start="74">
+<li>To the left of these instructions, copy the <strong>Ec2Instance</strong> URL and paste it into a new web browser window.</li>
+</ol>
+<p><i class="fas fa-info-circle" style="color:#0073bb;"></i> If you still have the EC2 Instance Connect window open from a previous task, but it seems to be unresponsive, refresh the page to restore connectivity. The connection will time out after a few minutes of not being used.</p>
+<ol start="75">
+<li>In the EC2 Instance Connect session, enter the following command to display information about the block devices attached to your instance:</li>
+</ol><pre class="highlight shell"><code>lsblk
+</code><button class="button button--text button--small copy-button js-copy-button-23"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The output should look similar to this:</p>
+<pre class="highlight plaintext"><code>[ec2-user@ip-10-10-1-61 ~]$ lsblk
+NAME          MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+nvme0n1       259:0    0   8G  0 disk
+├─nvme0n1p1   259:1    0   8G  0 part /
+└─nvme0n1p128 259:2    0   1M  0 part
+nvme1n1       259:3    0  20G  0 disk /mnt/data-store
+nvme2n1       259:4    0  15G  0 disk /mnt/data-store2
+</code><button class="button button--text button--small copy-button js-copy-button-24"><ql-icon>content_copy</ql-icon></button></pre>
+<p>Notice that the size of the first Amazon EBS volume you attached to the instance (nvme1n1) is now 20 GiB.</p>
+<ol start="76">
+<li>Enter the following command to verify the size of the file system for each volume:</li>
+</ol><pre class="highlight shell"><code>df -h
+</code><button class="button button--text button--small copy-button js-copy-button-25"><ql-icon>content_copy</ql-icon></button></pre>
+<p>Notice the size of the file system on the volume is still approximately 10 GiB. You must extend the file system to take advantage of the increased volume size.</p>
+<ol start="77">
+<li>Enter the following command to extend the file system to use the additional available capacity of the volume:</li>
+</ol><pre class="highlight shell"><code>sudo resize2fs /dev/nvme1n1
+</code><button class="button button--text button--small copy-button js-copy-button-26"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The output should be similar to this:</p>
+<pre class="highlight plaintext"><code>[ec2-user@ip-10-10-1-61 ~]$ sudo resize2fs /dev/nvme1n1
+resize2fs 1.42.9 (28-Dec-2013)
+Filesystem at /dev/nvme1n1 is mounted on /mnt/data-store; on-line resizing required
+old_desc_blocks = 1, new_desc_blocks = 2
+The filesystem on /dev/nvme1n1 is now 5242880 blocks long.
+</code><button class="button button--text button--small copy-button js-copy-button-27"><ql-icon>content_copy</ql-icon></button></pre><ol start="78">
+<li>Enter the following command to verify the size of the file system for each volume:</li>
+</ol><pre class="highlight shell"><code>df -h
+</code><button class="button button--text button--small copy-button js-copy-button-28"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The size of the file system should now be approximately 20 GiB.</p>
+
+<h2 id="step10">Conclusion</h2>
+
+<p><i class="fas fa-thumbs-up" style="color:#0073bb;"></i> Congratulations! You have successfully learned how to:</p>
+<ul>
+<li>Create an Amazon EBS volume in the Amazon Management Console.</li>
+<li>Attach an EBS Volume to an Amazon EC2 instance.</li>
+<li>Create a snapshot of an EBS volume.</li>
+<li>Restore a snapshot of an EBS volume.</li>
+<li>Modify an EBS Volume.</li>
+</ul>
+<h2 id="step11">End Lab</h2>
+
+<p>Follow these steps to close the console, end your lab, and evaluate the experience.</p>
+<ol start="79">
+<li><p>Return to the AWS Management Console.</p></li>
+<li><p>On the navigation bar, click <strong>awsstudent@&lt;AccountNumber&gt;</strong>, and then click <strong>Sign Out</strong>.</p></li>
+<li><p>Click <span style="background-color:#D93025;font-family:Google Sans;font-weight:bold;font-size:90%;color:white;border-color:#D93025;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">End Lab</span></p></li>
+<li><p>Click <span style="background-color:#DEDEDE;font-family:Google Sans;font-weight:bold;font-size:90%;color:#444;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">OK</span></p></li>
+<li><p>(Optional):</p></li>
+</ol><ul>
+<li>Select the applicable number of stars <i class="far fa-star"></i>
+</li>
+<li>Type a comment</li>
+<li>
+<p>Click <strong>Submit</strong></p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+</li>
+</ul>
+<p>You may close the dialog if you don't want to provide feedback.</p>
+
+<h2 id="step12">Additional resources</h2>
+<ul>
+<li><a href="http://aws.amazon.com/ebs" target="_blank">Amazon EBS</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html" target="_blank">Amazon EBS Volume Types</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/recognize-expanded-volume-linux.html" target="_blank">Extending a Linux File System After Resizing a Volume</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Connect-using-EC2-Instance-Connect.html" target="_blank">EC2 Instance Connect</a></li>
+</ul>
+<p>For more information about AWS Training and Certification, see <a href="http://aws.amazon.com/training/" target="_blank"><em>http://aws.amazon.com/training/</em></a>.</p>
+
+<p><em>Your feedback is welcome and appreciated.</em><br>
+If you would like to share any feedback, suggestions, or corrections, please provide the details in our <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank"><em>AWS Training and Certification Contact Form</em></a>.</p>
+
+</div>
+</div>
+
+
+<div class="hidden js-end-lab-button-container lab-content__end-lab-button">
+<ql-lab-control-button class="js-end-lab-button" running=""></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class="lab-content__renderable-instructions">
+<div class="lab-content__recommendation">
+<h4 class="headline-3">
+Ready for more?
+<p>Here's another lab we think you'll like.</p>
+<div class="content-card-grid">
+<div class="card-content-wrapper js-content-card" data-id="2543" data-level="Introductory" data-name="Introduction to Amazon Simple Storage Service (S3)" data-type="Lab">
+<a class="card card--content elevation-0 content-lab" href="https://www.qwiklabs.com/focuses/15683?parent=catalog"><div class="card__image">
+<div class="card__image__inner" style="background-image: url(https://cdn.qwiklabs.com/assets/fractal2-a4905334374c9d90765c63535f0fc66eb81d5f18f7416db5bea58901744cc5d0.jpg)"></div>
+</div>
+<div class="card__body">
+<div class="overline card--content__type">
+Lab
+</div>
+<h3 class="card--content__title">
+Introduction to Amazon Simple Storage Service (S3)
+</h3>
+<div class="card--content__description body-1">
+<p>
+This lab demonstrates how to use an Amazon S3 bucket and manage files, or object, that are stored in the bucket. You will practice how to create a bucket, add an object, view an object, move an object, and delete an object and bucket in the AWS Management Console.
+</p>
+</div>
+</div>
+<div class="card__footer">
+<div class="card__footer__left">
+<span>Introductory</span>
+</div>
+<div class="card__footer__right">
+<div class="rateit" data-rateit-readonly="true" data-rateit-value="4.5353"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 72.5648px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+</div>
+</div>
+</a></div>
+
+</div>
+</h4>
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end="" id="outline-drawer" open="" slot="drawer" width="320" style="width: 320px;">
+<div class="js-lab-content-outline lab-content__outline">
+<a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step1" class="">Overview</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step2" class="">Topics covered</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step3" class="">Start Lab</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step4" class="">Task 1: Create an Elastic Block Store volume</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step5" class="">Task 2: Attach the EBS volume to an Amazon EC2 instance</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step6" class="">Task 3: Create and configure your file system</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step7" class="is-active">Task 4: Snapshot the EBS volume</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step8" class="">Task 5: Restore the Amazon EBS Snapshot</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step9">Task 6: Modify the EBS volume</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step10">Conclusion</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step11">End Lab</a><a href="https://www.qwiklabs.com/focuses/14303?parent=catalog#step12">Additional resources</a>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+<div class="lab-introduction js-lab-introduction is-hidden">
+<div class="lab-introduction__inner">
+<h1 class="headline-1">Welcome to Your First Lab!</h1>
+<ql-icon-button class="js-skip-button">close</ql-icon-button>
+<div class="lab-introduction__video">
+<iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" id="lab-introduction" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/yF7EDXKTmoQ.html"></iframe>
+</div>
+<a class="js-skip-button button button--outline">Skip this video</a>
+</div>
+</div>
+
+
+
+</div>
+</main>
+<div class="modal fade" id="lab-details-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<div class="modal-body">
+<p class="l-mbm">
+This lab takes you through how to create an Amazon Elastic Block Store (EBS) volume, attach it to an Amazon EC2 instance, create a file system on the volume, take a snapshot of the volume, and increase the size and IOPS.
+</p>
+<p class="small-label l-mbs">
+<strong>
+Duration:
+</strong>
+1m setup
+·
+45m access
+·
+45m completion
+</p>
+<p class="small-label l-mbs">
+<strong>AWS Region:</strong>
+[us-west-2] <strong>US West (Oregon)</strong>
+</p>
+<p class="small-label l-mbs">
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class="small-label">
+<strong>
+Permalink:
+</strong>
+<a href="https://www.qwiklabs.com/catalog_lab/3083">https://www.qwiklabs.com/catalog_lab/3083</a>
+</p>
+</div>
+<div class="modal-actions">
+<a class="button button--text" data-dismiss="modal">
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/saved_resource(4).html"></iframe>
+</div>
+<div class="modal fade" id="lab-review-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<form class="simple_form js-lab-review-form" id="edit_lab_review_10089332" action="https://www.qwiklabs.com/lab_reviews/10089332" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="_method" value="patch"><div class="modal-body">
+<p class="label">
+How satisfied are you with this lab?*
+</p>
+<div class="rateit js-rateit" data-rateit-max="5" data-rateit-min="0" data-rateit-resetable="false" data-rateit-step="1" data-rateit-value="4"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+<div class="l-mtm">
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" type="hidden" value="4265112" name="lab_review[user_id]" id="lab_review_user_id"></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id"></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" type="hidden" value="3083" name="lab_review[lab_id]" id="lab_review_lab_id"></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id"></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" type="hidden" value="1" name="lab_review[rating]" id="lab_review_rating"></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Comment</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment"></textarea></div></div>
+</div>
+</div>
+<div class="modal-actions">
+<a class="button button--text" data-dismiss="modal">
+Cancel
+</a>
+<input type="submit" name="commit" value="Submit" disabled="disabled" id="submit" data-disabled="false" class="button" data-disable-with="Submit">
+</div>
+</form>
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/saved_resource(5).html"></iframe>
+</div>
+<div class="modal fade" id="lab-access-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<a class="lab-access-modal-close" data-analytics-action="dismissed_lab_payment_modal" data-dismiss="modal">
+<i class="material-icons">close</i>
+</a>
+<form class="js-lab-access-form" action="https://www.qwiklabs.com/lab_onetime_coupons/activate?parent=catalog" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓">
+<div class="modal-body">
+<div class="lab-access-modal">
+<input type="hidden" name="id" id="id" value="14303">
+<input type="hidden" name="user_id" id="user_id" value="4265112">
+<input type="hidden" name="launch_with_credits" id="launch_with_credits" value="0" class="js-launch-with-credits-input">
+<input type="hidden" name="launch_with_subs" id="launch_with_subs" value="0" class="js-launch-with-subscription-input">
+<div class="lab-access-modal__method">
+<p>
+This lab costs
+1 Credit.
+</p>
+<p>
+You have a valid subscription package. Would you like to charge this lab to your subscription?
+
+</p>
+<a class="button js-launch-with-subscription-button js-lab-access-modal-button" data-analytics-action="clicked_launch_with_subscription_button">
+Use Subscription
+</a>
+</div>
+<div class="lab-access-modal__method">
+<p>
+Enter Lab Access Code:
+</p>
+<div class="lab-access-modal__code js-access-code">
+<input type="text" name="uuid_1" id="uuid_1" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_2" id="uuid_2" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_3" id="uuid_3" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_4" id="uuid_4" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+</div>
+<a class="button js-launch-with-access-code-button js-lab-access-modal-button" data-analytics-action="clicked_launch_with_access_code_button">
+Launch with Access Code
+</a>
+</div>
+</div>
+</div>
+</form>
+
+
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/saved_resource(6).html"></iframe>
+</div>
+
+<script>
+  $( function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabAccessModal();
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?\n","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.\n","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.chat.init();
+  ql.initHeader();
+  ql.navigation.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+<style>
+  .mdl-layout__container {
+    position: static
+  }
+</style>
+
+
+<iframe data-product="web_widget" title="No content" tabindex="-1" aria-hidden="true" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/saved_resource(7).html" style="width: 0px; height: 0px; border: 0px; position: absolute; top: -9999px;"></iframe><div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/anchor(2).html" width="256" height="60" role="presentation" name="a-2b7t70ibq75o" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></div><div><iframe title="Opens a widget where you can chat to one of our agents" id="launcher" tabindex="-1" style="width: 109px; height: 50px; padding: 0px; margin: 10px 20px; position: fixed; bottom: 30px; overflow: visible; opacity: 0; border: 0px; z-index: 999998; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; top: -9999px; visibility: hidden;" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/saved_resource(8).html"></iframe><iframe title="Find more information here" id="webWidget" tabindex="-1" style="width: 374px; max-height: calc(100vh - 32px); height: 572px; position: fixed; opacity: 0; border: 0px; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; top: -9999px; visibility: hidden; z-index: 999999;" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/saved_resource(9).html"></iframe></div><div style="background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px; position: absolute; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0; visibility: hidden; z-index: 2000000000; left: 0px; top: -10000px;"><div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.05;"></div><div class="g-recaptcha-bubble-arrow" style="border: 11px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -11px; z-index: 2000000000;"></div><div class="g-recaptcha-bubble-arrow" style="border: 10px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -10px; z-index: 2000000000;"></div><div style="z-index: 2000000000; position: relative;"><iframe title="recaptcha challenge" src="./Introduction to Amazon Elastic Block Store (EBS) _ Qwiklabs_files/bframe.html" name="c-w9a9tqr37ty0" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox" style="width: 100%; height: 100%;"></iframe></div></div></body></html>
