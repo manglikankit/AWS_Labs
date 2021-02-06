@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://amazon.qwiklabs.com/focuses/15571?parent=catalog -->
+<html lang="en" data-lt-installed="true" class="mdl-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="[]" name="active-experiments">
+<meta content="{&quot;userId&quot;:4265112}" name="help-api-product-data">
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="M5AXBSSKsgAjxQpPIQrJv4QO5aS6KLvQKRNfVwex5JT3k1oIgX9CI17h/reC7jNyFBZYpbyHhM4YYzQf4bgedQ==">
+<title>Using Open Data with Amazon S3 | Qwiklabs</title>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" name="viewport">
+<meta content="1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0" name="google-site-verification">
+<meta content="#3681E4" property="msapplication-TileColor">
+<meta content="/favicon-144.png" property="msapplication-TileImage">
+<meta content="This lab demonstrates how to upload data to Amazon S3 and make it available for anyone to access via a web browser. You will learn how to create an Amazon S3 bucket, configure it to host a website, upload objects to it, and use JavaScript to display those objects on a web page. Along the way, you’ll learn some best practices for creating open data. At the end of this lab you will have deployed a simple web site that makes data easy to access and provides basic documentation of the data." name="description">
+<meta content="Qwiklabs" name="author">
+<meta content="Using Open Data with Amazon S3 | Qwiklabs" property="og:title">
+<meta content="website" property="og:type">
+<meta content="/favicon-144.png" property="og:image">
+<meta content="Qwiklabs" property="og:site_name">
+<meta content="This lab demonstrates how to upload data to Amazon S3 and make it available for anyone to access via a web browser. You will learn how to create an Amazon S3 bucket, configure it to host a website, upload objects to it, and use JavaScript to display those objects on a web page. Along the way, you’ll learn some best practices for creating open data. At the end of this lab you will have deployed a simple web site that makes data easy to access and provides basic documentation of the data." property="og:description">
+<meta content="/qwiklabs_logo_900x887.png" property="og:logo" size="900x887">
+<meta content="/qwiklabs_logo_994x187.png" property="og:logo" size="994x187">
+<link href="https://amazon.qwiklabs.com/favicon-32.png" rel="shortcut icon">
+<link color="#3681E4" href="https://amazon.qwiklabs.com/favicon-svg.svg" rel="mask-icon">
+<link href="https://amazon.qwiklabs.com/favicon-180.png" rel="apple-touch-icon-precomposed">
+<link rel="stylesheet" media="screen" href="./Using Open Data with Amazon S3 _ Qwiklabs_files/css">
+
+
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script type="text/javascript" async="" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/js"></script><script type="text/javascript" async="" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/analytics.js"></script><script type="text/javascript" async="" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-Cx10SI4nRyIf/4CfTL8bj2s8I5ccz18HDscUBxSzsbe1SPnhchceoHtCw2m0nc/h"></script><script type="text/javascript" async="" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/analytics.min.js"></script><script type="text/javascript" async="" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-Cx10SI4nRyIf/4CfTL8bj2s8I5ccz18HDscUBxSzsbe1SPnhchceoHtCw2m0nc/h"></script><script type="text/javascript" id="www-widgetapi-script" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/www-widgetapi.js" async=""></script><script>
+//<![CDATA[
+window.gon={};gon.current_user={"firstname":"Ankit","lastname":"Manglik","fullname":"Ankit Manglik","company":"Incedo","email":"amanglik2010@gmail.com","origin":"run, direct","subscriptions":1,"id":"40881afb3090073a11cc87d2eff56386","qlCreatedAt":"2021-02-01 08:29:26 UTC","optIn":true};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="amazon-run";
+//]]>
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "url": "https://www.qwiklabs.com/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.qwiklabs.com/catalog?keywords={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<script id="ze-snippet" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/snippet.js"></script>
+
+
+
+
+<link rel="stylesheet" media="all" href="./Using Open Data with Amazon S3 _ Qwiklabs_files/application-970073e5b46f4630d4ec8cb8a2b1192838eb654177e4e7d2a8a82e4fc31930a8.css">
+<script>
+  EVENT_SOURCE_BASE_URL = "https://amazon-run.qwiklabs.com/nchan-sub?id=";
+</script>
+<script src="./Using Open Data with Amazon S3 _ Qwiklabs_files/webcomponents-loader-408088dc333247a761de5f2b2a4ba1cabd2bc36579f83ba92a559eb3682a9b77.js"></script>
+<script src="./Using Open Data with Amazon S3 _ Qwiklabs_files/hallofmirrors-31ad91021e55b64d370891210d6e30d3790a1e6f4bf9e3eca92b9dd159bc8a6d.js"></script>
+<custom-style>
+  <style is="custom-style">[hidden] {
+  display: none !important;
+}
+
+</style>
+</custom-style>
+<custom-style>
+  <style is="custom-style">html {
+  --layout_-_display:  flex;;
+
+      --layout-inline_-_display:  inline-flex;;
+
+      --layout-horizontal_-_display:  var(--layout_-_display); --layout-horizontal_-_-ms-flex-direction:  row; --layout-horizontal_-_-webkit-flex-direction:  row; --layout-horizontal_-_flex-direction:  row;;
+
+      --layout-horizontal-reverse_-_display:  var(--layout_-_display); --layout-horizontal-reverse_-_-ms-flex-direction:  row-reverse; --layout-horizontal-reverse_-_-webkit-flex-direction:  row-reverse; --layout-horizontal-reverse_-_flex-direction:  row-reverse;;
+
+      --layout-vertical_-_display:  var(--layout_-_display); --layout-vertical_-_-ms-flex-direction:  column; --layout-vertical_-_-webkit-flex-direction:  column; --layout-vertical_-_flex-direction:  column;;
+
+      --layout-vertical-reverse_-_display:  var(--layout_-_display); --layout-vertical-reverse_-_-ms-flex-direction:  column-reverse; --layout-vertical-reverse_-_-webkit-flex-direction:  column-reverse; --layout-vertical-reverse_-_flex-direction:  column-reverse;;
+
+      --layout-wrap_-_-ms-flex-wrap:  wrap; --layout-wrap_-_-webkit-flex-wrap:  wrap; --layout-wrap_-_flex-wrap:  wrap;;
+
+      --layout-wrap-reverse_-_-ms-flex-wrap:  wrap-reverse; --layout-wrap-reverse_-_-webkit-flex-wrap:  wrap-reverse; --layout-wrap-reverse_-_flex-wrap:  wrap-reverse;;
+
+      --layout-flex-auto_-_-ms-flex:  1 1 auto; --layout-flex-auto_-_-webkit-flex:  1 1 auto; --layout-flex-auto_-_flex:  1 1 auto;;
+
+      --layout-flex-none_-_-ms-flex:  none; --layout-flex-none_-_-webkit-flex:  none; --layout-flex-none_-_flex:  none;;
+
+      --layout-flex_-_-ms-flex:  1 1 0.000000001px; --layout-flex_-_-webkit-flex:  1; --layout-flex_-_flex:  1; --layout-flex_-_-webkit-flex-basis:  0.000000001px; --layout-flex_-_flex-basis:  0.000000001px;;
+
+      --layout-flex-2_-_-ms-flex:  2; --layout-flex-2_-_-webkit-flex:  2; --layout-flex-2_-_flex:  2;;
+
+      --layout-flex-3_-_-ms-flex:  3; --layout-flex-3_-_-webkit-flex:  3; --layout-flex-3_-_flex:  3;;
+
+      --layout-flex-4_-_-ms-flex:  4; --layout-flex-4_-_-webkit-flex:  4; --layout-flex-4_-_flex:  4;;
+
+      --layout-flex-5_-_-ms-flex:  5; --layout-flex-5_-_-webkit-flex:  5; --layout-flex-5_-_flex:  5;;
+
+      --layout-flex-6_-_-ms-flex:  6; --layout-flex-6_-_-webkit-flex:  6; --layout-flex-6_-_flex:  6;;
+
+      --layout-flex-7_-_-ms-flex:  7; --layout-flex-7_-_-webkit-flex:  7; --layout-flex-7_-_flex:  7;;
+
+      --layout-flex-8_-_-ms-flex:  8; --layout-flex-8_-_-webkit-flex:  8; --layout-flex-8_-_flex:  8;;
+
+      --layout-flex-9_-_-ms-flex:  9; --layout-flex-9_-_-webkit-flex:  9; --layout-flex-9_-_flex:  9;;
+
+      --layout-flex-10_-_-ms-flex:  10; --layout-flex-10_-_-webkit-flex:  10; --layout-flex-10_-_flex:  10;;
+
+      --layout-flex-11_-_-ms-flex:  11; --layout-flex-11_-_-webkit-flex:  11; --layout-flex-11_-_flex:  11;;
+
+      --layout-flex-12_-_-ms-flex:  12; --layout-flex-12_-_-webkit-flex:  12; --layout-flex-12_-_flex:  12;;
+
+      
+
+      --layout-start_-_-ms-flex-align:  start; --layout-start_-_-webkit-align-items:  flex-start; --layout-start_-_align-items:  flex-start;;
+
+      --layout-center_-_-ms-flex-align:  center; --layout-center_-_-webkit-align-items:  center; --layout-center_-_align-items:  center;;
+
+      --layout-end_-_-ms-flex-align:  end; --layout-end_-_-webkit-align-items:  flex-end; --layout-end_-_align-items:  flex-end;;
+
+      --layout-baseline_-_-ms-flex-align:  baseline; --layout-baseline_-_-webkit-align-items:  baseline; --layout-baseline_-_align-items:  baseline;;
+
+      
+
+      --layout-start-justified_-_-ms-flex-pack:  start; --layout-start-justified_-_-webkit-justify-content:  flex-start; --layout-start-justified_-_justify-content:  flex-start;;
+
+      --layout-center-justified_-_-ms-flex-pack:  center; --layout-center-justified_-_-webkit-justify-content:  center; --layout-center-justified_-_justify-content:  center;;
+
+      --layout-end-justified_-_-ms-flex-pack:  end; --layout-end-justified_-_-webkit-justify-content:  flex-end; --layout-end-justified_-_justify-content:  flex-end;;
+
+      --layout-around-justified_-_-ms-flex-pack:  distribute; --layout-around-justified_-_-webkit-justify-content:  space-around; --layout-around-justified_-_justify-content:  space-around;;
+
+      --layout-justified_-_-ms-flex-pack:  justify; --layout-justified_-_-webkit-justify-content:  space-between; --layout-justified_-_justify-content:  space-between;;
+
+      --layout-center-center_-_-ms-flex-align:  var(--layout-center_-_-ms-flex-align); --layout-center-center_-_-webkit-align-items:  var(--layout-center_-_-webkit-align-items); --layout-center-center_-_align-items:  var(--layout-center_-_align-items); --layout-center-center_-_-ms-flex-pack:  var(--layout-center-justified_-_-ms-flex-pack); --layout-center-center_-_-webkit-justify-content:  var(--layout-center-justified_-_-webkit-justify-content); --layout-center-center_-_justify-content:  var(--layout-center-justified_-_justify-content);;
+
+      
+
+      --layout-self-start_-_-ms-align-self:  flex-start; --layout-self-start_-_-webkit-align-self:  flex-start; --layout-self-start_-_align-self:  flex-start;;
+
+      --layout-self-center_-_-ms-align-self:  center; --layout-self-center_-_-webkit-align-self:  center; --layout-self-center_-_align-self:  center;;
+
+      --layout-self-end_-_-ms-align-self:  flex-end; --layout-self-end_-_-webkit-align-self:  flex-end; --layout-self-end_-_align-self:  flex-end;;
+
+      --layout-self-stretch_-_-ms-align-self:  stretch; --layout-self-stretch_-_-webkit-align-self:  stretch; --layout-self-stretch_-_align-self:  stretch;;
+
+      --layout-self-baseline_-_-ms-align-self:  baseline; --layout-self-baseline_-_-webkit-align-self:  baseline; --layout-self-baseline_-_align-self:  baseline;;
+
+      
+
+      --layout-start-aligned_-_-ms-flex-line-pack:  start; --layout-start-aligned_-_-ms-align-content:  flex-start; --layout-start-aligned_-_-webkit-align-content:  flex-start; --layout-start-aligned_-_align-content:  flex-start;;
+
+      --layout-end-aligned_-_-ms-flex-line-pack:  end; --layout-end-aligned_-_-ms-align-content:  flex-end; --layout-end-aligned_-_-webkit-align-content:  flex-end; --layout-end-aligned_-_align-content:  flex-end;;
+
+      --layout-center-aligned_-_-ms-flex-line-pack:  center; --layout-center-aligned_-_-ms-align-content:  center; --layout-center-aligned_-_-webkit-align-content:  center; --layout-center-aligned_-_align-content:  center;;
+
+      --layout-between-aligned_-_-ms-flex-line-pack:  justify; --layout-between-aligned_-_-ms-align-content:  space-between; --layout-between-aligned_-_-webkit-align-content:  space-between; --layout-between-aligned_-_align-content:  space-between;;
+
+      --layout-around-aligned_-_-ms-flex-line-pack:  distribute; --layout-around-aligned_-_-ms-align-content:  space-around; --layout-around-aligned_-_-webkit-align-content:  space-around; --layout-around-aligned_-_align-content:  space-around;;
+
+      
+
+      --layout-block_-_display:  block;;
+
+      --layout-invisible_-_visibility:  hidden !important;;
+
+      --layout-relative_-_position:  relative;;
+
+      --layout-fit_-_position:  absolute; --layout-fit_-_top:  0; --layout-fit_-_right:  0; --layout-fit_-_bottom:  0; --layout-fit_-_left:  0;;
+
+      --layout-scroll_-_-webkit-overflow-scrolling:  touch; --layout-scroll_-_overflow:  auto;;
+
+      --layout-fullbleed_-_margin:  0; --layout-fullbleed_-_height:  100vh;;
+
+      
+
+      --layout-fixed-top_-_position:  fixed; --layout-fixed-top_-_top:  0; --layout-fixed-top_-_left:  0; --layout-fixed-top_-_right:  0;;
+
+      --layout-fixed-right_-_position:  fixed; --layout-fixed-right_-_top:  0; --layout-fixed-right_-_right:  0; --layout-fixed-right_-_bottom:  0;;
+
+      --layout-fixed-bottom_-_position:  fixed; --layout-fixed-bottom_-_right:  0; --layout-fixed-bottom_-_bottom:  0; --layout-fixed-bottom_-_left:  0;;
+
+      --layout-fixed-left_-_position:  fixed; --layout-fixed-left_-_top:  0; --layout-fixed-left_-_bottom:  0; --layout-fixed-left_-_left:  0;;
+}
+
+</style>
+</custom-style><style>[hidden] { display: none !important; }</style><custom-style>
+  <style is="custom-style">html {
+  --google-red-100: #f4c7c3;
+      --google-red-300: #e67c73;
+      --google-red-500: #db4437;
+      --google-red-700: #c53929;
+
+      --google-blue-100: #c6dafc;
+      --google-blue-300: #7baaf7;
+      --google-blue-500: #4285f4;
+      --google-blue-700: #3367d6;
+
+      --google-green-100: #b7e1cd;
+      --google-green-300: #57bb8a;
+      --google-green-500: #0f9d58;
+      --google-green-700: #0b8043;
+
+      --google-yellow-100: #fce8b2;
+      --google-yellow-300: #f7cb4d;
+      --google-yellow-500: #f4b400;
+      --google-yellow-700: #f09300;
+
+      --google-grey-100: #f5f5f5;
+      --google-grey-300: #e0e0e0;
+      --google-grey-500: #9e9e9e;
+      --google-grey-700: #616161;
+
+      
+
+      --paper-red-50: #ffebee;
+      --paper-red-100: #ffcdd2;
+      --paper-red-200: #ef9a9a;
+      --paper-red-300: #e57373;
+      --paper-red-400: #ef5350;
+      --paper-red-500: #f44336;
+      --paper-red-600: #e53935;
+      --paper-red-700: #d32f2f;
+      --paper-red-800: #c62828;
+      --paper-red-900: #b71c1c;
+      --paper-red-a100: #ff8a80;
+      --paper-red-a200: #ff5252;
+      --paper-red-a400: #ff1744;
+      --paper-red-a700: #d50000;
+
+      --paper-pink-50: #fce4ec;
+      --paper-pink-100: #f8bbd0;
+      --paper-pink-200: #f48fb1;
+      --paper-pink-300: #f06292;
+      --paper-pink-400: #ec407a;
+      --paper-pink-500: #e91e63;
+      --paper-pink-600: #d81b60;
+      --paper-pink-700: #c2185b;
+      --paper-pink-800: #ad1457;
+      --paper-pink-900: #880e4f;
+      --paper-pink-a100: #ff80ab;
+      --paper-pink-a200: #ff4081;
+      --paper-pink-a400: #f50057;
+      --paper-pink-a700: #c51162;
+
+      --paper-purple-50: #f3e5f5;
+      --paper-purple-100: #e1bee7;
+      --paper-purple-200: #ce93d8;
+      --paper-purple-300: #ba68c8;
+      --paper-purple-400: #ab47bc;
+      --paper-purple-500: #9c27b0;
+      --paper-purple-600: #8e24aa;
+      --paper-purple-700: #7b1fa2;
+      --paper-purple-800: #6a1b9a;
+      --paper-purple-900: #4a148c;
+      --paper-purple-a100: #ea80fc;
+      --paper-purple-a200: #e040fb;
+      --paper-purple-a400: #d500f9;
+      --paper-purple-a700: #aa00ff;
+
+      --paper-deep-purple-50: #ede7f6;
+      --paper-deep-purple-100: #d1c4e9;
+      --paper-deep-purple-200: #b39ddb;
+      --paper-deep-purple-300: #9575cd;
+      --paper-deep-purple-400: #7e57c2;
+      --paper-deep-purple-500: #673ab7;
+      --paper-deep-purple-600: #5e35b1;
+      --paper-deep-purple-700: #512da8;
+      --paper-deep-purple-800: #4527a0;
+      --paper-deep-purple-900: #311b92;
+      --paper-deep-purple-a100: #b388ff;
+      --paper-deep-purple-a200: #7c4dff;
+      --paper-deep-purple-a400: #651fff;
+      --paper-deep-purple-a700: #6200ea;
+
+      --paper-indigo-50: #e8eaf6;
+      --paper-indigo-100: #c5cae9;
+      --paper-indigo-200: #9fa8da;
+      --paper-indigo-300: #7986cb;
+      --paper-indigo-400: #5c6bc0;
+      --paper-indigo-500: #3f51b5;
+      --paper-indigo-600: #3949ab;
+      --paper-indigo-700: #303f9f;
+      --paper-indigo-800: #283593;
+      --paper-indigo-900: #1a237e;
+      --paper-indigo-a100: #8c9eff;
+      --paper-indigo-a200: #536dfe;
+      --paper-indigo-a400: #3d5afe;
+      --paper-indigo-a700: #304ffe;
+
+      --paper-blue-50: #e3f2fd;
+      --paper-blue-100: #bbdefb;
+      --paper-blue-200: #90caf9;
+      --paper-blue-300: #64b5f6;
+      --paper-blue-400: #42a5f5;
+      --paper-blue-500: #2196f3;
+      --paper-blue-600: #1e88e5;
+      --paper-blue-700: #1976d2;
+      --paper-blue-800: #1565c0;
+      --paper-blue-900: #0d47a1;
+      --paper-blue-a100: #82b1ff;
+      --paper-blue-a200: #448aff;
+      --paper-blue-a400: #2979ff;
+      --paper-blue-a700: #2962ff;
+
+      --paper-light-blue-50: #e1f5fe;
+      --paper-light-blue-100: #b3e5fc;
+      --paper-light-blue-200: #81d4fa;
+      --paper-light-blue-300: #4fc3f7;
+      --paper-light-blue-400: #29b6f6;
+      --paper-light-blue-500: #03a9f4;
+      --paper-light-blue-600: #039be5;
+      --paper-light-blue-700: #0288d1;
+      --paper-light-blue-800: #0277bd;
+      --paper-light-blue-900: #01579b;
+      --paper-light-blue-a100: #80d8ff;
+      --paper-light-blue-a200: #40c4ff;
+      --paper-light-blue-a400: #00b0ff;
+      --paper-light-blue-a700: #0091ea;
+
+      --paper-cyan-50: #e0f7fa;
+      --paper-cyan-100: #b2ebf2;
+      --paper-cyan-200: #80deea;
+      --paper-cyan-300: #4dd0e1;
+      --paper-cyan-400: #26c6da;
+      --paper-cyan-500: #00bcd4;
+      --paper-cyan-600: #00acc1;
+      --paper-cyan-700: #0097a7;
+      --paper-cyan-800: #00838f;
+      --paper-cyan-900: #006064;
+      --paper-cyan-a100: #84ffff;
+      --paper-cyan-a200: #18ffff;
+      --paper-cyan-a400: #00e5ff;
+      --paper-cyan-a700: #00b8d4;
+
+      --paper-teal-50: #e0f2f1;
+      --paper-teal-100: #b2dfdb;
+      --paper-teal-200: #80cbc4;
+      --paper-teal-300: #4db6ac;
+      --paper-teal-400: #26a69a;
+      --paper-teal-500: #009688;
+      --paper-teal-600: #00897b;
+      --paper-teal-700: #00796b;
+      --paper-teal-800: #00695c;
+      --paper-teal-900: #004d40;
+      --paper-teal-a100: #a7ffeb;
+      --paper-teal-a200: #64ffda;
+      --paper-teal-a400: #1de9b6;
+      --paper-teal-a700: #00bfa5;
+
+      --paper-green-50: #e8f5e9;
+      --paper-green-100: #c8e6c9;
+      --paper-green-200: #a5d6a7;
+      --paper-green-300: #81c784;
+      --paper-green-400: #66bb6a;
+      --paper-green-500: #4caf50;
+      --paper-green-600: #43a047;
+      --paper-green-700: #388e3c;
+      --paper-green-800: #2e7d32;
+      --paper-green-900: #1b5e20;
+      --paper-green-a100: #b9f6ca;
+      --paper-green-a200: #69f0ae;
+      --paper-green-a400: #00e676;
+      --paper-green-a700: #00c853;
+
+      --paper-light-green-50: #f1f8e9;
+      --paper-light-green-100: #dcedc8;
+      --paper-light-green-200: #c5e1a5;
+      --paper-light-green-300: #aed581;
+      --paper-light-green-400: #9ccc65;
+      --paper-light-green-500: #8bc34a;
+      --paper-light-green-600: #7cb342;
+      --paper-light-green-700: #689f38;
+      --paper-light-green-800: #558b2f;
+      --paper-light-green-900: #33691e;
+      --paper-light-green-a100: #ccff90;
+      --paper-light-green-a200: #b2ff59;
+      --paper-light-green-a400: #76ff03;
+      --paper-light-green-a700: #64dd17;
+
+      --paper-lime-50: #f9fbe7;
+      --paper-lime-100: #f0f4c3;
+      --paper-lime-200: #e6ee9c;
+      --paper-lime-300: #dce775;
+      --paper-lime-400: #d4e157;
+      --paper-lime-500: #cddc39;
+      --paper-lime-600: #c0ca33;
+      --paper-lime-700: #afb42b;
+      --paper-lime-800: #9e9d24;
+      --paper-lime-900: #827717;
+      --paper-lime-a100: #f4ff81;
+      --paper-lime-a200: #eeff41;
+      --paper-lime-a400: #c6ff00;
+      --paper-lime-a700: #aeea00;
+
+      --paper-yellow-50: #fffde7;
+      --paper-yellow-100: #fff9c4;
+      --paper-yellow-200: #fff59d;
+      --paper-yellow-300: #fff176;
+      --paper-yellow-400: #ffee58;
+      --paper-yellow-500: #ffeb3b;
+      --paper-yellow-600: #fdd835;
+      --paper-yellow-700: #fbc02d;
+      --paper-yellow-800: #f9a825;
+      --paper-yellow-900: #f57f17;
+      --paper-yellow-a100: #ffff8d;
+      --paper-yellow-a200: #ffff00;
+      --paper-yellow-a400: #ffea00;
+      --paper-yellow-a700: #ffd600;
+
+      --paper-amber-50: #fff8e1;
+      --paper-amber-100: #ffecb3;
+      --paper-amber-200: #ffe082;
+      --paper-amber-300: #ffd54f;
+      --paper-amber-400: #ffca28;
+      --paper-amber-500: #ffc107;
+      --paper-amber-600: #ffb300;
+      --paper-amber-700: #ffa000;
+      --paper-amber-800: #ff8f00;
+      --paper-amber-900: #ff6f00;
+      --paper-amber-a100: #ffe57f;
+      --paper-amber-a200: #ffd740;
+      --paper-amber-a400: #ffc400;
+      --paper-amber-a700: #ffab00;
+
+      --paper-orange-50: #fff3e0;
+      --paper-orange-100: #ffe0b2;
+      --paper-orange-200: #ffcc80;
+      --paper-orange-300: #ffb74d;
+      --paper-orange-400: #ffa726;
+      --paper-orange-500: #ff9800;
+      --paper-orange-600: #fb8c00;
+      --paper-orange-700: #f57c00;
+      --paper-orange-800: #ef6c00;
+      --paper-orange-900: #e65100;
+      --paper-orange-a100: #ffd180;
+      --paper-orange-a200: #ffab40;
+      --paper-orange-a400: #ff9100;
+      --paper-orange-a700: #ff6500;
+
+      --paper-deep-orange-50: #fbe9e7;
+      --paper-deep-orange-100: #ffccbc;
+      --paper-deep-orange-200: #ffab91;
+      --paper-deep-orange-300: #ff8a65;
+      --paper-deep-orange-400: #ff7043;
+      --paper-deep-orange-500: #ff5722;
+      --paper-deep-orange-600: #f4511e;
+      --paper-deep-orange-700: #e64a19;
+      --paper-deep-orange-800: #d84315;
+      --paper-deep-orange-900: #bf360c;
+      --paper-deep-orange-a100: #ff9e80;
+      --paper-deep-orange-a200: #ff6e40;
+      --paper-deep-orange-a400: #ff3d00;
+      --paper-deep-orange-a700: #dd2c00;
+
+      --paper-brown-50: #efebe9;
+      --paper-brown-100: #d7ccc8;
+      --paper-brown-200: #bcaaa4;
+      --paper-brown-300: #a1887f;
+      --paper-brown-400: #8d6e63;
+      --paper-brown-500: #795548;
+      --paper-brown-600: #6d4c41;
+      --paper-brown-700: #5d4037;
+      --paper-brown-800: #4e342e;
+      --paper-brown-900: #3e2723;
+
+      --paper-grey-50: #fafafa;
+      --paper-grey-100: #f5f5f5;
+      --paper-grey-200: #eeeeee;
+      --paper-grey-300: #e0e0e0;
+      --paper-grey-400: #bdbdbd;
+      --paper-grey-500: #9e9e9e;
+      --paper-grey-600: #757575;
+      --paper-grey-700: #616161;
+      --paper-grey-800: #424242;
+      --paper-grey-900: #212121;
+
+      --paper-blue-grey-50: #eceff1;
+      --paper-blue-grey-100: #cfd8dc;
+      --paper-blue-grey-200: #b0bec5;
+      --paper-blue-grey-300: #90a4ae;
+      --paper-blue-grey-400: #78909c;
+      --paper-blue-grey-500: #607d8b;
+      --paper-blue-grey-600: #546e7a;
+      --paper-blue-grey-700: #455a64;
+      --paper-blue-grey-800: #37474f;
+      --paper-blue-grey-900: #263238;
+
+      
+      --dark-divider-opacity: 0.12;
+      --dark-disabled-opacity: 0.38; 
+      --dark-secondary-opacity: 0.54;
+      --dark-primary-opacity: 0.87;
+
+      
+      --light-divider-opacity: 0.12;
+      --light-disabled-opacity: 0.3; 
+      --light-secondary-opacity: 0.7;
+      --light-primary-opacity: 1.0;
+}
+
+</style>
+</custom-style><custom-style>
+  <style is="custom-style">html {
+  --primary-text-color: var(--light-theme-text-color);
+      --primary-background-color: var(--light-theme-background-color);
+      --secondary-text-color: var(--light-theme-secondary-color);
+      --disabled-text-color: var(--light-theme-disabled-color);
+      --divider-color: var(--light-theme-divider-color);
+      --error-color: var(--paper-deep-orange-a700);
+
+      
+      --primary-color: var(--paper-indigo-500);
+      --light-primary-color: var(--paper-indigo-100);
+      --dark-primary-color: var(--paper-indigo-700);
+
+      --accent-color: var(--paper-pink-a200);
+      --light-accent-color: var(--paper-pink-a100);
+      --dark-accent-color: var(--paper-pink-a400);
+
+
+      
+      --light-theme-background-color: #ffffff;
+      --light-theme-base-color: #000000;
+      --light-theme-text-color: var(--paper-grey-900);
+      --light-theme-secondary-color: #737373;  
+      --light-theme-disabled-color: #9b9b9b;  
+      --light-theme-divider-color: #dbdbdb;
+
+      
+      --dark-theme-background-color: var(--paper-grey-900);
+      --dark-theme-base-color: #ffffff;
+      --dark-theme-text-color: #ffffff;
+      --dark-theme-secondary-color: #bcbcbc;  
+      --dark-theme-disabled-color: #646464;  
+      --dark-theme-divider-color: #3c3c3c;
+
+      
+      --text-primary-color: var(--dark-theme-text-color);
+      --default-primary-color: var(--primary-color);
+}
+
+</style>
+</custom-style><script async="" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/lazy.min.js"></script><script src="./Using Open Data with Amazon S3 _ Qwiklabs_files/loader.js"></script>
+<script src="./Using Open Data with Amazon S3 _ Qwiklabs_files/iframe_api"></script>
+<script src="./Using Open Data with Amazon S3 _ Qwiklabs_files/vendor-45d462772c30000424907184f70c7157e95fb6227698d1671c5051818a6f60d8.js"></script>
+<script src="./Using Open Data with Amazon S3 _ Qwiklabs_files/application-b0d5869f103bdc15016b8f4a671824262f94c48bd9d5a9cf2645f5c4858a9e2b.js"></script>
+</head>
+<body class="application-new focuses focuses-show l-full lab-show no-nav">
+<div class="header-container">
+<div class="header">
+<ql-icon-button class="js-nav-toggle header__nav-panel-button l-mrm">menu</ql-icon-button>
+<div class="header__title">
+<a class="icon-button" href="javascript:history.back()"><ql-icon>arrow_back</ql-icon></a>
+
+<h1 class="headline-5">
+Using Open Data with Amazon S3
+</h1>
+</div>
+<div class="header__actions">
+<ql-icon-button class="header__button--search js-header-search-bar-button">search</ql-icon-button>
+<a class="icon-button js-favorite-button favorite-button" id="CatalogItem-15571-favorite-button" data-type="CatalogItem" data-id="15571" data-name="Using Open Data with Amazon S3" href="https://amazon.qwiklabs.com/favorite.json?item_id=15571&amp;item_type=CatalogItem" tabindex="0"><ql-icon>favorite_border</ql-icon>
+</a><div class="mdl-tooltip js-tooltip" for="CatalogItem-15571-favorite-button" data-upgraded=",MaterialTooltip">
+Add to favorites
+</div>
+
+
+<ql-icon-button id="control-panel-target" style="display: none;">
+dashboard
+</ql-icon-button>
+<ql-menu for="control-panel-target" id="control-panel-menu" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="control-panel-target"></ql-menu>
+
+<ql-icon-button id="help-menu-button" tabindex="0">help</ql-icon-button>
+<div class="mdl-tooltip js-tooltip" data-mdl-for="help-menu-button" data-upgraded=",MaterialTooltip">
+Help
+</div>
+<ql-menu for="help-menu-button" id="help-menu" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="help-menu-button">
+<ql-menu-item>
+<ql-help context="lab" data-analytics-action="opened_help" data-analytics-label="lab" productdata="{&quot;userId&quot;:4265112}">
+Help Center
+</ql-help>
+</ql-menu-item>
+<ql-menu-item>
+<a target="_blank" class="ql-body-1" href="https://support.google.com/qwiklabs/contact/contact_us" tabindex="-1" role="menuitem">Email support</a>
+</ql-menu-item>
+<ql-menu-item>
+<a class="ql-body-1" onclick="ql.chat.open()" tabindex="-1" role="menuitem">Chat support</a>
+</ql-menu-item>
+</ql-menu>
+
+<button class="icon-button" id="my_account" aria-haspopup="true" aria-controls="">
+<ql-avatar></ql-avatar>
+</button>
+<ql-menu for="my_account" open="" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="my_account">
+<div class="my-account-menu">
+<ql-avatar class="l-mtl l-mbl" size="120"></ql-avatar>
+<div class="my-account-menu__user-info l-mbl">
+<h4 class="ql-subhead-1">Ankit Manglik</h4>
+<p class="ql-body-2 text--light">amanglik2010@gmail.com</p>
+<p class="ql-body-2 text--light">
+</p>
+<a class="text--green ql-subhead-2" href="https://amazon.qwiklabs.com/my_account/payments"><ql-chip positive="">
+Monthly Subscription
+</ql-chip>
+</a></div>
+<div class="buttons l-mbl">
+<a class="button button--hairline" id="settings" href="https://amazon.qwiklabs.com/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action="clicked_sign_out" href="/users/sign_out" method="delete">
+Sign Out
+</ql-button>
+<div class="privacy l-mtl">
+<a class="ql-caption text--light" href="https://amazon.qwiklabs.com/privacy_policy">Privacy</a>
+<span class="ql-caption text--light l-mls l-mrs">·</span>
+<a class="ql-caption text--light" href="https://amazon.qwiklabs.com/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</div>
+<div class="header__search-bar js-header-search-bar">
+<form class="js-search-form-mobile" onsubmit="ql.searchFilter(); return false;" action="https://amazon.qwiklabs.com/searches/elasticsearch" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="M5AXBSSKsgAjxQpPIQrJv4QO5aS6KLvQKRNfVwex5JT3k1oIgX9CI17h/reC7jNyFBZYpbyHhM4YYzQf4bgedQ==">
+<input type="text" name="keywords" id="keywords" placeholder="Search" maxlength="255" aria-label="catalog search bar">
+</form>
+
+<ql-icon-button class="js-close-search-bar">close</ql-icon-button>
+</div>
+</div>
+
+<nav class="nav-bar">
+<a class="nav-bar__item js-navigation-button" href="https://amazon.qwiklabs.com/"><ql-icon class="nav-bar__item__icon">
+home
+</ql-icon>
+<span class="nav-bar__item__label">
+Home
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button  active" aria-current="page" href="https://amazon.qwiklabs.com/catalog"><ql-icon class="nav-bar__item__icon">
+school
+</ql-icon>
+<span class="nav-bar__item__label">
+Catalog
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button" href="https://amazon.qwiklabs.com/my_learning"><ql-icon class="nav-bar__item__icon">
+event_note
+</ql-icon>
+<span class="nav-bar__item__label">
+My Learning
+</span>
+</a>
+</nav>
+
+<nav class="nav-panel js-nav-panel">
+<div class="nav-panel__logo">
+<div class="logo logo--blue"></div>
+</div>
+<a title="Home" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://amazon.qwiklabs.com/"><ql-icon class="nav-panel__item__icon">
+home
+</ql-icon>
+<div class="nav-panel__item__label">
+Home
+</div>
+</a>
+<a title="Catalog" tabindex="-1" class="nav-panel__item js-navigation-button active" aria-current="page" href="https://amazon.qwiklabs.com/catalog"><ql-icon class="nav-panel__item__icon">
+school
+</ql-icon>
+<div class="nav-panel__item__label">
+Catalog
+</div>
+</a>
+<a title="My Learning" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://amazon.qwiklabs.com/my_learning"><ql-icon class="nav-panel__item__icon">
+event_note
+</ql-icon>
+<div class="nav-panel__item__label">
+My Learning
+</div>
+</a>
+<div class="nav-panel__spacer"></div>
+<a title="Profile" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://amazon.qwiklabs.com/my_account/profile"><ql-icon class="nav-panel__item__icon">
+account_circle
+</ql-icon>
+<div class="nav-panel__item__label">
+Profile
+</div>
+</a>
+<a title="Credits &amp; Subscriptions" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://amazon.qwiklabs.com/my_account/credits"><ql-icon class="nav-panel__item__icon">
+money
+</ql-icon>
+<div class="nav-panel__item__label">
+Credits &amp; Subscriptions
+</div>
+</a>
+<a title="Security" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://amazon.qwiklabs.com/my_account/security"><ql-icon class="nav-panel__item__icon">
+security
+</ql-icon>
+<div class="nav-panel__item__label">
+Security
+</div>
+</a>
+<div class="nav-panel__spacer"></div>
+<a class="nav-panel__item" tabindex="-1" href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#"><ql-help>
+<div class="nav-panel__help-item">
+<ql-icon class="nav-panel__item__icon">help</ql-icon>
+<div class="nav-panel__item__label">
+Help
+</div>
+</div>
+</ql-help>
+</a><div class="nav-panel__small-links">
+<a tabindex="-1" href="https://amazon.qwiklabs.com/privacy_policy">Privacy</a>
+<a tabindex="-1" href="https://amazon.qwiklabs.com/terms_of_service">Terms</a>
+</div>
+</nav>
+<div class="nav-panel__overlay js-nav-toggle"></div>
+
+<main class="js-main">
+<span class="hidden" id="flash-sibling-before"></span>
+
+<div class="l-main-wrapper" id="main-wrapper">
+
+
+
+
+
+
+
+<ql-drawer-container class="js-lab-state" data-analytics-payload="{&quot;label&quot;:&quot;Using Open Data with Amazon S3&quot;,&quot;lab_name&quot;:&quot;Using Open Data with Amazon S3&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;amazon-run&quot;}" data-focus-id="15571" data-lab-billing-limit="0.0" data-lab-duration="2400" data-parent="catalog" data-payment-required="" data-recaptcha-enabled="" id="lab-container">
+<ql-drawer id="terminal-drawer" slot="drawer">
+<ql-cloud-terminal class="terminal"></ql-cloud-terminal>
+</ql-drawer>
+<ql-drawer-content class="js-lab-wrapper" id="lab-content" slot="drawer-content">
+<ql-drawer-container id="lab-content-container">
+<ql-drawer id="control-panel-drawer" open="" slot="drawer" width="320" style="width: 320px;">
+<ql-lab-control-panel class="ql-lab-control-panel__max-height control-panel js-lab-control-panel" connectionfiles="[]" labcontrolbutton="{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}" labdetails="[]" labtimer="{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:2400}" studentresources="[]">
+<script src="./Using Open Data with Amazon S3 _ Qwiklabs_files/api.js"></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+              grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response " value="03AGdBq25-8ZmG3FvXtJxW72EQZgrhIWNLvCvSUBtfOfL9zY6Bov6ZwQSxqUDhQWPnZ1MZQVyWM_VmVpLmcw7ZNpOhH3WwLanCEPT053otp8BBvZ_lxt7zw2Bsv2a5wsfavbhHBxUvZCDoAQbFPoJdIemhAR1KiYqN01fL3v3PdtewARkiLceBeam7HMjb_lG0M6mEzWQTYYmGUHEpz1XMhw4WLnAuBBOHd1JpOC7ejpIxu-JaSepykcHThhqKmEPcGPhQ0U1Z9wo451o79zTV3jRfrp9Vw9ZHNcgWWc4_2EMC-JORIdWAR9O1FE7RKkwBpKyKF66LA-py_GSdwQgaK5HTe4Dc3f-aZUbBCuSVjfqpiikrw5oTT93eRTjR2l-i8cZ373Qe7ktC7sW52OB9HsjdM_2Mptvooma7mwvTpXwruJM-OVKYxrEo-b8zhQmA2QvKbBHgXOJ6uHzGCI8zdsbNB5v5va9a9vN14-MYQOZWKCSvIpbTGMN1uq2Kyt3-8KsKzSVXJVk7" style=""><div style="width: 304px; height: 78px;"><div><iframe src="./Using Open Data with Amazon S3 _ Qwiklabs_files/anchor.html" width="304" height="78" role="presentation" name="a-8z5w3rci322x" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></input>
+
+<div class="hidden" id="recaptcha-v2-start-lab" slot="recaptcha">
+<script src="./Using Open Data with Amazon S3 _ Qwiklabs_files/api(1).js" async="" defer=""></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "><div style="width: 304px; height: 78px;"><div><iframe src="./Using Open Data with Amazon S3 _ Qwiklabs_files/anchor(1).html" width="304" height="78" role="presentation" name="a-1g0oku7l0qre" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response-1" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/saved_resource.html"></iframe></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id="lab-instructions" slot="drawer-content">
+<div class="alert alert--fake js-alert">
+<p class="alert__message js-alert-message"></p>
+<a class="alert__close js-alert-close">
+<i class="fa fa-times"></i>
+</a>
+<iframe class="l-ie-iframe-fix" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/saved_resource(1).html"></iframe>
+</div>
+<div class="js-lab-content lab-content__renderable-instructions">
+<div class="lab-preamble">
+<h1 class="lab-preamble__title">
+Using Open Data with Amazon S3
+</h1>
+<div class="lab-preamble__details subtitle-headline-1">
+<span>40 minutes</span>
+<span>8 Credits</span>
+<div class="lab__rating">
+<a href="https://amazon.qwiklabs.com/focuses/15571/reviews?parent=catalog"><div class="rateit" data-rateit-readonly="true" data-rateit-value="4.4573"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 71.3168px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+
+</a><a data-target="#lab-review-modal" data-toggle="modal">
+Rate Lab
+</a>
+</div>
+</div>
+</div>
+
+<div class="js-markdown-instructions markdown-lab-instructions no-select" id="markdown-lab-instructions">
+<p><img src="./Using Open Data with Amazon S3 _ Qwiklabs_files/aws-logo.png" alt=""></p>
+
+
+
+<p><strong>SPL-60 Version 2.2.4</strong></p>
+
+<p>© 2020 Amazon Web Services, Inc. and its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited. All trademarks are the property of their owners.</p>
+
+<p>Corrections, feedback, or other questions? Contact us at <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank"><em>AWS Training and Certification</em></a>.</p>
+
+<h2 id="step1">Overview</h2>
+
+<p>This lab demonstrates the steps to upload data to Amazon S3 and make it available for anyone to access via a web browser. You will learn how to create an Amazon S3 bucket, configure it to host a static website, upload objects to it, and even use JavaScript to display those objects on a web page. Along the way, you’ll learn some best practices for publishing data on Amazon S3. At the end of this lab you will have deployed a simple web site that makes data easy to access and provides basic documentation of the data.</p>
+
+<h2 id="step2">Topics covered</h2>
+
+<p>When you finish the lab, you will be able to:</p>
+<ul>
+<li>Create an Amazon S3 bucket.</li>
+<li>Upload objects to Amazon S3.</li>
+<li>Create a Bucket Policy to set permissions on a bucket.</li>
+<li>Create a Cross-Origin Resource Sharing (CORS) Configuration policy for a bucket.</li>
+<li>Configure a bucket for static website hosting.</li>
+<li>Use JavaScript to display the contents of a bucket on a static webpage.</li>
+</ul>
+<h2 id="step3">What is Amazon Simple Storage Service (Amazon S3)?</h2>
+
+<p>Amazon Simple Storage Service (Amazon S3) is safe, secure, highly scalable object storage in the cloud. It is commonly used for backup and storage, application or media hosting, high-traffic website hosting, or software delivery.</p>
+
+<p>To get the most out of Amazon S3, you need to understand a few simple concepts:</p>
+<ul>
+<li>Amazon S3 stores data as objects within buckets. An object is composed of a file and, optionally, any metadata that describes that file.</li>
+<li>To store an object in Amazon S3, you upload it to a bucket. When you upload an object, you can set permissions on the object as well as any metadata.</li>
+<li>Buckets are the containers for objects. You can have one or more buckets. For each bucket, you can:
+<ul>
+<li>Control access to the bucket, defining who can create, delete, and list objects in the bucket.</li>
+<li>View access logs for the bucket and its objects.</li>
+<li>Choose the geographical region where Amazon S3 will store the bucket and its contents.</li>
+</ul>
+</li>
+<li>You can create folders to group objects within buckets. You can also nest folders (create folders within folders). If you have used the Amazon S3 API or other utilities, you can learn some important aspects about how folders work with other grouping conventions in the <a href="http://docs.aws.amazon.com/AmazonS3/latest/UG/" target="_blank">Amazon Simple Storage Service Console User Guide</a>.</li>
+</ul>
+<p>Refer to the <a href="https://aws.amazon.com/documentation/s3/" target="_blank">Amazon Web Services Documentation for Amazon S3</a> for additional information.</p>
+
+<h2 id="step4">Publishing data on Amazon S3</h2>
+
+<p>Imagine that you have a data set that you wish to share with the world. How would you share it if you do not have a web server? If the data set is small enough, you could email it to people or make it available with a file sharing service. But if you have a lot of data, you will need something more sophisticated.</p>
+
+<p>Fortunately, Amazon S3 provides a very flexible solution to store and retrieve any amount of data, at any time, from anywhere on the web. Amazon S3 acts like a web server for your data, but does not require you to pay for, nor maintain, a web server. When you store data on Amazon S3, you are only charged for data storage and any requests and data transfer.</p>
+
+<p>When data files are available on Amazon S3, they can be accessed via a simple HTTP endpoint, which makes it easy for people to access programmatically. Publishing data on Amazon S3 also makes it easy to analyze using Amazon Web Services’ computational and data analysis products like Amazon EC2 and Amazon Redshift.</p>
+
+<p>The purpose of this lab is to show you one way to use Amazon S3 to make data available for anyone to access via a web browser.</p>
+
+<h2 id="step5">Start Lab</h2>
+<ol start="1">
+<li>At the top of your screen, launch your lab by choosing <span style="background-color:#34A853;font-family:Google Sans;font-weight:bold;font-size:90%;color:white;border-color:#34A853;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Start Lab</span>
+</li>
+</ol>
+<p>This starts the process of provisioning your lab resources. An estimated amount of time to provision your lab resources is displayed. You must wait for your resources to be provisioned before continuing.</p>
+
+<p><i class="fas fa-info-circle"></i> If you are prompted for a token, use the one distributed to you (or credits you have purchased). </p>
+<ol start="2">
+<li>Open your lab by choosing <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span>
+</li>
+</ol>
+<p>This automatically logs you in to the AWS Management Console. </p>
+
+<p><i class="fas fa-exclamation-triangle"></i> <strong>Do not change the Region unless instructed.</strong></p>
+
+
+
+<h3>Common Login Errors</h3>
+
+<p><strong>Error: Federated login credentials</strong></p>
+
+<p><img src="./Using Open Data with Amazon S3 _ Qwiklabs_files/federatedloginerror.png" alt=""></p>
+
+<p>If you see this message:</p>
+<ul>
+<li>Close the browser tab to return to your initial lab window</li>
+<li>Wait a few seconds</li>
+<li>Choose <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span> again</li>
+</ul>
+<p>You should now be able to access the AWS Management Console.</p>
+
+
+
+<p><strong>Error: You must first log out</strong></p>
+
+<p><img src="./Using Open Data with Amazon S3 _ Qwiklabs_files/logouterror.png" alt=""></p>
+
+<p>If you see the message, <strong>You must first log out before logging into a different AWS account:</strong> </p>
+<ul>
+<li>Choose <strong>click here</strong>
+</li>
+<li>Close your browser tab to return to your initial lab window</li>
+<li>Choose <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span> again</li>
+</ul>
+
+
+<h2 id="step6">Task 1: Create an Amazon S3 bucket</h2>
+
+<p>Every object in Amazon S3 is stored in a bucket.</p>
+
+<p>In this task, you create a bucket in Amazon S3 to store your data and your website.</p>
+<ol start="3">
+<li><p>In the AWS Management Console, on the <span style="background-color:#232f3e;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Services <i class="fas fa-angle-down"></i></span> menu, choose <strong>S3</strong>.</p></li>
+<li><p>Choose <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Create bucket</span> and then configure:</p></li>
+</ol><ul>
+<li>
+<strong>Bucket name:</strong> <input readonly="" class="copyable-inline-input" size="13" type="text" value="websiteNUMBER">
+<ul>
+<li>Replace <strong>NUMBER</strong> with a random number.</li>
+<li>Copy the name of your bucket to a text editor.</li>
+</ul>
+</li>
+<li>
+<strong>Region:</strong> US East (N. Virginia)</li>
+<li>Choose <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Create bucket</span>
+</li>
+</ul>
+<p><i class="fas fa-sticky-note" style="color:gold;"></i> Every Amazon S3 bucket must have a unique name.</p>
+
+<p><i class="fas fa-comment" style="color:DodgerBlue;"></i> If you receive an error stating <em>The requested bucket name is not available</em>, click the top <strong>Edit</strong> link, change the bucket name, and try again until it works.</p>
+
+<p>After Amazon S3 creates your bucket, the console displays your bucket name in the list of buckets.</p>
+
+<h2 id="step7">Task 2: Upload files</h2>
+
+<p>You can now upload files to your bucket. In this task, you upload a set of sample files.</p>
+<ol start="5">
+<li><p>Download the following file: <a href="https://s3.us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/spl-60/2.2.4.prod/scripts/sample-files.zip" target="_blank">sample-files.zip</a></p></li>
+<li><p>Locate the <strong>sample-files.zip</strong> file you downloaded, and then unzip it. It should create a folder with several files.</p></li>
+<li><p>In the <strong>Amazon S3</strong> console, choose the <strong>websiteNUMBER</strong> bucket you created in the previous task.</p></li>
+<li><p>Choose <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Upload</span></p></li>
+<li><p>Choose <strong>Add files</strong></p></li>
+<li><p>A file selection dialog box appears.</p></li>
+<li><p>Browse to the <strong>sample-files</strong> folder that you created from the zip file.</p></li>
+<li><p>Select all of the files, and then choose <strong>Open</strong> (for Windows) or <strong>Open</strong> (for Mac).</p></li>
+<li><p>Choose <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Upload</span></p></li>
+</ol>
+<p>The status bar at the bottom of the page displays the upload progress. Verify the files upload successfully.</p>
+
+<h2 id="step8">Task 3: Grant access to the bucket</h2>
+
+<p>Your files have now been uploaded as objects in your Amazon S3 bucket. The term object is used because files are stored in a filesystem but Amazon S3 is actually an object storage system. While it behaves similar to a filesystem on a computer, it actually has many more capabilities.</p>
+
+<p>Objects in Amazon S3 are private by default. In this task, you verify that the objects in your bucket are not publicly accessible by default.</p>
+<ol start="13">
+<li>Choose the the <strong>aws-logo.png</strong> object link.</li>
+</ol>
+<p>Information about the object will appear on the screen, including:</p>
+<ul>
+<li>
+<strong>Etag:</strong> An MD5 checksum that can be used to confirm that the object was uploaded correctly.</li>
+<li>
+<strong>Storage class:</strong> Indicates durability and cost of storing the object.</li>
+<li>
+<strong>Server side encryption:</strong> Whether the object is encrypted while stored on Amazon S3.</li>
+<li>
+<strong>Size:</strong> Size of the object being stored.</li>
+<li>
+<strong>Object URL:</strong> A link to the object on the Internet. Notice that it includes the name of your bucket.</li>
+</ul><ol start="14">
+<li><p>Copy the <strong>Object URL</strong> to your clipboard.</p></li>
+<li><p>Open a new browser tab, and then paste the Object URL link and press Enter.</p></li>
+</ol>
+<p>You should receive an <strong>Access Denied</strong> message. This is good! It indicates that your data remains private on Amazon S3.</p>
+
+<p>However, when deploying a website, you want your data to be fully accessible on the Internet. You can accomplish this by creating a Bucket Policy that defines who can access specific parts of your bucket. Bucket policies can restrict access only to specific directories, from specific IP addresses, during specific times, and even only to specific users.</p>
+<ol start="16">
+<li><p>Keep the <strong>Access Denied</strong> tab open. You will use it again soon.</p></li>
+<li><p>In the <strong>Amazon S3</strong> console, at the top of the page, choose <span style="color:#1166bb;font-weight:bold;">Amazon S3</span> to return to the list of buckets.</p></li>
+<li><p>Choose your <strong>websiteNUMBER</strong> bucket.</p></li>
+<li><p>Choose the <strong>Permissions</strong> tab.</p></li>
+</ol><ul>
+<li>Choose the <strong>Edit</strong> option under <strong>Block public access</strong>
+</li>
+</ul><ol start="20">
+<li>
+<strong>Deselect</strong> the <strong>Block <em>all</em> public access</strong> option, and then leave all other options <strong>deselected</strong>.</li>
+</ol>
+<p><i class="fas fa-info-circle" style="color:DodgerBlue;"></i> Notice all of the individual options remain deselected. When deselecting all public access, you must then select the individual options that apply to your situation and security objectives. In a production environment, it is recommended to use the least permissive settings possible.</p>
+<ol start="21">
+<li><p>Choose <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Save changes</span></p></li>
+<li><p>A dialogue box opens asking you to confirm your changes. Enter <input readonly="" class="copyable-inline-input" size="7" type="text" value="confirm"> in the field, and then choose <span style="background-color:#329AD6;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Confirm</span></p></li>
+<li><p>A dialogue box opens asking you to confirm your changes. Enter <input readonly="" class="copyable-inline-input" size="7" type="text" value="confirm"> in the field, and then choose <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Confirm</span></p></li>
+<li><p>Click on <strong>Edit</strong> under <strong>Bucket Policy</strong></p></li>
+</ol>
+<p>The <strong>Bucket policy editor</strong> panel opens with a field where you can enter a policy for your bucket.</p>
+<ol start="25">
+<li>Copy and paste the following policy into the <strong>Bucket policy editor</strong> (but don’t save yet):</li>
+</ol><pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-10-17"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Statement"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"Sid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PublicReadGetObject"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Effect"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Allow"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Principal"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"s3:GetObject"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Resource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arn:aws:s3:::BUCKET/*"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code><button class="button button--text button--small copy-button js-copy-button-0"><ql-icon>content_copy</ql-icon></button></pre><ol start="26">
+<li>In the policy, replace <strong>BUCKET</strong> with the name of your bucket. Keep the <input readonly="" class="copyable-inline-input" size="2" type="text" value="/*"> in place after your bucket name!</li>
+</ol><ul>
+<li>The * is a wildcard, so adding <input readonly="" class="copyable-inline-input" size="2" type="text" value="/*"> at the end of the bucket name applies this policy to all objects in the bucket.
+<ul>
+<li>You could limit the policy to a specific folder, rather than making the entire bucket public, by adding the path to the folder. For example: "arn:aws:s3:::BUCKET/FOLDER/*"</li>
+</ul>
+</li>
+<li>The policy <em>Allows</em> anyone (indicated by Principal: *) to download an object (<strong>GetObject</strong>) from your bucket.</li>
+</ul><ol start="27">
+<li>Choose <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Save changes</span> to save the new bucket policy.</li>
+</ol>
+<p><i class="fas fa-info-circle" style="color:DodgerBlue;"></i> If you receive an error when saving, it might be due to a mismatch with your bucket name. Make sure the bucket name in the <strong>Resource</strong> line matches the name of the bucket your created earlier (shown at the top of the window).</p>
+
+<p>You can now test that the objects are accessible.</p>
+<ol start="28">
+<li><p>Return to the browser tab that previously showed <strong>Access Denied</strong>.</p></li>
+<li><p>Refresh the web page.</p></li>
+</ol>
+<p>The AWS logo should appear, proving that your Bucket Policy now grants public access to your Amazon S3 bucket.</p>
+<ol start="30">
+<li>Close the browser tab with the logo and return to the tab with the Amazon S3 Management Console.</li>
+</ol>
+<h2 id="step9">Task 4: Configure static website hosting</h2>
+
+<p>Amazon S3 also has the ability to configure a bucket for static website hosting, which allows you to:</p>
+<ul>
+<li>Define a <strong>default page</strong> that should be displayed when users access your website but do not specify a particular HTML page.</li>
+<li>Define an <strong>error page</strong> that appears if users navigate to a page that does not exist.</li>
+<li>Define <strong>redirections</strong> to send users to alternate pages at different locations.</li>
+</ul>
+<p>In this task, you activate static website hosting and configure it to use the <strong>index.html</strong> and <strong>error.html</strong> pages that were included in your upload.</p>
+<ol start="31">
+<li><p>Choose the <strong>Properties</strong> tab at the top of the page.</p></li>
+<li><p>Choose <strong>Edit</strong> under <strong>Static website hosting</strong> and select <strong>Enable</strong></p></li>
+<li><p>Configure</p></li>
+<li><p><strong>Index document:</strong> <input readonly="" class="copyable-inline-input" size="10" type="text" value="index.html"> (You must enter these values even though they are already displayed as hints.)</p></li>
+<li><p><strong>Error document:</strong> <input readonly="" class="copyable-inline-input" size="10" type="text" value="error.html"></p></li>
+<li><p>Click <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Save changes</span></p></li>
+<li><p>Choose <strong>Static website hosting</strong> again.</p></li>
+<li><p>Choose the <strong>Bucket website endpoint</strong> link which will be under <strong>Static website hosting</strong>.</p></li>
+</ol>
+<p>This is a link to your new website. It should look like: <em>http://website-XXX.s3-website-us-west-2.amazonaws.com</em></p>
+
+<p>The <strong>index.html</strong> page opens in a new tab.</p>
+
+<p><i class="fas fa-comment" style="color:DodgerBlue;"></i> You will also see an error message on the page. This is okay! You still have some configuration to perform.</p>
+
+<p><img src="https://s3.us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/spl-60/2.2.4.prod/images/error.png" alt="error"></p>
+<ol start="36">
+<li>Within the error message window, choose <span style="background-color:#329AD6;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">OK</span>
+</li>
+</ol>
+<p>Next, you test the <strong>error.html</strong> page.</p>
+<ol start="37">
+<li>In the address bar of your browser, type extra characters at the end of the previous URL to go to a page that does <strong>not</strong> exist. For example: <em>http://website-XXX.s3-website-us-west-2.amazonaws.com/wrong</em>
+</li>
+</ol>
+<p>The <strong>error.html</strong> page should display with a message that says <strong>We're sorry</strong>. This error page is also known as a <strong>404 page</strong> because error 404 means <em>Page Not Found</em>.</p>
+
+<p><img src="https://s3.us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/spl-60/2.2.4.prod/images/sorry.png" alt="sorry"></p>
+
+<p>You now have a few final steps to configure your website!</p>
+
+<h2 id="step10">Task 5: Enable Cross-Origin Resource Sharing</h2>
+
+<p>You can also access your Amazon S3 bucket programmatically. This allows the objects in your bucket to be shown within web pages without users even knowing that they are coming from Amazon S3.</p>
+
+<p>To demonstrate this concept, the index.html page that you uploaded uses JavaScript to dynamically read the contents of your bucket and display a list of objects to your visitors. To do this, you must enable <strong>Cross-Origin Resource Sharing (CORS)</strong>. A browser would normally block JavaScript from allowing requests to read the contents of your bucket, but with CORS you can configure the bucket to explicitly permit JavaScript to do this.</p>
+
+<p>In this task, you define a CORS configuration to allow cross-origin requests for the bucket. A CORS configuration is an XML document with rules that identify the origins that are permitted to access the bucket, the operations (HTTP methods) it supports for each origin, and other operation-specific information.</p>
+
+<p><i class="fas fa-info-circle" style="color:DodgerBlue;"></i> Cross-Origin Resource Sharing (CORS) defines a way for client web applications that are loaded in one domain to interact with resources in a different domain. With CORS support, you can build rich client-side web applications with Amazon S3 and selectively allow cross-origin access to your Amazon S3 resources.</p>
+<ol start="38">
+<li><p>Keep the <strong>We're Sorry</strong> tab open. You will use it again soon.</p></li>
+<li><p>Return to your <strong>Amazon S3</strong> console tab and click your S3 bucket.</p></li>
+<li><p>Click the <strong>Permissions</strong> tab</p></li>
+<li><p>Click on <strong>Edit</strong> under choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#329AD6;border-color:#329AD6;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">CORS Configuration</span></p></li>
+<li><p>Copy the following policy, and then paste it into the editor:</p></li>
+</ol><pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"AllowedHeaders"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"*"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"AllowedMethods"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"GET"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"AllowedOrigins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"*"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"MaxAgeSeconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code><button class="button button--text button--small copy-button js-copy-button-1"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:DodgerBlue;"></i> This is a basic and very permissive CORS configuration, but Amazon S3 supports a wide array of configuration options. We recommend that you always use the least permissive policies possible.</p>
+<ol start="42">
+<li>Click <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Save changes</span>
+</li>
+</ol>
+<p>There is one final step required, which is to permit programmatic listing of your bucket.</p>
+<ol start="43">
+<li><p>Click <strong>Edit</strong> under <span style="background-color:white;font-weight:bold;font-size:90%;color:#329AD6;border-color:#329AD6;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Access Control List</span></p></li>
+<li><p>Under <strong>Everyone (public access)</strong>, select <i class="far fa-check-square"></i> <em>List</em><br>
+and then scroll down to configure:</p></li>
+</ol><ul>
+<li>
+<i class="far fa-check-square"></i> <em>I understand the effects of these changes on my objects and buckets</em>
+</li>
+<li>Choose <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Save changes</span>
+</li>
+</ul>
+<p><i class="fas fa-comment" style="color:DodgerBlue;"></i> A warning appears stating <em>This bucket will have public access</em>. This is expected because you are intentionally adding public access.</p>
+
+<p>You can now test your application!</p>
+<ol start="45">
+<li>Return to the <strong>We're Sorry</strong> tab in your web browser and choose the <strong><em>try visiting our home page</em></strong> link to return to the application.</li>
+</ol>
+<p><i class="fas fa-info-circle" style="color:DodgerBlue;"></i>  If you can't find the tab, choose the Endpoint URL shown in the <strong>Static website hosting</strong> section of the <strong>Properties</strong> tab.</p>
+
+<p>The site looks something like this:</p>
+
+<p><img src="https://s3.us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/spl-60/2.2.4.prod/scripts/demo-app.png" alt="demo-app.png"></p>
+
+<p>The page includes documentation for the application and the bottom of the page lists the objects stored in your Amazon S3 bucket.</p>
+
+<h2 id="step11">Understand the website</h2>
+
+<p>Feel free to explore the source code of the <strong>index.html</strong> file. It is a static HTML file, but it is made dynamic through the use of several JavaScript plugins and custom JavaScript that displays the contents of an Amazon S3 bucket in an HTML table. The JavaScript includes comments to help you understand the application.</p>
+
+<p>While this lab doesn’t require you to know how to write JavaScript, HTML, or CSS, listed below are a few interesting aspects of the index.html file.</p>
+
+<h3>The AWS SDK for JavaScript</h3>
+
+<p>The index.html page uses the AWS SDK for JavaScript in the browser to dynamically query the contents of an S3 bucket.</p>
+
+<p>The JavaScript SDK makes it very simple to list the objects in an S3 bucket. The code:</p>
+<ul>
+<li>Links to the AWS JavaScript SDK.</li>
+<li>Configures the SDK with a default AWS region of us-west-2.</li>
+<li>Creates and initializes an Amazon S3 object.</li>
+<li>Via the Amazon S3 object, makes an unauthenticated <em>listObjects</em> call to Amazon S3.</li>
+<li>Accumulates the resulting object listings.</li>
+<li>Calls <em>listObjects</em> repeatedly as needed if there are more results to come.</li>
+</ul>
+<p>To keep things simple, the code does not ask for credentials when querying a bucket. Instead, it makes unauthenticated calls to the Amazon S3 API. This means that it will only work against buckets that are publicly readable. This is why you to set the permissions of your bucket to allow anyone to list the contents of the bucket.</p>
+
+<p>The last point on the list above is worth noting because <em>listObjects</em> will only return 1,000 objects at a time. Due to this, the JavaScript code will continually query a bucket to see if there are more objects to retrieve. The code has been tested on buckets with over 10,000 objects and encountered no issues, but it may overwhelm your browser if you try to display the contents of a bucket with a very large amount of objects (say, over one million objects).</p>
+
+<p>The JavaScript only queries for objects at one level of the bucket at a time. That is, it will only look for objects in the root of your bucket and will not look for objects in folders unless you click into them.</p>
+
+<h3>Other features</h3>
+
+<p>The index.html page relies on these other libraries to work:</p>
+<ul>
+<li>
+<strong>JQuery</strong>, which is a common JavaScript library used to create browser-based apps: <a href="http://jquery.com/" target="_blank">http://jquery.com</a>
+</li>
+<li>
+<strong>Bootstrap</strong>, for CSS styling: <a href="http://getbootstrap.com/" target="_blank">http://getbootstrap.com</a>
+</li>
+<li>
+<strong>Font Awesome</strong>, for vector icons: <a href="http://fontawesome.io/" target="_blank">http://fontawesome.io</a>
+</li>
+<li>
+<strong>DataTables</strong>, for table organization, filtering, and sorting: <a href="http://datatables.net/" target="_blank">http://datatables.net</a>
+</li>
+<li>
+<strong>Bootbox</strong>, for popup dialogs and alerts that work with Bootstrap: <a href="http://bootboxjs.com/" target="_blank">http://bootboxjs.com</a>
+</li>
+<li>
+<strong>Moment</strong>, for time formatting (e.g. "2 days ago", "last year"): <a href="http://momentjs.com/" target="_blank">http://momentjs.com</a>
+</li>
+</ul>
+<h2 id="step12">Conclusion</h2>
+
+<p>Congratulations! You now have successfully:</p>
+<ul>
+<li>Created an Amazon S3 bucket.</li>
+<li>Uploaded objects to Amazon S3.</li>
+<li>Set permissions on your bucket by creating a bucket policy.</li>
+<li>Created a CORS configuration policy for the bucket.</li>
+<li>Configured a bucket for static website hosting.</li>
+<li>Used JavaScript to display the contents of a bucket on a static webpage.</li>
+</ul>
+<h2 id="step13">End Lab</h2>
+
+<p>Follow these steps to close the console, end your lab, and evaluate the experience.</p>
+<ol start="46">
+<li><p>Return to the AWS Management Console.</p></li>
+<li><p>On the navigation bar, choose <strong>awsstudent@&lt;AccountNumber&gt;</strong>, and then choose <strong>Sign Out</strong>.</p></li>
+<li><p>Choose <span style="background-color:#D93025;font-family:Google Sans;font-weight:bold;font-size:90%;color:white;border-color:#D93025;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">End Lab</span></p></li>
+<li><p>Choose <span style="background-color:#DEDEDE;font-family:Google Sans;font-weight:bold;font-size:90%;color:#444;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">OK</span></p></li>
+<li><p>(Optional):</p></li>
+</ol><ul>
+<li>Select the applicable number of stars <i class="far fa-star"></i>
+</li>
+<li>Type a comment</li>
+<li>
+<p>Choose <strong>Submit</strong></p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+</li>
+</ul>
+<p>You may close the window if you don't want to provide feedback.</p>
+
+<h2 id="step14">Additional resources</h2>
+<ul>
+<li><a href="http://docs.aws.amazon.com/gettingstarted/latest/swh/website-hosting-intro.html" target="_blank">Hosting a Static Website on Amazon Web Services</a></li>
+<li><a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/website-hosting-custom-domain-walkthrough.html" target="_blank">Setting Up a Static Website on Amazon S3 Using a Custom Domain</a></li>
+<li><a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/" target="_blank">Amazon Web Services SDK for JavaScript</a></li>
+<li><a href="http://aws.amazon.com/S3/" target="_blank">Amazon S3</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html" target="_blank">Cross-Origin Resource Sharing (CORS)</a></li>
+</ul>
+<p>For more information about AWS Training and Certification, see <a href="http://aws.amazon.com/training/" target="_blank"><em>http://aws.amazon.com/training/</em></a>.</p>
+
+<p><em>Your feedback is welcome and appreciated.</em></p>
+
+<p>If you would like to share any feedback, suggestions, or corrections, please provide the details in our <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank"><em>AWS Training and Certification Contact Form</em></a>.</p>
+
+</div>
+</div>
+
+
+<div class="hidden js-end-lab-button-container lab-content__end-lab-button">
+<ql-lab-control-button class="js-end-lab-button" running=""></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class="lab-content__renderable-instructions">
+<div class="lab-content__recommendation">
+<h4 class="headline-3">
+Ready for more?
+<p>Here's another lab we think you'll like.</p>
+<div class="content-card-grid">
+<div class="card-content-wrapper js-content-card" data-id="2543" data-level="Introductory" data-name="Introduction to Amazon Simple Storage Service (S3)" data-type="Lab">
+<a class="card card--content elevation-0 content-lab" href="https://amazon.qwiklabs.com/focuses/15683?parent=catalog"><div class="card__image">
+<div class="card__image__inner" style="background-image: url(https://cdn.qwiklabs.com/assets/fractal2-a4905334374c9d90765c63535f0fc66eb81d5f18f7416db5bea58901744cc5d0.jpg)"></div>
+</div>
+<div class="card__body">
+<div class="overline card--content__type">
+Lab
+</div>
+<h3 class="card--content__title">
+Introduction to Amazon Simple Storage Service (S3)
+</h3>
+<div class="card--content__description body-1">
+<p>
+This lab demonstrates how to use an Amazon S3 bucket and manage files, or object, that are stored in the bucket. You will practice how to create a bucket, add an object, view an object, move an object, and delete an object and bucket in the AWS Management Console.
+</p>
+</div>
+</div>
+<div class="card__footer">
+<div class="card__footer__left">
+<span>Introductory</span>
+</div>
+<div class="card__footer__right">
+<div class="rateit" data-rateit-readonly="true" data-rateit-value="4.5353"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 72.5648px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+</div>
+</div>
+</a></div>
+
+</div>
+</h4>
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end="" id="outline-drawer" open="" slot="drawer" width="320" style="width: 320px;">
+<div class="js-lab-content-outline lab-content__outline">
+<a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step1" class="">Overview</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step2" class="">Topics covered</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step3" class="">What is Amazon Simple Storage Service (Amazon S3)?</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step4" class="">Publishing data on Amazon S3</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step5" class="">Start Lab</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step6" class="">Task 1: Create an Amazon S3 bucket</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step7" class="">Task 2: Upload files</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step8" class="">Task 3: Grant access to the bucket</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step9" class="">Task 4: Configure static website hosting</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step10" class="">Task 5: Enable Cross-Origin Resource Sharing</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step11" class="is-active">Understand the website</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step12">Conclusion</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step13">End Lab</a><a href="https://amazon.qwiklabs.com/focuses/15571?parent=catalog#step14">Additional resources</a>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+<div class="lab-introduction js-lab-introduction is-hidden">
+<div class="lab-introduction__inner">
+<h1 class="headline-1">Welcome to Your First Lab!</h1>
+<ql-icon-button class="js-skip-button">close</ql-icon-button>
+<div class="lab-introduction__video">
+<iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" id="lab-introduction" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/yF7EDXKTmoQ.html"></iframe>
+</div>
+<a class="js-skip-button button button--outline">Skip this video</a>
+</div>
+</div>
+
+
+
+</div>
+</main>
+<div class="modal fade" id="lab-details-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<div class="modal-body">
+<p class="l-mbm">
+This lab demonstrates how to upload data to Amazon S3 and make it available for anyone to access via a web browser. You will learn how to create an Amazon S3 bucket, configure it to host a website, upload objects to it, and use JavaScript to display those objects on a web page. Along the way, you’ll learn some best practices for creating open data. At the end of this lab you will have deployed a simple web site that makes data easy to access and provides basic documentation of the data.
+</p>
+<p>
+This lab is included in these quests:
+<a href="https://amazon.qwiklabs.com/quests/9">Storage &amp; CDN</a>, <a href="https://amazon.qwiklabs.com/quests/3">Websites &amp; Web Apps</a>.
+If you complete this lab you'll receive credit for it when you enroll in one of these quests.
+</p>
+<p class="small-label l-mbs">
+<strong>
+Duration:
+</strong>
+0m setup
+·
+40m access
+·
+40m completion
+</p>
+<p class="small-label l-mbs">
+<strong>AWS Region:</strong>
+[us-east-1] <strong>US East (N. Virginia)</strong>
+</p>
+<p class="small-label l-mbs">
+
+</p>
+<p class="small-label">
+<strong>
+Permalink:
+</strong>
+<a href="https://amazon.qwiklabs.com/catalog_lab/3257">https://amazon.qwiklabs.com/catalog_lab/3257</a>
+</p>
+</div>
+<div class="modal-actions">
+<a class="button button--text" data-dismiss="modal">
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/saved_resource(2).html"></iframe>
+</div>
+<div class="modal fade" id="lab-review-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<form class="simple_form js-lab-review-form" id="edit_lab_review_10076301" action="https://amazon.qwiklabs.com/lab_reviews/10076301" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="_method" value="patch"><div class="modal-body">
+<p class="label">
+How satisfied are you with this lab?*
+</p>
+<div class="rateit js-rateit" data-rateit-max="5" data-rateit-min="0" data-rateit-resetable="false" data-rateit-step="1" data-rateit-value="3"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 48px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+<div class="l-mtm">
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" type="hidden" value="4265112" name="lab_review[user_id]" id="lab_review_user_id"></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id"></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" type="hidden" value="3257" name="lab_review[lab_id]" id="lab_review_lab_id"></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id"></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" type="hidden" value="0" name="lab_review[rating]" id="lab_review_rating"></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Comment</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">test</textarea></div></div>
+</div>
+</div>
+<div class="modal-actions">
+<a class="button button--text" data-dismiss="modal">
+Cancel
+</a>
+<input type="submit" name="commit" value="Submit" disabled="disabled" id="submit" data-disabled="false" class="button" data-disable-with="Submit">
+</div>
+</form>
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/saved_resource(3).html"></iframe>
+</div>
+<div class="modal fade" id="lab-access-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<a class="lab-access-modal-close" data-analytics-action="dismissed_lab_payment_modal" data-dismiss="modal">
+<i class="material-icons">close</i>
+</a>
+<form class="js-lab-access-form" action="https://amazon.qwiklabs.com/lab_onetime_coupons/activate?parent=catalog" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓">
+<div class="modal-body">
+<div class="lab-access-modal">
+<input type="hidden" name="id" id="id" value="15571">
+<input type="hidden" name="user_id" id="user_id" value="4265112">
+<input type="hidden" name="launch_with_credits" id="launch_with_credits" value="0" class="js-launch-with-credits-input">
+<input type="hidden" name="launch_with_subs" id="launch_with_subs" value="0" class="js-launch-with-subscription-input">
+<div class="lab-access-modal__method">
+<p>
+This lab costs
+8 Credits.
+</p>
+<p>
+You have a valid subscription package. Would you like to charge this lab to your subscription?
+
+</p>
+<a class="button js-launch-with-subscription-button js-lab-access-modal-button" data-analytics-action="clicked_launch_with_subscription_button">
+Use Subscription
+</a>
+</div>
+<div class="lab-access-modal__method">
+<p>
+Enter Lab Access Code:
+</p>
+<div class="lab-access-modal__code js-access-code">
+<input type="text" name="uuid_1" id="uuid_1" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_2" id="uuid_2" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_3" id="uuid_3" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_4" id="uuid_4" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+</div>
+<a class="button js-launch-with-access-code-button js-lab-access-modal-button" data-analytics-action="clicked_launch_with_access_code_button">
+Launch with Access Code
+</a>
+</div>
+</div>
+</div>
+</form>
+
+
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/saved_resource(4).html"></iframe>
+</div>
+
+<script>
+  $( function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabAccessModal();
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?\n","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.\n","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.chat.init();
+  ql.initHeader();
+  ql.navigation.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+<style>
+  .mdl-layout__container {
+    position: static
+  }
+</style>
+
+
+<div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe src="./Using Open Data with Amazon S3 _ Qwiklabs_files/anchor(2).html" width="256" height="60" role="presentation" name="a-725nibtk07ag" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></div><iframe data-product="web_widget" title="No content" tabindex="-1" aria-hidden="true" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/saved_resource(5).html" style="width: 0px; height: 0px; border: 0px; position: absolute; top: -9999px;"></iframe><div style="background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px; position: absolute; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0; visibility: hidden; z-index: 2000000000; left: 0px; top: -10000px;"><div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.05;"></div><div class="g-recaptcha-bubble-arrow" style="border: 11px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -11px; z-index: 2000000000;"></div><div class="g-recaptcha-bubble-arrow" style="border: 10px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -10px; z-index: 2000000000;"></div><div style="z-index: 2000000000; position: relative;"><iframe title="recaptcha challenge" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/bframe.html" name="c-1g0oku7l0qre" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox" style="width: 100%; height: 100%;"></iframe></div></div><div><iframe title="Opens a widget where you can chat to one of our agents" id="launcher" tabindex="-1" style="width: 109px; height: 50px; padding: 0px; margin: 10px 20px; position: fixed; bottom: 30px; overflow: visible; opacity: 0; border: 0px; z-index: 999998; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; top: -9999px; visibility: hidden;" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/saved_resource(6).html"></iframe><iframe title="Find more information here" id="webWidget" tabindex="-1" style="width: 374px; max-height: calc(100vh - 32px); height: 572px; position: fixed; opacity: 0; border: 0px; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; top: -9999px; visibility: hidden; z-index: 999999;" src="./Using Open Data with Amazon S3 _ Qwiklabs_files/saved_resource(7).html"></iframe></div></body></html>
