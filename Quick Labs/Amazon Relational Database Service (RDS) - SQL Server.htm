@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://www.qwiklabs.com/focuses/15778?parent=catalog -->
+<html lang="en" data-lt-installed="true" class="mdl-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="[]" name="active-experiments">
+<meta content="{&quot;userId&quot;:4265112}" name="help-api-product-data">
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="QeJM+iJb3SZ9Nrf+yVxa2zWO6tIFOMasJzRbkEFt9TFeT+ubuVimL3BtK3neYdmQShtDIMrFu0a4BFtPl75Rzg==">
+<title>Introduction to Amazon Relational Database Service (RDS) - SQL Server | Qwiklabs</title>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" name="viewport">
+<meta content="1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0" name="google-site-verification">
+<meta content="#3681E4" property="msapplication-TileColor">
+<meta content="/favicon-144.png" property="msapplication-TileImage">
+<meta content="This lab takes you through the steps of creating a SQLServer database using the Amazon Relational Database Service and the AWS Management Console.  You will then connect to the database engine in AWS using Microsoft SQL Server Management Studio running on a Microsoft Windows server, also provided in the lab environment. Note: this lab has a longer startup time of 20 minutes to allow the RDS instance to fully launch and initialize." name="description">
+<meta content="Qwiklabs" name="author">
+<meta content="Introduction to Amazon Relational Database Service (RDS) - SQL Server | Qwiklabs" property="og:title">
+<meta content="website" property="og:type">
+<meta content="/favicon-144.png" property="og:image">
+<meta content="Qwiklabs" property="og:site_name">
+<meta content="This lab takes you through the steps of creating a SQLServer database using the Amazon Relational Database Service and the AWS Management Console.  You will then connect to the database engine in AWS using Microsoft SQL Server Management Studio running on a Microsoft Windows server, also provided in the lab environment. Note: this lab has a longer startup time of 20 minutes to allow the RDS instance to fully launch and initialize." property="og:description">
+<meta content="/qwiklabs_logo_900x887.png" property="og:logo" size="900x887">
+<meta content="/qwiklabs_logo_994x187.png" property="og:logo" size="994x187">
+<link href="https://www.qwiklabs.com/favicon-32.png" rel="shortcut icon">
+<link color="#3681E4" href="https://www.qwiklabs.com/favicon-svg.svg" rel="mask-icon">
+<link href="https://www.qwiklabs.com/favicon-180.png" rel="apple-touch-icon-precomposed">
+<link rel="stylesheet" media="screen" href="./Amazon Relational Database Service (RDS) - SQL Server_files/css">
+
+
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script type="text/javascript" async="" src="./Amazon Relational Database Service (RDS) - SQL Server_files/js"></script><script type="text/javascript" async="" src="./Amazon Relational Database Service (RDS) - SQL Server_files/analytics.js"></script><script type="text/javascript" async="" src="./Amazon Relational Database Service (RDS) - SQL Server_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-Cx10SI4nRyIf/4CfTL8bj2s8I5ccz18HDscUBxSzsbe1SPnhchceoHtCw2m0nc/h"></script><script type="text/javascript" async="" src="./Amazon Relational Database Service (RDS) - SQL Server_files/analytics.min.js"></script><script type="text/javascript" async="" src="./Amazon Relational Database Service (RDS) - SQL Server_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-Cx10SI4nRyIf/4CfTL8bj2s8I5ccz18HDscUBxSzsbe1SPnhchceoHtCw2m0nc/h"></script><script type="text/javascript" id="www-widgetapi-script" src="./Amazon Relational Database Service (RDS) - SQL Server_files/www-widgetapi.js" async=""></script><script>
+//<![CDATA[
+window.gon={};gon.current_user={"firstname":"Ankit","lastname":"Manglik","fullname":"Ankit Manglik","company":"Incedo","email":"amanglik2010@gmail.com","origin":"run, direct","subscriptions":1,"id":"40881afb3090073a11cc87d2eff56386","qlCreatedAt":"2021-02-01 08:29:26 UTC","optIn":true};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run";
+//]]>
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "url": "https://www.qwiklabs.com/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.qwiklabs.com/catalog?keywords={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<script id="ze-snippet" src="./Amazon Relational Database Service (RDS) - SQL Server_files/snippet.js"></script>
+
+
+
+
+<link rel="stylesheet" media="all" href="./Amazon Relational Database Service (RDS) - SQL Server_files/application-970073e5b46f4630d4ec8cb8a2b1192838eb654177e4e7d2a8a82e4fc31930a8.css">
+<script>
+  EVENT_SOURCE_BASE_URL = "https://run.qwiklabs.com/nchan-sub?id=";
+</script>
+<script src="./Amazon Relational Database Service (RDS) - SQL Server_files/webcomponents-loader-408088dc333247a761de5f2b2a4ba1cabd2bc36579f83ba92a559eb3682a9b77.js"></script>
+<script src="./Amazon Relational Database Service (RDS) - SQL Server_files/hallofmirrors-31ad91021e55b64d370891210d6e30d3790a1e6f4bf9e3eca92b9dd159bc8a6d.js"></script>
+<custom-style>
+  <style is="custom-style">[hidden] {
+  display: none !important;
+}
+
+</style>
+</custom-style>
+<custom-style>
+  <style is="custom-style">html {
+  --layout_-_display:  flex;;
+
+      --layout-inline_-_display:  inline-flex;;
+
+      --layout-horizontal_-_display:  var(--layout_-_display); --layout-horizontal_-_-ms-flex-direction:  row; --layout-horizontal_-_-webkit-flex-direction:  row; --layout-horizontal_-_flex-direction:  row;;
+
+      --layout-horizontal-reverse_-_display:  var(--layout_-_display); --layout-horizontal-reverse_-_-ms-flex-direction:  row-reverse; --layout-horizontal-reverse_-_-webkit-flex-direction:  row-reverse; --layout-horizontal-reverse_-_flex-direction:  row-reverse;;
+
+      --layout-vertical_-_display:  var(--layout_-_display); --layout-vertical_-_-ms-flex-direction:  column; --layout-vertical_-_-webkit-flex-direction:  column; --layout-vertical_-_flex-direction:  column;;
+
+      --layout-vertical-reverse_-_display:  var(--layout_-_display); --layout-vertical-reverse_-_-ms-flex-direction:  column-reverse; --layout-vertical-reverse_-_-webkit-flex-direction:  column-reverse; --layout-vertical-reverse_-_flex-direction:  column-reverse;;
+
+      --layout-wrap_-_-ms-flex-wrap:  wrap; --layout-wrap_-_-webkit-flex-wrap:  wrap; --layout-wrap_-_flex-wrap:  wrap;;
+
+      --layout-wrap-reverse_-_-ms-flex-wrap:  wrap-reverse; --layout-wrap-reverse_-_-webkit-flex-wrap:  wrap-reverse; --layout-wrap-reverse_-_flex-wrap:  wrap-reverse;;
+
+      --layout-flex-auto_-_-ms-flex:  1 1 auto; --layout-flex-auto_-_-webkit-flex:  1 1 auto; --layout-flex-auto_-_flex:  1 1 auto;;
+
+      --layout-flex-none_-_-ms-flex:  none; --layout-flex-none_-_-webkit-flex:  none; --layout-flex-none_-_flex:  none;;
+
+      --layout-flex_-_-ms-flex:  1 1 0.000000001px; --layout-flex_-_-webkit-flex:  1; --layout-flex_-_flex:  1; --layout-flex_-_-webkit-flex-basis:  0.000000001px; --layout-flex_-_flex-basis:  0.000000001px;;
+
+      --layout-flex-2_-_-ms-flex:  2; --layout-flex-2_-_-webkit-flex:  2; --layout-flex-2_-_flex:  2;;
+
+      --layout-flex-3_-_-ms-flex:  3; --layout-flex-3_-_-webkit-flex:  3; --layout-flex-3_-_flex:  3;;
+
+      --layout-flex-4_-_-ms-flex:  4; --layout-flex-4_-_-webkit-flex:  4; --layout-flex-4_-_flex:  4;;
+
+      --layout-flex-5_-_-ms-flex:  5; --layout-flex-5_-_-webkit-flex:  5; --layout-flex-5_-_flex:  5;;
+
+      --layout-flex-6_-_-ms-flex:  6; --layout-flex-6_-_-webkit-flex:  6; --layout-flex-6_-_flex:  6;;
+
+      --layout-flex-7_-_-ms-flex:  7; --layout-flex-7_-_-webkit-flex:  7; --layout-flex-7_-_flex:  7;;
+
+      --layout-flex-8_-_-ms-flex:  8; --layout-flex-8_-_-webkit-flex:  8; --layout-flex-8_-_flex:  8;;
+
+      --layout-flex-9_-_-ms-flex:  9; --layout-flex-9_-_-webkit-flex:  9; --layout-flex-9_-_flex:  9;;
+
+      --layout-flex-10_-_-ms-flex:  10; --layout-flex-10_-_-webkit-flex:  10; --layout-flex-10_-_flex:  10;;
+
+      --layout-flex-11_-_-ms-flex:  11; --layout-flex-11_-_-webkit-flex:  11; --layout-flex-11_-_flex:  11;;
+
+      --layout-flex-12_-_-ms-flex:  12; --layout-flex-12_-_-webkit-flex:  12; --layout-flex-12_-_flex:  12;;
+
+      
+
+      --layout-start_-_-ms-flex-align:  start; --layout-start_-_-webkit-align-items:  flex-start; --layout-start_-_align-items:  flex-start;;
+
+      --layout-center_-_-ms-flex-align:  center; --layout-center_-_-webkit-align-items:  center; --layout-center_-_align-items:  center;;
+
+      --layout-end_-_-ms-flex-align:  end; --layout-end_-_-webkit-align-items:  flex-end; --layout-end_-_align-items:  flex-end;;
+
+      --layout-baseline_-_-ms-flex-align:  baseline; --layout-baseline_-_-webkit-align-items:  baseline; --layout-baseline_-_align-items:  baseline;;
+
+      
+
+      --layout-start-justified_-_-ms-flex-pack:  start; --layout-start-justified_-_-webkit-justify-content:  flex-start; --layout-start-justified_-_justify-content:  flex-start;;
+
+      --layout-center-justified_-_-ms-flex-pack:  center; --layout-center-justified_-_-webkit-justify-content:  center; --layout-center-justified_-_justify-content:  center;;
+
+      --layout-end-justified_-_-ms-flex-pack:  end; --layout-end-justified_-_-webkit-justify-content:  flex-end; --layout-end-justified_-_justify-content:  flex-end;;
+
+      --layout-around-justified_-_-ms-flex-pack:  distribute; --layout-around-justified_-_-webkit-justify-content:  space-around; --layout-around-justified_-_justify-content:  space-around;;
+
+      --layout-justified_-_-ms-flex-pack:  justify; --layout-justified_-_-webkit-justify-content:  space-between; --layout-justified_-_justify-content:  space-between;;
+
+      --layout-center-center_-_-ms-flex-align:  var(--layout-center_-_-ms-flex-align); --layout-center-center_-_-webkit-align-items:  var(--layout-center_-_-webkit-align-items); --layout-center-center_-_align-items:  var(--layout-center_-_align-items); --layout-center-center_-_-ms-flex-pack:  var(--layout-center-justified_-_-ms-flex-pack); --layout-center-center_-_-webkit-justify-content:  var(--layout-center-justified_-_-webkit-justify-content); --layout-center-center_-_justify-content:  var(--layout-center-justified_-_justify-content);;
+
+      
+
+      --layout-self-start_-_-ms-align-self:  flex-start; --layout-self-start_-_-webkit-align-self:  flex-start; --layout-self-start_-_align-self:  flex-start;;
+
+      --layout-self-center_-_-ms-align-self:  center; --layout-self-center_-_-webkit-align-self:  center; --layout-self-center_-_align-self:  center;;
+
+      --layout-self-end_-_-ms-align-self:  flex-end; --layout-self-end_-_-webkit-align-self:  flex-end; --layout-self-end_-_align-self:  flex-end;;
+
+      --layout-self-stretch_-_-ms-align-self:  stretch; --layout-self-stretch_-_-webkit-align-self:  stretch; --layout-self-stretch_-_align-self:  stretch;;
+
+      --layout-self-baseline_-_-ms-align-self:  baseline; --layout-self-baseline_-_-webkit-align-self:  baseline; --layout-self-baseline_-_align-self:  baseline;;
+
+      
+
+      --layout-start-aligned_-_-ms-flex-line-pack:  start; --layout-start-aligned_-_-ms-align-content:  flex-start; --layout-start-aligned_-_-webkit-align-content:  flex-start; --layout-start-aligned_-_align-content:  flex-start;;
+
+      --layout-end-aligned_-_-ms-flex-line-pack:  end; --layout-end-aligned_-_-ms-align-content:  flex-end; --layout-end-aligned_-_-webkit-align-content:  flex-end; --layout-end-aligned_-_align-content:  flex-end;;
+
+      --layout-center-aligned_-_-ms-flex-line-pack:  center; --layout-center-aligned_-_-ms-align-content:  center; --layout-center-aligned_-_-webkit-align-content:  center; --layout-center-aligned_-_align-content:  center;;
+
+      --layout-between-aligned_-_-ms-flex-line-pack:  justify; --layout-between-aligned_-_-ms-align-content:  space-between; --layout-between-aligned_-_-webkit-align-content:  space-between; --layout-between-aligned_-_align-content:  space-between;;
+
+      --layout-around-aligned_-_-ms-flex-line-pack:  distribute; --layout-around-aligned_-_-ms-align-content:  space-around; --layout-around-aligned_-_-webkit-align-content:  space-around; --layout-around-aligned_-_align-content:  space-around;;
+
+      
+
+      --layout-block_-_display:  block;;
+
+      --layout-invisible_-_visibility:  hidden !important;;
+
+      --layout-relative_-_position:  relative;;
+
+      --layout-fit_-_position:  absolute; --layout-fit_-_top:  0; --layout-fit_-_right:  0; --layout-fit_-_bottom:  0; --layout-fit_-_left:  0;;
+
+      --layout-scroll_-_-webkit-overflow-scrolling:  touch; --layout-scroll_-_overflow:  auto;;
+
+      --layout-fullbleed_-_margin:  0; --layout-fullbleed_-_height:  100vh;;
+
+      
+
+      --layout-fixed-top_-_position:  fixed; --layout-fixed-top_-_top:  0; --layout-fixed-top_-_left:  0; --layout-fixed-top_-_right:  0;;
+
+      --layout-fixed-right_-_position:  fixed; --layout-fixed-right_-_top:  0; --layout-fixed-right_-_right:  0; --layout-fixed-right_-_bottom:  0;;
+
+      --layout-fixed-bottom_-_position:  fixed; --layout-fixed-bottom_-_right:  0; --layout-fixed-bottom_-_bottom:  0; --layout-fixed-bottom_-_left:  0;;
+
+      --layout-fixed-left_-_position:  fixed; --layout-fixed-left_-_top:  0; --layout-fixed-left_-_bottom:  0; --layout-fixed-left_-_left:  0;;
+}
+
+</style>
+</custom-style><style>[hidden] { display: none !important; }</style><custom-style>
+  <style is="custom-style">html {
+  --google-red-100: #f4c7c3;
+      --google-red-300: #e67c73;
+      --google-red-500: #db4437;
+      --google-red-700: #c53929;
+
+      --google-blue-100: #c6dafc;
+      --google-blue-300: #7baaf7;
+      --google-blue-500: #4285f4;
+      --google-blue-700: #3367d6;
+
+      --google-green-100: #b7e1cd;
+      --google-green-300: #57bb8a;
+      --google-green-500: #0f9d58;
+      --google-green-700: #0b8043;
+
+      --google-yellow-100: #fce8b2;
+      --google-yellow-300: #f7cb4d;
+      --google-yellow-500: #f4b400;
+      --google-yellow-700: #f09300;
+
+      --google-grey-100: #f5f5f5;
+      --google-grey-300: #e0e0e0;
+      --google-grey-500: #9e9e9e;
+      --google-grey-700: #616161;
+
+      
+
+      --paper-red-50: #ffebee;
+      --paper-red-100: #ffcdd2;
+      --paper-red-200: #ef9a9a;
+      --paper-red-300: #e57373;
+      --paper-red-400: #ef5350;
+      --paper-red-500: #f44336;
+      --paper-red-600: #e53935;
+      --paper-red-700: #d32f2f;
+      --paper-red-800: #c62828;
+      --paper-red-900: #b71c1c;
+      --paper-red-a100: #ff8a80;
+      --paper-red-a200: #ff5252;
+      --paper-red-a400: #ff1744;
+      --paper-red-a700: #d50000;
+
+      --paper-pink-50: #fce4ec;
+      --paper-pink-100: #f8bbd0;
+      --paper-pink-200: #f48fb1;
+      --paper-pink-300: #f06292;
+      --paper-pink-400: #ec407a;
+      --paper-pink-500: #e91e63;
+      --paper-pink-600: #d81b60;
+      --paper-pink-700: #c2185b;
+      --paper-pink-800: #ad1457;
+      --paper-pink-900: #880e4f;
+      --paper-pink-a100: #ff80ab;
+      --paper-pink-a200: #ff4081;
+      --paper-pink-a400: #f50057;
+      --paper-pink-a700: #c51162;
+
+      --paper-purple-50: #f3e5f5;
+      --paper-purple-100: #e1bee7;
+      --paper-purple-200: #ce93d8;
+      --paper-purple-300: #ba68c8;
+      --paper-purple-400: #ab47bc;
+      --paper-purple-500: #9c27b0;
+      --paper-purple-600: #8e24aa;
+      --paper-purple-700: #7b1fa2;
+      --paper-purple-800: #6a1b9a;
+      --paper-purple-900: #4a148c;
+      --paper-purple-a100: #ea80fc;
+      --paper-purple-a200: #e040fb;
+      --paper-purple-a400: #d500f9;
+      --paper-purple-a700: #aa00ff;
+
+      --paper-deep-purple-50: #ede7f6;
+      --paper-deep-purple-100: #d1c4e9;
+      --paper-deep-purple-200: #b39ddb;
+      --paper-deep-purple-300: #9575cd;
+      --paper-deep-purple-400: #7e57c2;
+      --paper-deep-purple-500: #673ab7;
+      --paper-deep-purple-600: #5e35b1;
+      --paper-deep-purple-700: #512da8;
+      --paper-deep-purple-800: #4527a0;
+      --paper-deep-purple-900: #311b92;
+      --paper-deep-purple-a100: #b388ff;
+      --paper-deep-purple-a200: #7c4dff;
+      --paper-deep-purple-a400: #651fff;
+      --paper-deep-purple-a700: #6200ea;
+
+      --paper-indigo-50: #e8eaf6;
+      --paper-indigo-100: #c5cae9;
+      --paper-indigo-200: #9fa8da;
+      --paper-indigo-300: #7986cb;
+      --paper-indigo-400: #5c6bc0;
+      --paper-indigo-500: #3f51b5;
+      --paper-indigo-600: #3949ab;
+      --paper-indigo-700: #303f9f;
+      --paper-indigo-800: #283593;
+      --paper-indigo-900: #1a237e;
+      --paper-indigo-a100: #8c9eff;
+      --paper-indigo-a200: #536dfe;
+      --paper-indigo-a400: #3d5afe;
+      --paper-indigo-a700: #304ffe;
+
+      --paper-blue-50: #e3f2fd;
+      --paper-blue-100: #bbdefb;
+      --paper-blue-200: #90caf9;
+      --paper-blue-300: #64b5f6;
+      --paper-blue-400: #42a5f5;
+      --paper-blue-500: #2196f3;
+      --paper-blue-600: #1e88e5;
+      --paper-blue-700: #1976d2;
+      --paper-blue-800: #1565c0;
+      --paper-blue-900: #0d47a1;
+      --paper-blue-a100: #82b1ff;
+      --paper-blue-a200: #448aff;
+      --paper-blue-a400: #2979ff;
+      --paper-blue-a700: #2962ff;
+
+      --paper-light-blue-50: #e1f5fe;
+      --paper-light-blue-100: #b3e5fc;
+      --paper-light-blue-200: #81d4fa;
+      --paper-light-blue-300: #4fc3f7;
+      --paper-light-blue-400: #29b6f6;
+      --paper-light-blue-500: #03a9f4;
+      --paper-light-blue-600: #039be5;
+      --paper-light-blue-700: #0288d1;
+      --paper-light-blue-800: #0277bd;
+      --paper-light-blue-900: #01579b;
+      --paper-light-blue-a100: #80d8ff;
+      --paper-light-blue-a200: #40c4ff;
+      --paper-light-blue-a400: #00b0ff;
+      --paper-light-blue-a700: #0091ea;
+
+      --paper-cyan-50: #e0f7fa;
+      --paper-cyan-100: #b2ebf2;
+      --paper-cyan-200: #80deea;
+      --paper-cyan-300: #4dd0e1;
+      --paper-cyan-400: #26c6da;
+      --paper-cyan-500: #00bcd4;
+      --paper-cyan-600: #00acc1;
+      --paper-cyan-700: #0097a7;
+      --paper-cyan-800: #00838f;
+      --paper-cyan-900: #006064;
+      --paper-cyan-a100: #84ffff;
+      --paper-cyan-a200: #18ffff;
+      --paper-cyan-a400: #00e5ff;
+      --paper-cyan-a700: #00b8d4;
+
+      --paper-teal-50: #e0f2f1;
+      --paper-teal-100: #b2dfdb;
+      --paper-teal-200: #80cbc4;
+      --paper-teal-300: #4db6ac;
+      --paper-teal-400: #26a69a;
+      --paper-teal-500: #009688;
+      --paper-teal-600: #00897b;
+      --paper-teal-700: #00796b;
+      --paper-teal-800: #00695c;
+      --paper-teal-900: #004d40;
+      --paper-teal-a100: #a7ffeb;
+      --paper-teal-a200: #64ffda;
+      --paper-teal-a400: #1de9b6;
+      --paper-teal-a700: #00bfa5;
+
+      --paper-green-50: #e8f5e9;
+      --paper-green-100: #c8e6c9;
+      --paper-green-200: #a5d6a7;
+      --paper-green-300: #81c784;
+      --paper-green-400: #66bb6a;
+      --paper-green-500: #4caf50;
+      --paper-green-600: #43a047;
+      --paper-green-700: #388e3c;
+      --paper-green-800: #2e7d32;
+      --paper-green-900: #1b5e20;
+      --paper-green-a100: #b9f6ca;
+      --paper-green-a200: #69f0ae;
+      --paper-green-a400: #00e676;
+      --paper-green-a700: #00c853;
+
+      --paper-light-green-50: #f1f8e9;
+      --paper-light-green-100: #dcedc8;
+      --paper-light-green-200: #c5e1a5;
+      --paper-light-green-300: #aed581;
+      --paper-light-green-400: #9ccc65;
+      --paper-light-green-500: #8bc34a;
+      --paper-light-green-600: #7cb342;
+      --paper-light-green-700: #689f38;
+      --paper-light-green-800: #558b2f;
+      --paper-light-green-900: #33691e;
+      --paper-light-green-a100: #ccff90;
+      --paper-light-green-a200: #b2ff59;
+      --paper-light-green-a400: #76ff03;
+      --paper-light-green-a700: #64dd17;
+
+      --paper-lime-50: #f9fbe7;
+      --paper-lime-100: #f0f4c3;
+      --paper-lime-200: #e6ee9c;
+      --paper-lime-300: #dce775;
+      --paper-lime-400: #d4e157;
+      --paper-lime-500: #cddc39;
+      --paper-lime-600: #c0ca33;
+      --paper-lime-700: #afb42b;
+      --paper-lime-800: #9e9d24;
+      --paper-lime-900: #827717;
+      --paper-lime-a100: #f4ff81;
+      --paper-lime-a200: #eeff41;
+      --paper-lime-a400: #c6ff00;
+      --paper-lime-a700: #aeea00;
+
+      --paper-yellow-50: #fffde7;
+      --paper-yellow-100: #fff9c4;
+      --paper-yellow-200: #fff59d;
+      --paper-yellow-300: #fff176;
+      --paper-yellow-400: #ffee58;
+      --paper-yellow-500: #ffeb3b;
+      --paper-yellow-600: #fdd835;
+      --paper-yellow-700: #fbc02d;
+      --paper-yellow-800: #f9a825;
+      --paper-yellow-900: #f57f17;
+      --paper-yellow-a100: #ffff8d;
+      --paper-yellow-a200: #ffff00;
+      --paper-yellow-a400: #ffea00;
+      --paper-yellow-a700: #ffd600;
+
+      --paper-amber-50: #fff8e1;
+      --paper-amber-100: #ffecb3;
+      --paper-amber-200: #ffe082;
+      --paper-amber-300: #ffd54f;
+      --paper-amber-400: #ffca28;
+      --paper-amber-500: #ffc107;
+      --paper-amber-600: #ffb300;
+      --paper-amber-700: #ffa000;
+      --paper-amber-800: #ff8f00;
+      --paper-amber-900: #ff6f00;
+      --paper-amber-a100: #ffe57f;
+      --paper-amber-a200: #ffd740;
+      --paper-amber-a400: #ffc400;
+      --paper-amber-a700: #ffab00;
+
+      --paper-orange-50: #fff3e0;
+      --paper-orange-100: #ffe0b2;
+      --paper-orange-200: #ffcc80;
+      --paper-orange-300: #ffb74d;
+      --paper-orange-400: #ffa726;
+      --paper-orange-500: #ff9800;
+      --paper-orange-600: #fb8c00;
+      --paper-orange-700: #f57c00;
+      --paper-orange-800: #ef6c00;
+      --paper-orange-900: #e65100;
+      --paper-orange-a100: #ffd180;
+      --paper-orange-a200: #ffab40;
+      --paper-orange-a400: #ff9100;
+      --paper-orange-a700: #ff6500;
+
+      --paper-deep-orange-50: #fbe9e7;
+      --paper-deep-orange-100: #ffccbc;
+      --paper-deep-orange-200: #ffab91;
+      --paper-deep-orange-300: #ff8a65;
+      --paper-deep-orange-400: #ff7043;
+      --paper-deep-orange-500: #ff5722;
+      --paper-deep-orange-600: #f4511e;
+      --paper-deep-orange-700: #e64a19;
+      --paper-deep-orange-800: #d84315;
+      --paper-deep-orange-900: #bf360c;
+      --paper-deep-orange-a100: #ff9e80;
+      --paper-deep-orange-a200: #ff6e40;
+      --paper-deep-orange-a400: #ff3d00;
+      --paper-deep-orange-a700: #dd2c00;
+
+      --paper-brown-50: #efebe9;
+      --paper-brown-100: #d7ccc8;
+      --paper-brown-200: #bcaaa4;
+      --paper-brown-300: #a1887f;
+      --paper-brown-400: #8d6e63;
+      --paper-brown-500: #795548;
+      --paper-brown-600: #6d4c41;
+      --paper-brown-700: #5d4037;
+      --paper-brown-800: #4e342e;
+      --paper-brown-900: #3e2723;
+
+      --paper-grey-50: #fafafa;
+      --paper-grey-100: #f5f5f5;
+      --paper-grey-200: #eeeeee;
+      --paper-grey-300: #e0e0e0;
+      --paper-grey-400: #bdbdbd;
+      --paper-grey-500: #9e9e9e;
+      --paper-grey-600: #757575;
+      --paper-grey-700: #616161;
+      --paper-grey-800: #424242;
+      --paper-grey-900: #212121;
+
+      --paper-blue-grey-50: #eceff1;
+      --paper-blue-grey-100: #cfd8dc;
+      --paper-blue-grey-200: #b0bec5;
+      --paper-blue-grey-300: #90a4ae;
+      --paper-blue-grey-400: #78909c;
+      --paper-blue-grey-500: #607d8b;
+      --paper-blue-grey-600: #546e7a;
+      --paper-blue-grey-700: #455a64;
+      --paper-blue-grey-800: #37474f;
+      --paper-blue-grey-900: #263238;
+
+      
+      --dark-divider-opacity: 0.12;
+      --dark-disabled-opacity: 0.38; 
+      --dark-secondary-opacity: 0.54;
+      --dark-primary-opacity: 0.87;
+
+      
+      --light-divider-opacity: 0.12;
+      --light-disabled-opacity: 0.3; 
+      --light-secondary-opacity: 0.7;
+      --light-primary-opacity: 1.0;
+}
+
+</style>
+</custom-style><custom-style>
+  <style is="custom-style">html {
+  --primary-text-color: var(--light-theme-text-color);
+      --primary-background-color: var(--light-theme-background-color);
+      --secondary-text-color: var(--light-theme-secondary-color);
+      --disabled-text-color: var(--light-theme-disabled-color);
+      --divider-color: var(--light-theme-divider-color);
+      --error-color: var(--paper-deep-orange-a700);
+
+      
+      --primary-color: var(--paper-indigo-500);
+      --light-primary-color: var(--paper-indigo-100);
+      --dark-primary-color: var(--paper-indigo-700);
+
+      --accent-color: var(--paper-pink-a200);
+      --light-accent-color: var(--paper-pink-a100);
+      --dark-accent-color: var(--paper-pink-a400);
+
+
+      
+      --light-theme-background-color: #ffffff;
+      --light-theme-base-color: #000000;
+      --light-theme-text-color: var(--paper-grey-900);
+      --light-theme-secondary-color: #737373;  
+      --light-theme-disabled-color: #9b9b9b;  
+      --light-theme-divider-color: #dbdbdb;
+
+      
+      --dark-theme-background-color: var(--paper-grey-900);
+      --dark-theme-base-color: #ffffff;
+      --dark-theme-text-color: #ffffff;
+      --dark-theme-secondary-color: #bcbcbc;  
+      --dark-theme-disabled-color: #646464;  
+      --dark-theme-divider-color: #3c3c3c;
+
+      
+      --text-primary-color: var(--dark-theme-text-color);
+      --default-primary-color: var(--primary-color);
+}
+
+</style>
+</custom-style><script async="" src="./Amazon Relational Database Service (RDS) - SQL Server_files/lazy.min.js"></script><script src="./Amazon Relational Database Service (RDS) - SQL Server_files/loader.js"></script>
+<script src="./Amazon Relational Database Service (RDS) - SQL Server_files/iframe_api"></script>
+<script src="./Amazon Relational Database Service (RDS) - SQL Server_files/vendor-45d462772c30000424907184f70c7157e95fb6227698d1671c5051818a6f60d8.js"></script>
+<script src="./Amazon Relational Database Service (RDS) - SQL Server_files/application-cd976ff3e60dd82e021a124c13a5f4fbfbf568d7453af855e2b275938d66d1b4.js"></script>
+</head>
+<body class="application-new focuses focuses-show l-full lab-show no-nav">
+<div class="header-container light-theme">
+<div class="header">
+<ql-icon-button class="js-nav-toggle header__nav-panel-button l-mrm">menu</ql-icon-button>
+<div class="header__title">
+<a class="icon-button" href="javascript:history.back()"><ql-icon>arrow_back</ql-icon></a>
+
+<h1 class="headline-5">
+Introduction to Amazon Relational Database Service (RDS) - SQL Server
+</h1>
+</div>
+<div class="header__actions">
+<ql-icon-button class="header__button--search js-header-search-bar-button">search</ql-icon-button>
+<a class="icon-button js-favorite-button favorite-button" id="CatalogItem-15778-favorite-button" data-type="CatalogItem" data-id="15778" data-name="Introduction to Amazon Relational Database Service (RDS) - SQL Server" href="https://www.qwiklabs.com/favorite.json?item_id=15778&amp;item_type=CatalogItem" tabindex="0"><ql-icon>favorite_border</ql-icon>
+</a><div class="mdl-tooltip js-tooltip" for="CatalogItem-15778-favorite-button" data-upgraded=",MaterialTooltip">
+Add to favorites
+</div>
+
+
+<ql-icon-button id="control-panel-target" style="display: none;">
+dashboard
+</ql-icon-button>
+<ql-menu for="control-panel-target" id="control-panel-menu" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="control-panel-target"></ql-menu>
+
+<ql-icon-button id="help-menu-button" tabindex="0">help</ql-icon-button>
+<div class="mdl-tooltip js-tooltip" data-mdl-for="help-menu-button" data-upgraded=",MaterialTooltip">
+Help
+</div>
+<ql-menu for="help-menu-button" id="help-menu" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="help-menu-button">
+<ql-menu-item>
+<ql-help context="lab" data-analytics-action="opened_help" data-analytics-label="lab" productdata="{&quot;userId&quot;:4265112}">
+Help Center
+</ql-help>
+</ql-menu-item>
+<ql-menu-item>
+<a target="_blank" class="ql-body-1" href="https://support.google.com/qwiklabs/contact/contact_us" tabindex="-1" role="menuitem">Email support</a>
+</ql-menu-item>
+<ql-menu-item>
+<a class="ql-body-1" onclick="ql.chat.open()" tabindex="-1" role="menuitem">Chat support</a>
+</ql-menu-item>
+</ql-menu>
+
+<button class="icon-button" id="my_account" aria-haspopup="true" aria-controls="">
+<ql-avatar></ql-avatar>
+</button>
+<ql-menu for="my_account" open="" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="my_account">
+<div class="my-account-menu">
+<ql-avatar class="l-mtl l-mbl" size="120"></ql-avatar>
+<div class="my-account-menu__user-info l-mbl">
+<h4 class="ql-subhead-1">Ankit Manglik</h4>
+<p class="ql-body-2 text--light">amanglik2010@gmail.com</p>
+<p class="ql-body-2 text--light">
+</p>
+<a class="text--green ql-subhead-2" href="https://www.qwiklabs.com/my_account/payments"><ql-chip positive="">
+Monthly Subscription
+</ql-chip>
+</a></div>
+<div class="buttons l-mbl">
+<a class="button button--hairline" id="settings" href="https://www.qwiklabs.com/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action="clicked_sign_out" href="/users/sign_out" method="delete">
+Sign Out
+</ql-button>
+<div class="privacy l-mtl">
+<a class="ql-caption text--light" href="https://www.qwiklabs.com/privacy_policy">Privacy</a>
+<span class="ql-caption text--light l-mls l-mrs">·</span>
+<a class="ql-caption text--light" href="https://www.qwiklabs.com/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</div>
+<div class="header__search-bar js-header-search-bar">
+<form class="js-search-form-mobile" onsubmit="ql.searchFilter(); return false;" action="https://www.qwiklabs.com/searches/elasticsearch" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="QeJM+iJb3SZ9Nrf+yVxa2zWO6tIFOMasJzRbkEFt9TFeT+ubuVimL3BtK3neYdmQShtDIMrFu0a4BFtPl75Rzg==">
+<input type="text" name="keywords" id="keywords" placeholder="Search" maxlength="255" aria-label="catalog search bar">
+</form>
+
+<ql-icon-button class="js-close-search-bar">close</ql-icon-button>
+</div>
+</div>
+
+<nav class="nav-bar">
+<a class="nav-bar__item js-navigation-button" href="https://www.qwiklabs.com/"><ql-icon class="nav-bar__item__icon">
+home
+</ql-icon>
+<span class="nav-bar__item__label">
+Home
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button  active" aria-current="page" href="https://www.qwiklabs.com/catalog"><ql-icon class="nav-bar__item__icon">
+school
+</ql-icon>
+<span class="nav-bar__item__label">
+Catalog
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button" href="https://www.qwiklabs.com/my_learning"><ql-icon class="nav-bar__item__icon">
+event_note
+</ql-icon>
+<span class="nav-bar__item__label">
+My Learning
+</span>
+</a>
+</nav>
+
+<nav class="nav-panel js-nav-panel">
+<div class="nav-panel__logo">
+<div class="logo logo--blue"></div>
+</div>
+<a title="Home" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/"><ql-icon class="nav-panel__item__icon">
+home
+</ql-icon>
+<div class="nav-panel__item__label">
+Home
+</div>
+</a>
+<a title="Catalog" tabindex="-1" class="nav-panel__item js-navigation-button active" aria-current="page" href="https://www.qwiklabs.com/catalog"><ql-icon class="nav-panel__item__icon">
+school
+</ql-icon>
+<div class="nav-panel__item__label">
+Catalog
+</div>
+</a>
+<a title="My Learning" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_learning"><ql-icon class="nav-panel__item__icon">
+event_note
+</ql-icon>
+<div class="nav-panel__item__label">
+My Learning
+</div>
+</a>
+<div class="nav-panel__spacer"></div>
+<a title="Profile" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/profile"><ql-icon class="nav-panel__item__icon">
+account_circle
+</ql-icon>
+<div class="nav-panel__item__label">
+Profile
+</div>
+</a>
+<a title="Credits &amp; Subscriptions" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/credits"><ql-icon class="nav-panel__item__icon">
+money
+</ql-icon>
+<div class="nav-panel__item__label">
+Credits &amp; Subscriptions
+</div>
+</a>
+<a title="Security" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/security"><ql-icon class="nav-panel__item__icon">
+security
+</ql-icon>
+<div class="nav-panel__item__label">
+Security
+</div>
+</a>
+<div class="nav-panel__spacer"></div>
+<a class="nav-panel__item" tabindex="-1" href="https://www.qwiklabs.com/focuses/15778?parent=catalog#"><ql-help>
+<div class="nav-panel__help-item">
+<ql-icon class="nav-panel__item__icon">help</ql-icon>
+<div class="nav-panel__item__label">
+Help
+</div>
+</div>
+</ql-help>
+</a><div class="nav-panel__small-links">
+<a tabindex="-1" href="https://www.qwiklabs.com/privacy_policy">Privacy</a>
+<a tabindex="-1" href="https://www.qwiklabs.com/terms_of_service">Terms</a>
+</div>
+</nav>
+<div class="nav-panel__overlay js-nav-toggle"></div>
+
+<main class="js-main">
+<span class="hidden" id="flash-sibling-before"></span>
+
+<div class="l-main-wrapper" id="main-wrapper">
+
+
+
+
+
+
+
+<ql-drawer-container class="js-lab-state" data-analytics-payload="{&quot;label&quot;:&quot;Introduction to Amazon Relational Database Service (RDS) - SQL Server&quot;,&quot;lab_name&quot;:&quot;Introduction to Amazon Relational Database Service (RDS) - SQL Server&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;run&quot;}" data-focus-id="15778" data-lab-billing-limit="0.0" data-lab-duration="4200" data-parent="catalog" data-payment-required="" data-recaptcha-enabled="" id="lab-container">
+<ql-drawer id="terminal-drawer" slot="drawer">
+<iframe class="terminal" id="embedded-resource" src="./Amazon Relational Database Service (RDS) - SQL Server_files/saved_resource.html"></iframe>
+</ql-drawer>
+<ql-drawer-content class="js-lab-wrapper" id="lab-content" slot="drawer-content">
+<ql-drawer-container id="lab-content-container">
+<ql-drawer id="control-panel-drawer" open="" slot="drawer" width="320" style="width: 320px;">
+<ql-lab-control-panel class="ql-lab-control-panel__max-height control-panel js-lab-control-panel" connectionfiles="[]" labcontrolbutton="{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}" labdetails="[]" labtimer="{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:4200}" studentresources="[]">
+<script src="./Amazon Relational Database Service (RDS) - SQL Server_files/api.js"></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+              grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response " value="03AGdBq24H3Yh-c-6r_zYHM6W5BNGOYK2THozP-KYCESFQH9Y9vPhsmeadBf8YGxC7CAGDqCceDENz91eLPeEX2LcDLQMcUW9PAqqC464fGtJXBWFclIo5aYEqnCKRIhQJZJyzyaU6TaKC1X5WNOVwMH8WzeKqTwMQANPRqCyzoD8zFHx6ws5lPcRNC1G1B7h-nw96Kk_DBvUqvHioQLIqTw9V9CZPnRK6J71luWTtSuF4L5y0FFW_m-nfpgyzHrmtbyoL00VmI9OlBVg-SM0RFXtLF6IPM59FJE0R5hlQdWgxwvwH0JNbiJPtnGPUNyJ5gchJBWi_setB7TqulYAGvLGdM9LIYP6H_sqBs0jgg8Tx9wwjX6E_SUafsbF6z7BjDpJLv-XQOM23TzkeVhysRyZczBNPOkT9H4ZxVNUVawsFrjtLWOV0uz1EIc89k8lk56wHo3FeBWYnMqGcLhs9qc0DIvnPu9VX4D0BFTDhwGZn5bco_Om9b66EOifMBLlcm5r9t48PUv0U" style=""><div style="width: 304px; height: 78px;"><div><iframe src="./Amazon Relational Database Service (RDS) - SQL Server_files/anchor.html" width="304" height="78" role="presentation" name="a-ndkz5icst28w" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></input>
+
+<div class="hidden" id="recaptcha-v2-start-lab" slot="recaptcha">
+<script src="./Amazon Relational Database Service (RDS) - SQL Server_files/api(1).js" async="" defer=""></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "><div style="width: 304px; height: 78px;"><div><iframe src="./Amazon Relational Database Service (RDS) - SQL Server_files/anchor(1).html" width="304" height="78" role="presentation" name="a-1ieboxgo54gl" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response-1" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;" src="./Amazon Relational Database Service (RDS) - SQL Server_files/saved_resource(1).html"></iframe></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id="lab-instructions" slot="drawer-content">
+<div class="alert alert--fake js-alert">
+<p class="alert__message js-alert-message"></p>
+<a class="alert__close js-alert-close">
+<i class="fa fa-times"></i>
+</a>
+<iframe class="l-ie-iframe-fix" src="./Amazon Relational Database Service (RDS) - SQL Server_files/saved_resource(2).html"></iframe>
+</div>
+<div class="js-lab-content lab-content__renderable-instructions">
+<div class="lab-preamble">
+<h1 class="lab-preamble__title">
+Introduction to Amazon Relational Database Service (RDS) - SQL Server
+</h1>
+<div class="lab-preamble__details subtitle-headline-1">
+<span>1 hour 10 minutes</span>
+<span>1 Credit</span>
+<div class="lab__rating">
+<a href="https://www.qwiklabs.com/focuses/15778/reviews?parent=catalog"><div class="rateit" data-rateit-readonly="true" data-rateit-value="4.1519"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 66.4304px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+
+</a></div>
+</div>
+</div>
+
+<div class="js-markdown-instructions markdown-lab-instructions no-select" id="markdown-lab-instructions">
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/aws-logo.png" alt=""></p>
+
+
+
+<p><strong>SPL-145 Version 2.0.14</strong></p>
+
+<p>© 2020 Amazon Web Services, Inc. and its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited. All trademarks are the property of their owners.</p>
+
+<p>Corrections, feedback, or other questions? Contact us at <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank"><em>AWS Training and Certification</em></a>.</p>
+
+<h2 id="step1">Overview</h2>
+
+<p>This lab provides an overview of using Amazon Relational Database Service (Amazon RDS) for SQL Server.</p>
+
+<h3>Topics covered</h3>
+
+<p>By the end of this lab, you will be able to:</p>
+<ul>
+<li>Create an Amazon Relational Database Service (Amazon RDS) SQL Server instance</li>
+<li>Connect to the RDS instance using Microsoft SQL Server Management Studio</li>
+<li>Export data from a local database to an Amazon RDS SQL Server database</li>
+</ul>
+<h3>Mac Users: Download Remote Desktop Client Software</h3>
+
+<p>If you are running <strong>Windows</strong> on your local machine, you can use <strong>Remote Desktop Connection</strong> to access your Amazon EC2 instance.</p>
+
+<p>If you are on a Mac, you will require <strong>Microsoft Remote Desktop</strong> (with the red icon):</p>
+
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/mac-icon.png" alt="Microsoft Remote Desktop"></p>
+
+<p>Mac users can <a href="https://itunes.apple.com/au/app/microsoft-remote-desktop/id715768417?mt=12" target="_blank">download Microsoft Remote Desktop from the Mac App Store</a>.</p>
+
+<p>If you do not have access to the Mac App Store, you can use <a href="http://cord.sourceforge.net/" target="_blank">CoRD for Mac</a>, but please note that the instructions for this lab assume you are using Microsoft Remote Desktop.</p>
+
+<h2 id="step2">Amazon Relational Database Service (RDS)</h2>
+
+<p><strong>Amazon Relational Database Service (Amazon RDS)</strong> is a web service that makes it easy to setup, operate, and scale relational databases in the cloud. It allows you to create and use MySQL, MariaDB, PostgreSQL, Oracle or SQL Server databases. This means the code, applications, and tools you already use today with your existing databases can be used with Amazon RDS.</p>
+
+<p>With Amazon RDS for SQL Server, you can deploy multiple editions of SQL Server (2008 R2, 2012, 2014 and 2016) including Express, Web, Standard and Enterprise in minutes with cost-efficient and re-sizable compute capacity. Amazon RDS frees you up to focus on application development because it simplifies many database administration tasks including taking backups, software patching, monitoring, hardware scaling, and designing for high availability.</p>
+
+<h2 id="step3">Start Lab</h2>
+<ol start="1">
+<li>At the top of your screen, launch your lab by choosing <span style="background-color:#34A853;font-family:Google Sans;font-weight:bold;font-size:90%;color:white;border-color:#34A853;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Start Lab</span>
+</li>
+</ol>
+<p>This starts the process of provisioning your lab resources. An estimated amount of time to provision your lab resources is displayed. You must wait for your resources to be provisioned before continuing.</p>
+
+<p><i class="fas fa-info-circle"></i> If you are prompted for a token, use the one distributed to you (or credits you have purchased). </p>
+<ol start="2">
+<li>Open your lab by choosing <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span>
+</li>
+</ol>
+<p>This automatically logs you in to the AWS Management Console. </p>
+
+<p><i class="fas fa-exclamation-triangle"></i> <strong>Do not change the Region unless instructed.</strong></p>
+
+
+
+<h3>Common Login Errors</h3>
+
+<p><strong>Error: Federated login credentials</strong></p>
+
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/federatedloginerror.png" alt=""></p>
+
+<p>If you see this message:</p>
+<ul>
+<li>Close the browser tab to return to your initial lab window</li>
+<li>Wait a few seconds</li>
+<li>Choose <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span> again</li>
+</ul>
+<p>You should now be able to access the AWS Management Console.</p>
+
+
+
+<p><strong>Error: You must first log out</strong></p>
+
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/logouterror.png" alt=""></p>
+
+<p>If you see the message, <strong>You must first log out before logging into a different AWS account:</strong> </p>
+<ul>
+<li>Choose <strong>click here</strong>
+</li>
+<li>Close your browser tab to return to your initial lab window</li>
+<li>Choose <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span> again</li>
+</ul>
+
+
+<h2 id="step4">Task 1: Launch an Amazon RDS Instance</h2>
+
+<p>In this task, you will launch an Amazon RDS for SQL Server database.</p>
+<ol start="3">
+<li><p>In the <strong>AWS Management Console</strong>, on the <span style="background-color:#232f3e;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Services</span> menu, click <strong>RDS</strong>.</p></li>
+<li><p>In the left navigation pane, click <strong>Databases</strong>.</p></li>
+<li><p>Click <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Create database</span></p></li>
+<li><p>In the Engine options section, for <strong>Engine type</strong>, select <i class="far fa-dot-circle"></i> <strong>Microsoft SQL Server</strong>.</p></li>
+</ol>
+<p>A selection of database engines will be presented. Amazon RDS supports many different databases and multiple versions of each database. You will be using <em>SQL Server Express Edition</em>.</p>
+<ol start="7">
+<li>In the Templates section, select <i class="far fa-dot-circle"></i> <strong>Dev/Test</strong>.</li>
+</ol>
+<p>You will configure the database to use <em>License Included</em>. This means that the cost of the SQL Server database license is included in the hourly fee for the Amazon RDS database. It is also possible to Bring Your Own License (BYOL) to Amazon RDS.</p>
+<ol start="8">
+<li>In the Settings section, configure:</li>
+</ol><ul>
+<li>
+<strong>DB instance identifier:</strong> <input readonly="" class="copyable-inline-input" size="6" type="text" value="my-rds">
+</li>
+<li>
+<strong>Master username:</strong> <input readonly="" class="copyable-inline-input" size="7" type="text" value="student">
+</li>
+<li>
+<strong>Master password:</strong> <input readonly="" class="copyable-inline-input" size="8" type="text" value="Pass.123">
+</li>
+<li>
+<strong>Confirm password:</strong> <input readonly="" class="copyable-inline-input" size="8" type="text" value="Pass.123">
+</li>
+</ul><ol start="9">
+<li>In the DB instance size section, configure:</li>
+</ol><ul>
+<li>
+<i class="far fa-dot-circle"></i> <strong>Burstable classes</strong>
+</li>
+<li>Select <em>db.t3.medium</em>
+</li>
+</ul><ol start="10">
+<li>In the Connectivity section, configure:</li>
+</ol><ul>
+<li>
+<strong>Virtual Private Cloud (VPC):</strong> <em>Lab VPC</em>
+</li>
+</ul><ol start="11">
+<li>Configure:</li>
+</ol><ul>
+<li>
+<strong>Public access:</strong> <i class="far fa-dot-circle"></i> <strong>Yes</strong>
+</li>
+<li>
+<i class="far fa-dot-circle"></i> <em>Choose existing</em>
+</li>
+<li>
+<strong>Existing VPC Security groups:</strong>
+<ul>
+<li>Select <strong>RDS Security Group</strong>
+</li>
+<li>Remove <strong>default</strong>
+</li>
+</ul>
+</li>
+</ul><ol start="12">
+<li>Expand <i class="fas fa-caret-right"></i> <strong>Additional configuration</strong> then:</li>
+</ol><ul>
+<li>De-select <i class="far fa-square"></i> <strong>Enable automatic backups</strong>
+</li>
+<li>De-select <i class="far fa-square"></i> <strong>Enable Enhanced monitoring</strong>
+</li>
+</ul>
+<p><i class="fas fa-comment"></i> You are disabling database backups in this <em>lab</em> so that you can progress through the lab without having to wait for a backup to complete. In the real-world you should never disable database backups.</p>
+<ol start="13">
+<li><p>Scroll to the bottom of the screen, then select <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Create database</span></p></li>
+<li><p>Click <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">View DB instances details</span></p></li>
+</ol>
+<p>Here you will be able to monitor the progress of your DB Instance. The RDS instance will take about 20 minutes to create. However, as part of the lab setup, a similar RDS instance ("Lab") was automatically provisioned to expedite the lab. The rest of the steps will use this pre-created instance.</p>
+
+<p><i class="fas fa-comment"></i> Please continue to the next task. There is no need to wait for your database to launch.</p>
+
+<h2 id="step5">Task 2: Obtain Windows Password</h2>
+
+<p>You will interact with your Amazon RDS instance via an Amazon EC2 instance running a Windows Server. When Amazon EC2 launches a new Windows instance, it generates a random Administrator password. This prevents other people from having access to your instance. The random password is then encrypted using a key pair.</p>
+
+<p>In this task, you will download a key pair and use it to <em>decrypt</em> the password so that you can login to the Windows instance.</p>
+<ol start="15">
+<li><p>To the left of these instructions, click <i class="fas fa-download" style="color:blue;"> Download PEM</i>.</p></li>
+<li><p>Save the file to the folder of your choice.</p></li>
+<li><p>In the <strong>AWS Management Console</strong>, on the <span style="background-color:#232f3e;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Services</span> menu, click <strong>EC2</strong>.</p></li>
+</ol>
+<p><i class="fas fa-exclamation-triangle"></i> If you see <strong>New EC2 Experience</strong> at the top-left of your screen, ensure <i class="fas fa-toggle-on"></i> <strong>New EC2 Experience</strong> is selected. This lab is designed to use the new EC2 Console.</p>
+<ol start="18">
+<li>In the left navigation pane, click <strong>Instances</strong>.</li>
+</ol>
+<p><i class="fas fa-square" style="color:blue;"></i> <strong>Lab</strong> should be selected.</p>
+<ol start="19">
+<li><p>In the <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:5px;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Actions <i class="fas fa-angle-down"></i></span> menu, select <strong>Connect</strong>.</p></li>
+<li><p>In the <strong>Connect To instance</strong> window, select <strong>RDP client</strong></p></li>
+<li><p>Click <strong>Get password</strong></p></li>
+</ol>
+<p><i class="fas fa-exclamation-triangle" style="color:red;"></i> If you receive a <strong>Password not available yet</strong> warning, it means that your instance is not yet ready. Wait 30 seconds, then click <strong>Try again</strong> until the warning disappears.</p>
+<ol start="22">
+<li><p>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Choose file</span> or <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Browse</span> (the wording will vary between browsers).</p></li>
+<li><p>Select the PEM file that you downloaded.</p></li>
+</ol>
+<p>The PEM file name should match the key name value displayed here.</p>
+
+<p><i class="fas fa-comment"></i> Every lab uses a different key pair. Ensure you are selecting the right key pair for this lab.</p>
+<ol start="24">
+<li>Click <span style="background-color:#ec7211;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space: nowrap;">Decrypt Password</span>
+</li>
+</ol>
+<p>You will be presented with a screen similar to this:</p>
+
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/decrypt.png" alt="decrypt"></p>
+
+<p>The screen shows the DNS name of the instance, together with the Username and Password for logging into the instance.</p>
+<ol start="25">
+<li>Copy the <strong>Password</strong> to your text editor. (Be sure not to copy any extra spaces at the end of the password!)</li>
+</ol>
+<h2 id="step6">Task 3: Login to your Amazon EC2 Instance</h2>
+
+<p>In this task, you will login to your Amazon EC2 instance.</p>
+
+<p><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#ssh-mac" target="_blank">Mac/Linux users - click here for Login instructions</a></p>
+
+<h3>Login from Windows</h3>
+
+<p>This section is for <strong>Windows users only</strong>. If you are running Mac OS or Linux, please click the "Mac/Linux Users" link above.</p>
+<ol start="26">
+<li><p>Click <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Download remote desktop file</span></p></li>
+<li><p>Open the file to start your Remote Desktop application.</p></li>
+</ol>
+<p><i class="fas fa-comment"></i> If you receive a yellow warning message, click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Connect</span></p>
+<ol start="28">
+<li>Paste the <strong>password</strong> and then click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">OK</span>
+</li>
+</ol>
+<p><i class="fas fa-comment"></i> If you receive a yellow warning message, click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Yes</span></p>
+
+<p>You should now be connected to your Amazon EC2 instance.</p>
+
+<p>Here are some tips if you have trouble logging in:</p>
+<ul>
+<li>Try a Username of <input readonly="" class="copyable-inline-input" size="15" type="text" value=".\Administrator"> to override the Domain.</li>
+<li>Paste the password into a text editor, check that it looks correct, then Copy it again from the text editor. This help to remove any extra characters that may have been copied.</li>
+</ul><ol start="29">
+<li><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#ssh-after" target="_blank">Windows Users: Click here to skip ahead to the next task.</a></li>
+</ol>
+<p><a id="ssh-mac" target="_blank"></a></p>
+
+<h3>Login from Mac/Linux</h3>
+
+<p>This section is for <strong>Mac</strong> and <strong>Linux</strong> users only. <a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#ssh-after" target="_blank">If you are running <strong>Windows</strong> on your computer, click here to skip ahead to the next task.</a></p>
+<ol start="30">
+<li><p>Open the <strong>Microsoft Remote Desktop</strong> application on your Mac. It should have a red icon as described at the start of this lab guide. (Linux users: Run an equivalent RDP application.)</p></li>
+<li><p>Click <strong>New</strong>.</p></li>
+<li><p>Enter the details:</p></li>
+</ol><ul>
+<li>
+<strong>PC Name:</strong> Copy and paste the <strong>Public DNS</strong> from the EC2 console.</li>
+<li>Scroll under the <strong>User account</strong> options to select <strong>Add User Account</strong> </li>
+<li>
+<strong>Username:</strong> <input readonly="" class="copyable-inline-input" size="13" type="text" value="Administrator">
+</li>
+<li>
+<strong>Password:</strong> Copy and paste the <strong>Password</strong> from the EC2 console. (Be sure not to copy any extra spaces at the end of the password!)</li>
+<li>
+<strong>Friendly Name:</strong> <input readonly="" class="copyable-inline-input" size="3" type="text" value="Lab">
+</li>
+<li>Click on <strong>Add</strong>  to save the configuration</li>
+<li>Click on <strong>Add</strong> again </li>
+</ul>
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/rdp-mac.png" alt="Mac RDP"></p>
+<ol start="33">
+<li><p>Close the configuration window.</p></li>
+<li><p>Double-click the <strong>Lab</strong> configuration you just created.</p></li>
+</ol>
+<p><i class="fas fa-comment"></i> If prompted to <strong>Verify Certificate</strong>, click <strong>Continue</strong>.</p>
+
+<p><i class="fas fa-info-circle"></i> Mac users can swap to/from their Remote Desktop session by swiping left/right with 3-fingers or by using Ctrl-Arrow Keys.</p>
+
+<p>Here are some tips if you have trouble logging in:</p>
+<ul>
+<li>Try a Username of <input readonly="" class="copyable-inline-input" size="15" type="text" value=".\Administrator"> to override the Domain.</li>
+<li>Paste the password into a text editor, check that it looks correct, then Copy it again from the text editor. This help to remove any extra characters that may have been copied.</li>
+</ul>
+<p><a id="ssh-after" target="_blank"></a></p>
+
+<h2 id="step7">Task 4: Access Your Local Database via Microsoft SQL Server Management Studio</h2>
+
+<p>The Windows Server is running a local copy of Microsoft SQL Server. You will connect to the database, explore the data and then copy the data to an Amazon RDS database.</p>
+
+<p>In this task, you will start Microsoft SQL Server Management Studio and connect to the SQL Server database that is running locally on the EC2 instance.</p>
+<ol start="35">
+<li>In the remote session:</li>
+</ol><ul>
+<li>Click the <strong>Windows start</strong> <i class="fab fa-windows"></i> icon</li>
+<li>Search for SQL Server Management Studio by typing <input readonly="" class="copyable-inline-input" size="4" type="text" value="ssms">
+</li>
+<li>In the search results, click <strong>Microsoft SQL Server Management Studio 17</strong>
+</li>
+</ul>
+<p>SQL Server Management Studio will take a few minutes to launch.</p>
+<ol start="36">
+<li>After SQL Server Management Studio launches, configure:</li>
+</ol><ul>
+<li>
+<strong>Server name:</strong>
+<ul>
+<li>Select <em>&lt;Browse for more...&gt;</em>
+</li>
+<li>Under <strong>Database Engine</strong>, select the engine that you see</li>
+<li>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">OK</span>
+</li>
+</ul>
+</li>
+<li>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Connect</span>
+</li>
+</ul>
+<p>This connects you to the local instance of SQL Server on your instance using Windows Authentication.</p>
+<ol start="37">
+<li>In Object Explorer:</li>
+</ol><ul>
+<li>Expand <strong>Databases</strong>
+</li>
+<li>Expand <strong>AdventureWorks</strong>
+</li>
+<li>Expand <strong>Tables</strong>
+</li>
+</ul>
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/adventureworks.png" alt="AdventureWorks"></p>
+
+<p>A sample <em>AdventureWorks</em> database has been loaded onto the local database as part of the lab setup. Examine the tables and the data.</p>
+
+<p>In the next task, you will copy this data to the Amazon RDS database.</p>
+
+<h2 id="step8">Task 5: Access the RDS instance via Microsoft SQL Server Management Studio</h2>
+
+<p>In this task, you will connect SQL Server Management Studio to the Amazon RDS database and create a new database object.</p>
+
+<p>You will first gather the database connection details.</p>
+<ol start="38">
+<li><p>In the <strong>AWS Management Console</strong>, on the <span style="background-color:#232f3e;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Services</span> menu, click <strong>RDS</strong>.</p></li>
+<li><p>In the left navigation pane, click <strong>Databases</strong>.</p></li>
+</ol>
+<p>Two instances will be listed:</p>
+<ul>
+<li>One that you created earlier (<em>my-rds</em>)</li>
+<li>One that was created automatically when you started the lab (<em>Lab</em>).</li>
+</ul>
+<p>The following steps assume you will use the <strong>lab</strong> instance, but if your <strong>my-rds</strong> instance has a status of <em>available</em>, you can use it instead.</p>
+<ol start="40">
+<li>Click the <strong>lab</strong> instance to view the instance properties.</li>
+</ol>
+<p><i class="fas fa-comment"></i> You might need to wait here until the Status changes to "backing-up" or "available".</p>
+<ol start="41">
+<li><p>On the <strong>Connectivity &amp; security</strong> tab, copy the <strong>Endpoint</strong> to your text editor. It will look similar to: <em>lab.xxxxxxxxxx.us-west-2.rds.amazonaws.com</em></p></li>
+<li><p>Return to your Remote Desktop session.</p></li>
+<li><p>In <strong>SQL Server Management Studio</strong>, in Object Explorer:</p></li>
+</ol><ul>
+<li>Click <strong>Connect</strong>
+</li>
+<li>Click <strong>Database Engine</strong>
+</li>
+</ul>
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/connect.png" alt="connect"></p>
+
+<p>Amazon RDS for SQL Server supports Windows Authentication, and AWS provides several options for using Active Directory in the cloud. For example, you can deploy a Windows domain controller on Amazon EC2; you can use Directory Service Simple AD to proxy requests to your on-premises domain controller; or you can create an Active Directory domain in AWS Directory Services. In this lab you will use SQL Server Authentication.</p>
+<ol start="44">
+<li>In the <strong>Connect to Server</strong> dialog box, configure:</li>
+</ol><ul>
+<li>
+<strong>Server name:</strong> Paste the endpoint you copied</li>
+<li>
+<strong>Authentication:</strong> SQL Server Authentication</li>
+<li>
+<strong>Login:</strong> <input readonly="" class="copyable-inline-input" size="7" type="text" value="student">
+</li>
+<li>
+<strong>Password:</strong> <input readonly="" class="copyable-inline-input" size="8" type="text" value="Pass.123">
+</li>
+<li>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Connect</span>
+</li>
+</ul>
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/sql-connect.png" alt="sql-connect"></p>
+
+<p>After a minute, a new database connection will appear in the Object Explorer.</p>
+<ol start="45">
+<li>In the Object Explorer pane, beneath the RDS instance starting with <em>lab</em>.</li>
+</ol><ul>
+<li>Right-click <strong>Databases</strong>, then click <strong>New Database</strong>.</li>
+</ul>
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/new-database.png" alt="New Database"></p>
+
+<p><i class="fas fa-comment"></i> Make sure you are creating the new database in the remote RDS SQL Server instance (under <strong>lab</strong>) and <em>not</em> in the local SQL Server instance (named <strong>EC2AMAZ</strong>).</p>
+
+<p>After a minute, the <strong>New Database</strong> dialog box will appear.</p>
+<ol start="46">
+<li><p>For <strong>Database name</strong>, enter <input readonly="" class="copyable-inline-input" size="9" type="text" value="Adventure"></p></li>
+<li><p>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">OK</span></p></li>
+</ol>
+<p>You have successfully used SQL Server Management Studio to connect to your Amazon RDS instance and create a new database object.</p>
+
+<h2 id="step9">Task 6: Export AdventureWorks from SQL Server on Amazon EC2 to Amazon RDS</h2>
+
+<p>In this task, you will export data from the local database and load it into the Amazon RDS database.</p>
+<ol start="48">
+<li>In Object Explorer, beneath the local DB instance (the one named <strong>EC2AMAZ</strong> at the top):</li>
+</ol><ul>
+<li>Right-click the <strong>AdventureWorks</strong> database.</li>
+<li>Click <strong>Tasks</strong> <i class="fas fa-caret-right"></i>
+</li>
+<li>Click <strong>Export Data...</strong>
+</li>
+</ul>
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/export-data.png" alt="Export Data"></p>
+<ol start="49">
+<li>On the <strong>Welcome to SQL Server Import and Export Wizard</strong> page, click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Next &gt;</span> then configure:</li>
+</ol><ul>
+<li>
+<strong>Data source:</strong> <em>SQL Server Native Client 11.0</em>
+</li>
+<li>
+<strong>Authentication</strong> <i class="far fa-dot-circle"></i> <em>Use Windows Authentication</em>
+</li>
+<li>
+<strong>Database:</strong> <em>AdventureWorks</em>
+</li>
+<li>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Next &gt;</span>
+</li>
+</ul>
+<p>You will now configure the Export Wizard to send the data to the <em>Adventure</em> database object within your Amazon RDS database instance that you created.</p>
+<ol start="50">
+<li>On the <strong>Choose a Destination</strong> page, configure:</li>
+</ol><ul>
+<li>
+<strong>Destination:</strong> <em>SQL Server Native Client 11.0</em>
+</li>
+<li>
+<strong>Server name:</strong> Paste the Amazon RDS server Endpoint from the RDS management console (the one you pasted in the previous task).</li>
+<li>
+<strong>Authentication:</strong> <i class="far fa-dot-circle"></i> <em>Use SQL Server Authentication</em>
+</li>
+<li>
+<strong>User name:</strong> <input readonly="" class="copyable-inline-input" size="7" type="text" value="student">
+</li>
+<li>
+<strong>Password:</strong> <input readonly="" class="copyable-inline-input" size="8" type="text" value="Pass.123">
+</li>
+<li>
+<strong>Database:</strong> <em>Adventure</em>
+</li>
+<li>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Next &gt;</span>
+</li>
+</ul><ol start="51">
+<li>On the <strong>Specify Table Copy or Query</strong> page:</li>
+</ol><ul>
+<li>Verify that <i class="far fa-dot-circle"></i> <strong>Copy data from one or more tables or views</strong> is selected</li>
+<li>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Next &gt;</span>
+</li>
+</ul><ol start="52">
+<li>On the <strong>Select Source Tables and Views</strong> page:</li>
+</ol><ul>
+<li>Select the box <i class="far fa-check-square"></i> at the very top of the grid. This selects all the check boxes below it.</li>
+<li>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Next &gt;</span>
+</li>
+</ul>
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/source.png" alt="source"></p>
+<ol start="53">
+<li>On the <strong>Save and Run Package</strong> page:</li>
+</ol><ul>
+<li>Verify that the <i class="far fa-check-square"></i> <strong>Run immediately</strong> check box is selected</li>
+<li>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Finish</span> twice</li>
+</ul>
+<p>The copy operation starts and, within a couple of minutes, it moves all the tables and data to the database in your Amazon RDS instance. Wait until the operation is complete.</p>
+<ol start="54">
+<li>Click <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Close</span>
+</li>
+</ol>
+<p>Your data is now in the Amazon RDS database!</p>
+<ol start="55">
+<li>To verify the data transfer, in <strong>Object Explorer</strong>
+</li>
+</ol><ul>
+<li>Expand the <strong>Databases</strong> object under the <em>Lab</em> instance</li>
+<li>Right-click <strong>Adventure</strong>
+</li>
+<li>Click <strong>New Query</strong>
+</li>
+</ul>
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/new-query.png" alt="New Query"></p>
+<ol start="56">
+<li>In the query window, type or paste the following query to confirm that data has been copied to the destination database:</li>
+</ol><pre class="highlight sql"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">SalesLT</span><span class="p">.</span><span class="n">Address</span>
+</code><button class="button button--text button--small copy-button js-copy-button-0"><ql-icon>content_copy</ql-icon></button></pre><ol start="57">
+<li>Click <i class="fas fa-caret-right" style="color:green;"></i> <strong>Execute</strong>
+</li>
+</ol>
+<p><img src="./Amazon Relational Database Service (RDS) - SQL Server_files/execute.png" alt="Execute"></p>
+
+<p>You should see the list of records displayed in the Results tab at the bottom of the window.</p>
+
+<p><i class="far fa-thumbs-up" style="color:blue;"></i> Congratulations! You have successfully loaded data and executed queries against the Amazon RDS SQL Server instance.</p>
+
+<h2 id="step10">Conclusion</h2>
+
+<p><i class="far fa-thumbs-up" style="color:blue;"></i> Congratulations! You now have successfully:</p>
+<ul>
+<li>Created an Amazon Relational Database Service (RDS) SQL Server instance</li>
+<li>Connected to the RDS instance using Microsoft SQL Server Management Studio</li>
+<li>Exported data from a local database to an Amazon RDS SQL Server database</li>
+</ul>
+<h2 id="step11">End Lab</h2>
+
+<p>Follow these steps to close the console, end your lab, and evaluate the experience.</p>
+<ol start="58">
+<li><p>Return to the AWS Management Console.</p></li>
+<li><p>On the navigation bar, choose <strong>awsstudent@&lt;AccountNumber&gt;</strong>, and then choose <strong>Sign Out</strong>.</p></li>
+<li><p>Choose <span style="background-color:#D93025;font-family:Google Sans;font-weight:bold;font-size:90%;color:white;border-color:#D93025;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">End Lab</span></p></li>
+<li><p>Choose <span style="background-color:#DEDEDE;font-family:Google Sans;font-weight:bold;font-size:90%;color:#444;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">OK</span></p></li>
+<li><p>(Optional):</p></li>
+</ol><ul>
+<li>Select the applicable number of stars <i class="far fa-star"></i>
+</li>
+<li>Type a comment</li>
+<li>
+<p>Choose <strong>Submit</strong></p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+</li>
+</ul>
+<p>You may close the window if you don't want to provide feedback.</p>
+
+<h2 id="step12">Additional Resources</h2>
+<ul>
+<li><a href="https://aws.amazon.com/rds/sqlserver/" target="_blank">Amazon RDS SQL Server</a></li>
+</ul>
+<p>For more information about AWS Training and Certification, see <a href="http://aws.amazon.com/training/" target="_blank"><em>http://aws.amazon.com/training/</em></a>.</p>
+
+<p><em>Your feedback is welcome and appreciated.</em></p>
+
+<p>If you would like to share any feedback, suggestions, or corrections, please provide the details in our <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank"><em>AWS Training and Certification Contact Form</em></a>.</p>
+
+</div>
+</div>
+
+
+<div class="hidden js-end-lab-button-container lab-content__end-lab-button">
+<ql-lab-control-button class="js-end-lab-button" running=""></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class="lab-content__renderable-instructions">
+<div class="lab-content__recommendation">
+<h4 class="headline-3">
+Ready for more?
+<p>Here's another lab we think you'll like.</p>
+<div class="content-card-grid">
+<div class="card-content-wrapper js-content-card" data-id="2543" data-level="Introductory" data-name="Introduction to Amazon Simple Storage Service (S3)" data-type="Lab">
+<a class="card card--content elevation-0 content-lab" href="https://www.qwiklabs.com/focuses/15683?parent=catalog"><div class="card__image">
+<div class="card__image__inner" style="background-image: url(https://cdn.qwiklabs.com/assets/fractal2-a4905334374c9d90765c63535f0fc66eb81d5f18f7416db5bea58901744cc5d0.jpg)"></div>
+</div>
+<div class="card__body">
+<div class="overline card--content__type">
+Lab
+</div>
+<h3 class="card--content__title">
+Introduction to Amazon Simple Storage Service (S3)
+</h3>
+<div class="card--content__description body-1">
+<p>
+This lab demonstrates how to use an Amazon S3 bucket and manage files, or object, that are stored in the bucket. You will practice how to create a bucket, add an object, view an object, move an object, and delete an object and bucket in the AWS Management Console.
+</p>
+</div>
+</div>
+<div class="card__footer">
+<div class="card__footer__left">
+<span>Introductory</span>
+</div>
+<div class="card__footer__right">
+<div class="rateit" data-rateit-readonly="true" data-rateit-value="4.5329"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 72.5264px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+</div>
+</div>
+</a></div>
+
+</div>
+</h4>
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end="" id="outline-drawer" open="" slot="drawer" width="320" style="width: 320px;">
+<div class="js-lab-content-outline lab-content__outline">
+<a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step1" class="">Overview</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step2" class="">Amazon Relational Database Service (RDS)</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step3" class="">Start Lab</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step4" class="">Task 1: Launch an Amazon RDS Instance</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step5" class="">Task 2: Obtain Windows Password</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step6" class="">Task 3: Login to your Amazon EC2 Instance</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step7" class="is-active">Task 4: Access Your Local Database via Microsoft SQL Server Management Studio</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step8">Task 5: Access the RDS instance via Microsoft SQL Server Management Studio</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step9">Task 6: Export AdventureWorks from SQL Server on Amazon EC2 to Amazon RDS</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step10">Conclusion</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step11">End Lab</a><a href="https://www.qwiklabs.com/focuses/15778?parent=catalog#step12">Additional Resources</a>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+<div class="lab-introduction js-lab-introduction is-hidden">
+<div class="lab-introduction__inner">
+<h1 class="headline-1">Welcome to Your First Lab!</h1>
+<ql-icon-button class="js-skip-button">close</ql-icon-button>
+<div class="lab-introduction__video">
+<iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" id="lab-introduction" src="./Amazon Relational Database Service (RDS) - SQL Server_files/yF7EDXKTmoQ.html"></iframe>
+</div>
+<a class="js-skip-button button button--outline">Skip this video</a>
+</div>
+</div>
+
+
+
+</div>
+</main>
+<div class="modal fade" id="lab-details-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<div class="modal-body">
+<p class="l-mbm">
+This lab takes you through the steps of creating a SQLServer database using the Amazon Relational Database Service and the AWS Management Console.  You will then connect to the database engine in AWS using Microsoft SQL Server Management Studio running on a Microsoft Windows server, also provided in the lab environment. Note: this lab has a longer startup time of 20 minutes to allow the RDS instance to fully launch and initialize.
+</p>
+<p class="small-label l-mbs">
+<strong>
+Duration:
+</strong>
+9m setup
+·
+70m access
+·
+70m completion
+</p>
+<p class="small-label l-mbs">
+<strong>AWS Region:</strong>
+[us-west-2] <strong>US West (Oregon)</strong>
+</p>
+<p class="small-label l-mbs">
+
+</p>
+<p class="small-label">
+<strong>
+Permalink:
+</strong>
+<a href="https://www.qwiklabs.com/catalog_lab/3339">https://www.qwiklabs.com/catalog_lab/3339</a>
+</p>
+</div>
+<div class="modal-actions">
+<a class="button button--text" data-dismiss="modal">
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Amazon Relational Database Service (RDS) - SQL Server_files/saved_resource(3).html"></iframe>
+</div>
+<div class="modal fade" id="lab-review-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="https://www.qwiklabs.com/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><div class="modal-body">
+<p class="label">
+How satisfied are you with this lab?*
+</p>
+<div class="rateit js-rateit" data-rateit-max="5" data-rateit-min="0" data-rateit-resetable="false" data-rateit-step="1" data-rateit-value="0"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 0px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+<div class="l-mtm">
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" type="hidden" value="4265112" name="lab_review[user_id]" id="lab_review_user_id"></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id"></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" type="hidden" value="3339" name="lab_review[lab_id]" id="lab_review_lab_id"></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id"></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" type="hidden" name="lab_review[rating]" id="lab_review_rating"></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Comment</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment"></textarea></div></div>
+</div>
+</div>
+<div class="modal-actions">
+<a class="button button--text" data-dismiss="modal">
+Cancel
+</a>
+<input type="submit" name="commit" value="Submit" disabled="disabled" id="submit" data-disabled="false" class="button" data-disable-with="Submit">
+</div>
+</form>
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Amazon Relational Database Service (RDS) - SQL Server_files/saved_resource(4).html"></iframe>
+</div>
+<div class="modal fade" id="lab-access-modal" style="display: none;">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<a class="lab-access-modal-close" data-analytics-action="dismissed_lab_payment_modal" data-dismiss="modal">
+<i class="material-icons">close</i>
+</a>
+<form class="js-lab-access-form" action="https://www.qwiklabs.com/lab_onetime_coupons/activate?parent=catalog" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓">
+<div class="modal-body">
+<div class="lab-access-modal">
+<input type="hidden" name="id" id="id" value="15778">
+<input type="hidden" name="user_id" id="user_id" value="4265112">
+<input type="hidden" name="launch_with_credits" id="launch_with_credits" value="0" class="js-launch-with-credits-input">
+<input type="hidden" name="launch_with_subs" id="launch_with_subs" value="1" class="js-launch-with-subscription-input">
+<div class="lab-access-modal__method">
+<p>
+This lab costs
+1 Credit.
+</p>
+<p>
+You have a valid subscription package. Would you like to charge this lab to your subscription?
+
+</p>
+<a class="button js-launch-with-subscription-button js-lab-access-modal-button" data-analytics-action="clicked_launch_with_subscription_button">
+Use Subscription
+</a>
+</div>
+<div class="lab-access-modal__method">
+<p>
+Enter Lab Access Code:
+</p>
+<div class="lab-access-modal__code js-access-code">
+<input type="text" name="uuid_1" id="uuid_1" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_2" id="uuid_2" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_3" id="uuid_3" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_4" id="uuid_4" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+</div>
+<a class="button js-launch-with-access-code-button js-lab-access-modal-button" data-analytics-action="clicked_launch_with_access_code_button">
+Launch with Access Code
+</a>
+</div>
+</div>
+</div>
+</form>
+
+
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Amazon Relational Database Service (RDS) - SQL Server_files/saved_resource(5).html"></iframe>
+</div>
+
+<script>
+  $( function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabAccessModal();
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?\n","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.\n","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.chat.init();
+  ql.initHeader();
+  ql.navigation.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+<style>
+  .mdl-layout__container {
+    position: static
+  }
+</style>
+
+
+<div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe src="./Amazon Relational Database Service (RDS) - SQL Server_files/anchor(2).html" width="256" height="60" role="presentation" name="a-kan33dxyw5ie" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></div><iframe data-product="web_widget" title="No content" tabindex="-1" aria-hidden="true" src="./Amazon Relational Database Service (RDS) - SQL Server_files/saved_resource(6).html" style="width: 0px; height: 0px; border: 0px; position: absolute; top: -9999px;"></iframe><div><iframe title="Opens a widget where you can chat to one of our agents" id="launcher" tabindex="-1" style="width: 109px; height: 50px; padding: 0px; margin: 10px 20px; position: fixed; bottom: 30px; overflow: visible; opacity: 0; border: 0px; z-index: 999998; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; top: -9999px; visibility: hidden;" src="./Amazon Relational Database Service (RDS) - SQL Server_files/saved_resource(7).html"></iframe><iframe title="Find more information here" id="webWidget" tabindex="-1" style="width: 374px; max-height: calc(100vh - 32px); height: 572px; position: fixed; opacity: 0; border: 0px; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; top: -9999px; visibility: hidden; z-index: 999999;" src="./Amazon Relational Database Service (RDS) - SQL Server_files/saved_resource(8).html"></iframe></div><div style="background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px; position: absolute; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0; visibility: hidden; z-index: 2000000000; left: 0px; top: -10000px;"><div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.05;"></div><div class="g-recaptcha-bubble-arrow" style="border: 11px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -11px; z-index: 2000000000;"></div><div class="g-recaptcha-bubble-arrow" style="border: 10px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -10px; z-index: 2000000000;"></div><div style="z-index: 2000000000; position: relative;"><iframe title="recaptcha challenge" src="./Amazon Relational Database Service (RDS) - SQL Server_files/bframe.html" name="c-1ieboxgo54gl" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox" style="width: 100%; height: 100%;"></iframe></div></div></body></html>
