@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://www.qwiklabs.com/focuses/15604?parent=catalog -->
+<html lang="en" data-lt-installed="true" class="mdl-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="[]" name="active-experiments">
+<meta content="{&quot;userId&quot;:4265112}" name="help-api-product-data">
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="kxf8ayOBsJrDlom0botTxlS3OqHvQsRfTm/w8Op7X/eMulsKuILLk87NFTN5ttCNKyKTUyC/ubXRX/AvPKj7CA==">
+<title>Amazon DynamoDB CRUD Activities Using the AWS CLI and SDK | Qwiklabs</title>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" name="viewport">
+<meta content="1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0" name="google-site-verification">
+<meta content="#3681E4" property="msapplication-TileColor">
+<meta content="/favicon-144.png" property="msapplication-TileImage">
+<meta content="This lab teaches you the basics of creating and managing an Amazon DynamoDB table using the AWS CLI and the AWS SDK for Python (Boto3)." name="description">
+<meta content="Qwiklabs" name="author">
+<meta content="Amazon DynamoDB CRUD Activities Using the AWS CLI and SDK | Qwiklabs" property="og:title">
+<meta content="website" property="og:type">
+<meta content="/favicon-144.png" property="og:image">
+<meta content="Qwiklabs" property="og:site_name">
+<meta content="This lab teaches you the basics of creating and managing an Amazon DynamoDB table using the AWS CLI and the AWS SDK for Python (Boto3)." property="og:description">
+<meta content="/qwiklabs_logo_900x887.png" property="og:logo" size="900x887">
+<meta content="/qwiklabs_logo_994x187.png" property="og:logo" size="994x187">
+<link href="https://www.qwiklabs.com/favicon-32.png" rel="shortcut icon">
+<link color="#3681E4" href="https://www.qwiklabs.com/favicon-svg.svg" rel="mask-icon">
+<link href="https://www.qwiklabs.com/favicon-180.png" rel="apple-touch-icon-precomposed">
+<link rel="stylesheet" media="screen" href="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/css">
+
+
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script type="text/javascript" async="" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/js"></script><script type="text/javascript" async="" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/analytics.js"></script><script type="text/javascript" async="" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-Cx10SI4nRyIf/4CfTL8bj2s8I5ccz18HDscUBxSzsbe1SPnhchceoHtCw2m0nc/h"></script><script type="text/javascript" async="" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/analytics.min.js"></script><script type="text/javascript" async="" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-Cx10SI4nRyIf/4CfTL8bj2s8I5ccz18HDscUBxSzsbe1SPnhchceoHtCw2m0nc/h"></script><script type="text/javascript" id="www-widgetapi-script" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/www-widgetapi.js" async=""></script><script>
+//<![CDATA[
+window.gon={};gon.current_user={"firstname":"Ankit","lastname":"Manglik","fullname":"Ankit Manglik","company":"Incedo","email":"amanglik2010@gmail.com","origin":"run, direct","subscriptions":1,"id":"40881afb3090073a11cc87d2eff56386","qlCreatedAt":"2021-02-01 08:29:26 UTC","optIn":true};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run";
+//]]>
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "url": "https://www.qwiklabs.com/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.qwiklabs.com/catalog?keywords={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<script id="ze-snippet" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/snippet.js"></script>
+
+
+
+
+<link rel="stylesheet" media="all" href="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/application-970073e5b46f4630d4ec8cb8a2b1192838eb654177e4e7d2a8a82e4fc31930a8.css">
+<script>
+  EVENT_SOURCE_BASE_URL = "https://run.qwiklabs.com/nchan-sub?id=";
+</script>
+<script src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/webcomponents-loader-408088dc333247a761de5f2b2a4ba1cabd2bc36579f83ba92a559eb3682a9b77.js"></script>
+<script src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/hallofmirrors-31ad91021e55b64d370891210d6e30d3790a1e6f4bf9e3eca92b9dd159bc8a6d.js"></script>
+<custom-style>
+  <style is="custom-style">[hidden] {
+  display: none !important;
+}
+
+</style>
+</custom-style>
+<custom-style>
+  <style is="custom-style">html {
+  --layout_-_display:  flex;;
+
+      --layout-inline_-_display:  inline-flex;;
+
+      --layout-horizontal_-_display:  var(--layout_-_display); --layout-horizontal_-_-ms-flex-direction:  row; --layout-horizontal_-_-webkit-flex-direction:  row; --layout-horizontal_-_flex-direction:  row;;
+
+      --layout-horizontal-reverse_-_display:  var(--layout_-_display); --layout-horizontal-reverse_-_-ms-flex-direction:  row-reverse; --layout-horizontal-reverse_-_-webkit-flex-direction:  row-reverse; --layout-horizontal-reverse_-_flex-direction:  row-reverse;;
+
+      --layout-vertical_-_display:  var(--layout_-_display); --layout-vertical_-_-ms-flex-direction:  column; --layout-vertical_-_-webkit-flex-direction:  column; --layout-vertical_-_flex-direction:  column;;
+
+      --layout-vertical-reverse_-_display:  var(--layout_-_display); --layout-vertical-reverse_-_-ms-flex-direction:  column-reverse; --layout-vertical-reverse_-_-webkit-flex-direction:  column-reverse; --layout-vertical-reverse_-_flex-direction:  column-reverse;;
+
+      --layout-wrap_-_-ms-flex-wrap:  wrap; --layout-wrap_-_-webkit-flex-wrap:  wrap; --layout-wrap_-_flex-wrap:  wrap;;
+
+      --layout-wrap-reverse_-_-ms-flex-wrap:  wrap-reverse; --layout-wrap-reverse_-_-webkit-flex-wrap:  wrap-reverse; --layout-wrap-reverse_-_flex-wrap:  wrap-reverse;;
+
+      --layout-flex-auto_-_-ms-flex:  1 1 auto; --layout-flex-auto_-_-webkit-flex:  1 1 auto; --layout-flex-auto_-_flex:  1 1 auto;;
+
+      --layout-flex-none_-_-ms-flex:  none; --layout-flex-none_-_-webkit-flex:  none; --layout-flex-none_-_flex:  none;;
+
+      --layout-flex_-_-ms-flex:  1 1 0.000000001px; --layout-flex_-_-webkit-flex:  1; --layout-flex_-_flex:  1; --layout-flex_-_-webkit-flex-basis:  0.000000001px; --layout-flex_-_flex-basis:  0.000000001px;;
+
+      --layout-flex-2_-_-ms-flex:  2; --layout-flex-2_-_-webkit-flex:  2; --layout-flex-2_-_flex:  2;;
+
+      --layout-flex-3_-_-ms-flex:  3; --layout-flex-3_-_-webkit-flex:  3; --layout-flex-3_-_flex:  3;;
+
+      --layout-flex-4_-_-ms-flex:  4; --layout-flex-4_-_-webkit-flex:  4; --layout-flex-4_-_flex:  4;;
+
+      --layout-flex-5_-_-ms-flex:  5; --layout-flex-5_-_-webkit-flex:  5; --layout-flex-5_-_flex:  5;;
+
+      --layout-flex-6_-_-ms-flex:  6; --layout-flex-6_-_-webkit-flex:  6; --layout-flex-6_-_flex:  6;;
+
+      --layout-flex-7_-_-ms-flex:  7; --layout-flex-7_-_-webkit-flex:  7; --layout-flex-7_-_flex:  7;;
+
+      --layout-flex-8_-_-ms-flex:  8; --layout-flex-8_-_-webkit-flex:  8; --layout-flex-8_-_flex:  8;;
+
+      --layout-flex-9_-_-ms-flex:  9; --layout-flex-9_-_-webkit-flex:  9; --layout-flex-9_-_flex:  9;;
+
+      --layout-flex-10_-_-ms-flex:  10; --layout-flex-10_-_-webkit-flex:  10; --layout-flex-10_-_flex:  10;;
+
+      --layout-flex-11_-_-ms-flex:  11; --layout-flex-11_-_-webkit-flex:  11; --layout-flex-11_-_flex:  11;;
+
+      --layout-flex-12_-_-ms-flex:  12; --layout-flex-12_-_-webkit-flex:  12; --layout-flex-12_-_flex:  12;;
+
+      
+
+      --layout-start_-_-ms-flex-align:  start; --layout-start_-_-webkit-align-items:  flex-start; --layout-start_-_align-items:  flex-start;;
+
+      --layout-center_-_-ms-flex-align:  center; --layout-center_-_-webkit-align-items:  center; --layout-center_-_align-items:  center;;
+
+      --layout-end_-_-ms-flex-align:  end; --layout-end_-_-webkit-align-items:  flex-end; --layout-end_-_align-items:  flex-end;;
+
+      --layout-baseline_-_-ms-flex-align:  baseline; --layout-baseline_-_-webkit-align-items:  baseline; --layout-baseline_-_align-items:  baseline;;
+
+      
+
+      --layout-start-justified_-_-ms-flex-pack:  start; --layout-start-justified_-_-webkit-justify-content:  flex-start; --layout-start-justified_-_justify-content:  flex-start;;
+
+      --layout-center-justified_-_-ms-flex-pack:  center; --layout-center-justified_-_-webkit-justify-content:  center; --layout-center-justified_-_justify-content:  center;;
+
+      --layout-end-justified_-_-ms-flex-pack:  end; --layout-end-justified_-_-webkit-justify-content:  flex-end; --layout-end-justified_-_justify-content:  flex-end;;
+
+      --layout-around-justified_-_-ms-flex-pack:  distribute; --layout-around-justified_-_-webkit-justify-content:  space-around; --layout-around-justified_-_justify-content:  space-around;;
+
+      --layout-justified_-_-ms-flex-pack:  justify; --layout-justified_-_-webkit-justify-content:  space-between; --layout-justified_-_justify-content:  space-between;;
+
+      --layout-center-center_-_-ms-flex-align:  var(--layout-center_-_-ms-flex-align); --layout-center-center_-_-webkit-align-items:  var(--layout-center_-_-webkit-align-items); --layout-center-center_-_align-items:  var(--layout-center_-_align-items); --layout-center-center_-_-ms-flex-pack:  var(--layout-center-justified_-_-ms-flex-pack); --layout-center-center_-_-webkit-justify-content:  var(--layout-center-justified_-_-webkit-justify-content); --layout-center-center_-_justify-content:  var(--layout-center-justified_-_justify-content);;
+
+      
+
+      --layout-self-start_-_-ms-align-self:  flex-start; --layout-self-start_-_-webkit-align-self:  flex-start; --layout-self-start_-_align-self:  flex-start;;
+
+      --layout-self-center_-_-ms-align-self:  center; --layout-self-center_-_-webkit-align-self:  center; --layout-self-center_-_align-self:  center;;
+
+      --layout-self-end_-_-ms-align-self:  flex-end; --layout-self-end_-_-webkit-align-self:  flex-end; --layout-self-end_-_align-self:  flex-end;;
+
+      --layout-self-stretch_-_-ms-align-self:  stretch; --layout-self-stretch_-_-webkit-align-self:  stretch; --layout-self-stretch_-_align-self:  stretch;;
+
+      --layout-self-baseline_-_-ms-align-self:  baseline; --layout-self-baseline_-_-webkit-align-self:  baseline; --layout-self-baseline_-_align-self:  baseline;;
+
+      
+
+      --layout-start-aligned_-_-ms-flex-line-pack:  start; --layout-start-aligned_-_-ms-align-content:  flex-start; --layout-start-aligned_-_-webkit-align-content:  flex-start; --layout-start-aligned_-_align-content:  flex-start;;
+
+      --layout-end-aligned_-_-ms-flex-line-pack:  end; --layout-end-aligned_-_-ms-align-content:  flex-end; --layout-end-aligned_-_-webkit-align-content:  flex-end; --layout-end-aligned_-_align-content:  flex-end;;
+
+      --layout-center-aligned_-_-ms-flex-line-pack:  center; --layout-center-aligned_-_-ms-align-content:  center; --layout-center-aligned_-_-webkit-align-content:  center; --layout-center-aligned_-_align-content:  center;;
+
+      --layout-between-aligned_-_-ms-flex-line-pack:  justify; --layout-between-aligned_-_-ms-align-content:  space-between; --layout-between-aligned_-_-webkit-align-content:  space-between; --layout-between-aligned_-_align-content:  space-between;;
+
+      --layout-around-aligned_-_-ms-flex-line-pack:  distribute; --layout-around-aligned_-_-ms-align-content:  space-around; --layout-around-aligned_-_-webkit-align-content:  space-around; --layout-around-aligned_-_align-content:  space-around;;
+
+      
+
+      --layout-block_-_display:  block;;
+
+      --layout-invisible_-_visibility:  hidden !important;;
+
+      --layout-relative_-_position:  relative;;
+
+      --layout-fit_-_position:  absolute; --layout-fit_-_top:  0; --layout-fit_-_right:  0; --layout-fit_-_bottom:  0; --layout-fit_-_left:  0;;
+
+      --layout-scroll_-_-webkit-overflow-scrolling:  touch; --layout-scroll_-_overflow:  auto;;
+
+      --layout-fullbleed_-_margin:  0; --layout-fullbleed_-_height:  100vh;;
+
+      
+
+      --layout-fixed-top_-_position:  fixed; --layout-fixed-top_-_top:  0; --layout-fixed-top_-_left:  0; --layout-fixed-top_-_right:  0;;
+
+      --layout-fixed-right_-_position:  fixed; --layout-fixed-right_-_top:  0; --layout-fixed-right_-_right:  0; --layout-fixed-right_-_bottom:  0;;
+
+      --layout-fixed-bottom_-_position:  fixed; --layout-fixed-bottom_-_right:  0; --layout-fixed-bottom_-_bottom:  0; --layout-fixed-bottom_-_left:  0;;
+
+      --layout-fixed-left_-_position:  fixed; --layout-fixed-left_-_top:  0; --layout-fixed-left_-_bottom:  0; --layout-fixed-left_-_left:  0;;
+}
+
+</style>
+</custom-style><style>[hidden] { display: none !important; }</style><custom-style>
+  <style is="custom-style">html {
+  --google-red-100: #f4c7c3;
+      --google-red-300: #e67c73;
+      --google-red-500: #db4437;
+      --google-red-700: #c53929;
+
+      --google-blue-100: #c6dafc;
+      --google-blue-300: #7baaf7;
+      --google-blue-500: #4285f4;
+      --google-blue-700: #3367d6;
+
+      --google-green-100: #b7e1cd;
+      --google-green-300: #57bb8a;
+      --google-green-500: #0f9d58;
+      --google-green-700: #0b8043;
+
+      --google-yellow-100: #fce8b2;
+      --google-yellow-300: #f7cb4d;
+      --google-yellow-500: #f4b400;
+      --google-yellow-700: #f09300;
+
+      --google-grey-100: #f5f5f5;
+      --google-grey-300: #e0e0e0;
+      --google-grey-500: #9e9e9e;
+      --google-grey-700: #616161;
+
+      
+
+      --paper-red-50: #ffebee;
+      --paper-red-100: #ffcdd2;
+      --paper-red-200: #ef9a9a;
+      --paper-red-300: #e57373;
+      --paper-red-400: #ef5350;
+      --paper-red-500: #f44336;
+      --paper-red-600: #e53935;
+      --paper-red-700: #d32f2f;
+      --paper-red-800: #c62828;
+      --paper-red-900: #b71c1c;
+      --paper-red-a100: #ff8a80;
+      --paper-red-a200: #ff5252;
+      --paper-red-a400: #ff1744;
+      --paper-red-a700: #d50000;
+
+      --paper-pink-50: #fce4ec;
+      --paper-pink-100: #f8bbd0;
+      --paper-pink-200: #f48fb1;
+      --paper-pink-300: #f06292;
+      --paper-pink-400: #ec407a;
+      --paper-pink-500: #e91e63;
+      --paper-pink-600: #d81b60;
+      --paper-pink-700: #c2185b;
+      --paper-pink-800: #ad1457;
+      --paper-pink-900: #880e4f;
+      --paper-pink-a100: #ff80ab;
+      --paper-pink-a200: #ff4081;
+      --paper-pink-a400: #f50057;
+      --paper-pink-a700: #c51162;
+
+      --paper-purple-50: #f3e5f5;
+      --paper-purple-100: #e1bee7;
+      --paper-purple-200: #ce93d8;
+      --paper-purple-300: #ba68c8;
+      --paper-purple-400: #ab47bc;
+      --paper-purple-500: #9c27b0;
+      --paper-purple-600: #8e24aa;
+      --paper-purple-700: #7b1fa2;
+      --paper-purple-800: #6a1b9a;
+      --paper-purple-900: #4a148c;
+      --paper-purple-a100: #ea80fc;
+      --paper-purple-a200: #e040fb;
+      --paper-purple-a400: #d500f9;
+      --paper-purple-a700: #aa00ff;
+
+      --paper-deep-purple-50: #ede7f6;
+      --paper-deep-purple-100: #d1c4e9;
+      --paper-deep-purple-200: #b39ddb;
+      --paper-deep-purple-300: #9575cd;
+      --paper-deep-purple-400: #7e57c2;
+      --paper-deep-purple-500: #673ab7;
+      --paper-deep-purple-600: #5e35b1;
+      --paper-deep-purple-700: #512da8;
+      --paper-deep-purple-800: #4527a0;
+      --paper-deep-purple-900: #311b92;
+      --paper-deep-purple-a100: #b388ff;
+      --paper-deep-purple-a200: #7c4dff;
+      --paper-deep-purple-a400: #651fff;
+      --paper-deep-purple-a700: #6200ea;
+
+      --paper-indigo-50: #e8eaf6;
+      --paper-indigo-100: #c5cae9;
+      --paper-indigo-200: #9fa8da;
+      --paper-indigo-300: #7986cb;
+      --paper-indigo-400: #5c6bc0;
+      --paper-indigo-500: #3f51b5;
+      --paper-indigo-600: #3949ab;
+      --paper-indigo-700: #303f9f;
+      --paper-indigo-800: #283593;
+      --paper-indigo-900: #1a237e;
+      --paper-indigo-a100: #8c9eff;
+      --paper-indigo-a200: #536dfe;
+      --paper-indigo-a400: #3d5afe;
+      --paper-indigo-a700: #304ffe;
+
+      --paper-blue-50: #e3f2fd;
+      --paper-blue-100: #bbdefb;
+      --paper-blue-200: #90caf9;
+      --paper-blue-300: #64b5f6;
+      --paper-blue-400: #42a5f5;
+      --paper-blue-500: #2196f3;
+      --paper-blue-600: #1e88e5;
+      --paper-blue-700: #1976d2;
+      --paper-blue-800: #1565c0;
+      --paper-blue-900: #0d47a1;
+      --paper-blue-a100: #82b1ff;
+      --paper-blue-a200: #448aff;
+      --paper-blue-a400: #2979ff;
+      --paper-blue-a700: #2962ff;
+
+      --paper-light-blue-50: #e1f5fe;
+      --paper-light-blue-100: #b3e5fc;
+      --paper-light-blue-200: #81d4fa;
+      --paper-light-blue-300: #4fc3f7;
+      --paper-light-blue-400: #29b6f6;
+      --paper-light-blue-500: #03a9f4;
+      --paper-light-blue-600: #039be5;
+      --paper-light-blue-700: #0288d1;
+      --paper-light-blue-800: #0277bd;
+      --paper-light-blue-900: #01579b;
+      --paper-light-blue-a100: #80d8ff;
+      --paper-light-blue-a200: #40c4ff;
+      --paper-light-blue-a400: #00b0ff;
+      --paper-light-blue-a700: #0091ea;
+
+      --paper-cyan-50: #e0f7fa;
+      --paper-cyan-100: #b2ebf2;
+      --paper-cyan-200: #80deea;
+      --paper-cyan-300: #4dd0e1;
+      --paper-cyan-400: #26c6da;
+      --paper-cyan-500: #00bcd4;
+      --paper-cyan-600: #00acc1;
+      --paper-cyan-700: #0097a7;
+      --paper-cyan-800: #00838f;
+      --paper-cyan-900: #006064;
+      --paper-cyan-a100: #84ffff;
+      --paper-cyan-a200: #18ffff;
+      --paper-cyan-a400: #00e5ff;
+      --paper-cyan-a700: #00b8d4;
+
+      --paper-teal-50: #e0f2f1;
+      --paper-teal-100: #b2dfdb;
+      --paper-teal-200: #80cbc4;
+      --paper-teal-300: #4db6ac;
+      --paper-teal-400: #26a69a;
+      --paper-teal-500: #009688;
+      --paper-teal-600: #00897b;
+      --paper-teal-700: #00796b;
+      --paper-teal-800: #00695c;
+      --paper-teal-900: #004d40;
+      --paper-teal-a100: #a7ffeb;
+      --paper-teal-a200: #64ffda;
+      --paper-teal-a400: #1de9b6;
+      --paper-teal-a700: #00bfa5;
+
+      --paper-green-50: #e8f5e9;
+      --paper-green-100: #c8e6c9;
+      --paper-green-200: #a5d6a7;
+      --paper-green-300: #81c784;
+      --paper-green-400: #66bb6a;
+      --paper-green-500: #4caf50;
+      --paper-green-600: #43a047;
+      --paper-green-700: #388e3c;
+      --paper-green-800: #2e7d32;
+      --paper-green-900: #1b5e20;
+      --paper-green-a100: #b9f6ca;
+      --paper-green-a200: #69f0ae;
+      --paper-green-a400: #00e676;
+      --paper-green-a700: #00c853;
+
+      --paper-light-green-50: #f1f8e9;
+      --paper-light-green-100: #dcedc8;
+      --paper-light-green-200: #c5e1a5;
+      --paper-light-green-300: #aed581;
+      --paper-light-green-400: #9ccc65;
+      --paper-light-green-500: #8bc34a;
+      --paper-light-green-600: #7cb342;
+      --paper-light-green-700: #689f38;
+      --paper-light-green-800: #558b2f;
+      --paper-light-green-900: #33691e;
+      --paper-light-green-a100: #ccff90;
+      --paper-light-green-a200: #b2ff59;
+      --paper-light-green-a400: #76ff03;
+      --paper-light-green-a700: #64dd17;
+
+      --paper-lime-50: #f9fbe7;
+      --paper-lime-100: #f0f4c3;
+      --paper-lime-200: #e6ee9c;
+      --paper-lime-300: #dce775;
+      --paper-lime-400: #d4e157;
+      --paper-lime-500: #cddc39;
+      --paper-lime-600: #c0ca33;
+      --paper-lime-700: #afb42b;
+      --paper-lime-800: #9e9d24;
+      --paper-lime-900: #827717;
+      --paper-lime-a100: #f4ff81;
+      --paper-lime-a200: #eeff41;
+      --paper-lime-a400: #c6ff00;
+      --paper-lime-a700: #aeea00;
+
+      --paper-yellow-50: #fffde7;
+      --paper-yellow-100: #fff9c4;
+      --paper-yellow-200: #fff59d;
+      --paper-yellow-300: #fff176;
+      --paper-yellow-400: #ffee58;
+      --paper-yellow-500: #ffeb3b;
+      --paper-yellow-600: #fdd835;
+      --paper-yellow-700: #fbc02d;
+      --paper-yellow-800: #f9a825;
+      --paper-yellow-900: #f57f17;
+      --paper-yellow-a100: #ffff8d;
+      --paper-yellow-a200: #ffff00;
+      --paper-yellow-a400: #ffea00;
+      --paper-yellow-a700: #ffd600;
+
+      --paper-amber-50: #fff8e1;
+      --paper-amber-100: #ffecb3;
+      --paper-amber-200: #ffe082;
+      --paper-amber-300: #ffd54f;
+      --paper-amber-400: #ffca28;
+      --paper-amber-500: #ffc107;
+      --paper-amber-600: #ffb300;
+      --paper-amber-700: #ffa000;
+      --paper-amber-800: #ff8f00;
+      --paper-amber-900: #ff6f00;
+      --paper-amber-a100: #ffe57f;
+      --paper-amber-a200: #ffd740;
+      --paper-amber-a400: #ffc400;
+      --paper-amber-a700: #ffab00;
+
+      --paper-orange-50: #fff3e0;
+      --paper-orange-100: #ffe0b2;
+      --paper-orange-200: #ffcc80;
+      --paper-orange-300: #ffb74d;
+      --paper-orange-400: #ffa726;
+      --paper-orange-500: #ff9800;
+      --paper-orange-600: #fb8c00;
+      --paper-orange-700: #f57c00;
+      --paper-orange-800: #ef6c00;
+      --paper-orange-900: #e65100;
+      --paper-orange-a100: #ffd180;
+      --paper-orange-a200: #ffab40;
+      --paper-orange-a400: #ff9100;
+      --paper-orange-a700: #ff6500;
+
+      --paper-deep-orange-50: #fbe9e7;
+      --paper-deep-orange-100: #ffccbc;
+      --paper-deep-orange-200: #ffab91;
+      --paper-deep-orange-300: #ff8a65;
+      --paper-deep-orange-400: #ff7043;
+      --paper-deep-orange-500: #ff5722;
+      --paper-deep-orange-600: #f4511e;
+      --paper-deep-orange-700: #e64a19;
+      --paper-deep-orange-800: #d84315;
+      --paper-deep-orange-900: #bf360c;
+      --paper-deep-orange-a100: #ff9e80;
+      --paper-deep-orange-a200: #ff6e40;
+      --paper-deep-orange-a400: #ff3d00;
+      --paper-deep-orange-a700: #dd2c00;
+
+      --paper-brown-50: #efebe9;
+      --paper-brown-100: #d7ccc8;
+      --paper-brown-200: #bcaaa4;
+      --paper-brown-300: #a1887f;
+      --paper-brown-400: #8d6e63;
+      --paper-brown-500: #795548;
+      --paper-brown-600: #6d4c41;
+      --paper-brown-700: #5d4037;
+      --paper-brown-800: #4e342e;
+      --paper-brown-900: #3e2723;
+
+      --paper-grey-50: #fafafa;
+      --paper-grey-100: #f5f5f5;
+      --paper-grey-200: #eeeeee;
+      --paper-grey-300: #e0e0e0;
+      --paper-grey-400: #bdbdbd;
+      --paper-grey-500: #9e9e9e;
+      --paper-grey-600: #757575;
+      --paper-grey-700: #616161;
+      --paper-grey-800: #424242;
+      --paper-grey-900: #212121;
+
+      --paper-blue-grey-50: #eceff1;
+      --paper-blue-grey-100: #cfd8dc;
+      --paper-blue-grey-200: #b0bec5;
+      --paper-blue-grey-300: #90a4ae;
+      --paper-blue-grey-400: #78909c;
+      --paper-blue-grey-500: #607d8b;
+      --paper-blue-grey-600: #546e7a;
+      --paper-blue-grey-700: #455a64;
+      --paper-blue-grey-800: #37474f;
+      --paper-blue-grey-900: #263238;
+
+      
+      --dark-divider-opacity: 0.12;
+      --dark-disabled-opacity: 0.38; 
+      --dark-secondary-opacity: 0.54;
+      --dark-primary-opacity: 0.87;
+
+      
+      --light-divider-opacity: 0.12;
+      --light-disabled-opacity: 0.3; 
+      --light-secondary-opacity: 0.7;
+      --light-primary-opacity: 1.0;
+}
+
+</style>
+</custom-style><custom-style>
+  <style is="custom-style">html {
+  --primary-text-color: var(--light-theme-text-color);
+      --primary-background-color: var(--light-theme-background-color);
+      --secondary-text-color: var(--light-theme-secondary-color);
+      --disabled-text-color: var(--light-theme-disabled-color);
+      --divider-color: var(--light-theme-divider-color);
+      --error-color: var(--paper-deep-orange-a700);
+
+      
+      --primary-color: var(--paper-indigo-500);
+      --light-primary-color: var(--paper-indigo-100);
+      --dark-primary-color: var(--paper-indigo-700);
+
+      --accent-color: var(--paper-pink-a200);
+      --light-accent-color: var(--paper-pink-a100);
+      --dark-accent-color: var(--paper-pink-a400);
+
+
+      
+      --light-theme-background-color: #ffffff;
+      --light-theme-base-color: #000000;
+      --light-theme-text-color: var(--paper-grey-900);
+      --light-theme-secondary-color: #737373;  
+      --light-theme-disabled-color: #9b9b9b;  
+      --light-theme-divider-color: #dbdbdb;
+
+      
+      --dark-theme-background-color: var(--paper-grey-900);
+      --dark-theme-base-color: #ffffff;
+      --dark-theme-text-color: #ffffff;
+      --dark-theme-secondary-color: #bcbcbc;  
+      --dark-theme-disabled-color: #646464;  
+      --dark-theme-divider-color: #3c3c3c;
+
+      
+      --text-primary-color: var(--dark-theme-text-color);
+      --default-primary-color: var(--primary-color);
+}
+
+</style>
+</custom-style><script async="" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/lazy.min.js"></script><script src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/loader.js"></script>
+<script src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/iframe_api"></script>
+<script src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/vendor-45d462772c30000424907184f70c7157e95fb6227698d1671c5051818a6f60d8.js"></script>
+<script src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/application-cd976ff3e60dd82e021a124c13a5f4fbfbf568d7453af855e2b275938d66d1b4.js"></script>
+</head>
+<body class="application-new focuses focuses-show l-full lab-show no-nav">
+<div class="header-container light-theme">
+<div class="header">
+<ql-icon-button class="js-nav-toggle header__nav-panel-button l-mrm">menu</ql-icon-button>
+<div class="header__title">
+<a class="icon-button" href="javascript:history.back()"><ql-icon>arrow_back</ql-icon></a>
+
+<h1 class="headline-5">
+Amazon DynamoDB CRUD Activities Using the AWS CLI and SDK
+</h1>
+</div>
+<div class="header__actions">
+<ql-icon-button class="header__button--search js-header-search-bar-button">search</ql-icon-button>
+<a class="icon-button js-favorite-button favorite-button" id="CatalogItem-15604-favorite-button" data-type="CatalogItem" data-id="15604" data-name="Amazon DynamoDB CRUD Activities Using the AWS CLI and SDK" href="https://www.qwiklabs.com/favorite.json?item_id=15604&amp;item_type=CatalogItem" tabindex="0"><ql-icon>favorite_border</ql-icon>
+</a><div class="mdl-tooltip js-tooltip" for="CatalogItem-15604-favorite-button" data-upgraded=",MaterialTooltip">
+Add to favorites
+</div>
+
+
+<ql-icon-button id="control-panel-target" style="display: none;">
+dashboard
+</ql-icon-button>
+<ql-menu for="control-panel-target" id="control-panel-menu" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="control-panel-target"></ql-menu>
+
+<ql-icon-button id="help-menu-button" tabindex="0">help</ql-icon-button>
+<div class="mdl-tooltip js-tooltip" data-mdl-for="help-menu-button" data-upgraded=",MaterialTooltip">
+Help
+</div>
+<ql-menu for="help-menu-button" id="help-menu" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="help-menu-button">
+<ql-menu-item>
+<ql-help context="lab" data-analytics-action="opened_help" data-analytics-label="lab" productdata="{&quot;userId&quot;:4265112}">
+Help Center
+</ql-help>
+</ql-menu-item>
+<ql-menu-item>
+<a target="_blank" class="ql-body-1" href="https://support.google.com/qwiklabs/contact/contact_us" tabindex="-1" role="menuitem">Email support</a>
+</ql-menu-item>
+<ql-menu-item>
+<a class="ql-body-1" onclick="ql.chat.open()" tabindex="-1" role="menuitem">Chat support</a>
+</ql-menu-item>
+</ql-menu>
+
+<button class="icon-button" id="my_account" aria-haspopup="true" aria-controls="">
+<ql-avatar></ql-avatar>
+</button>
+<ql-menu for="my_account" open="" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="my_account">
+<div class="my-account-menu">
+<ql-avatar class="l-mtl l-mbl" size="120"></ql-avatar>
+<div class="my-account-menu__user-info l-mbl">
+<h4 class="ql-subhead-1">Ankit Manglik</h4>
+<p class="ql-body-2 text--light">amanglik2010@gmail.com</p>
+<p class="ql-body-2 text--light">
+</p>
+<a class="text--green ql-subhead-2" href="https://www.qwiklabs.com/my_account/payments"><ql-chip positive="">
+Monthly Subscription
+</ql-chip>
+</a></div>
+<div class="buttons l-mbl">
+<a class="button button--hairline" id="settings" href="https://www.qwiklabs.com/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action="clicked_sign_out" href="/users/sign_out" method="delete">
+Sign Out
+</ql-button>
+<div class="privacy l-mtl">
+<a class="ql-caption text--light" href="https://www.qwiklabs.com/privacy_policy">Privacy</a>
+<span class="ql-caption text--light l-mls l-mrs">·</span>
+<a class="ql-caption text--light" href="https://www.qwiklabs.com/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</div>
+<div class="header__search-bar js-header-search-bar">
+<form class="js-search-form-mobile" onsubmit="ql.searchFilter(); return false;" action="https://www.qwiklabs.com/searches/elasticsearch" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="kxf8ayOBsJrDlom0botTxlS3OqHvQsRfTm/w8Op7X/eMulsKuILLk87NFTN5ttCNKyKTUyC/ubXRX/AvPKj7CA==">
+<input type="text" name="keywords" id="keywords" placeholder="Search" maxlength="255" aria-label="catalog search bar">
+</form>
+
+<ql-icon-button class="js-close-search-bar">close</ql-icon-button>
+</div>
+</div>
+
+<nav class="nav-bar">
+<a class="nav-bar__item js-navigation-button" href="https://www.qwiklabs.com/"><ql-icon class="nav-bar__item__icon">
+home
+</ql-icon>
+<span class="nav-bar__item__label">
+Home
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button  active" aria-current="page" href="https://www.qwiklabs.com/catalog"><ql-icon class="nav-bar__item__icon">
+school
+</ql-icon>
+<span class="nav-bar__item__label">
+Catalog
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button" href="https://www.qwiklabs.com/my_learning"><ql-icon class="nav-bar__item__icon">
+event_note
+</ql-icon>
+<span class="nav-bar__item__label">
+My Learning
+</span>
+</a>
+</nav>
+
+<nav class="nav-panel js-nav-panel">
+<div class="nav-panel__logo">
+<div class="logo logo--blue"></div>
+</div>
+<a title="Home" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/"><ql-icon class="nav-panel__item__icon">
+home
+</ql-icon>
+<div class="nav-panel__item__label">
+Home
+</div>
+</a>
+<a title="Catalog" tabindex="-1" class="nav-panel__item js-navigation-button active" aria-current="page" href="https://www.qwiklabs.com/catalog"><ql-icon class="nav-panel__item__icon">
+school
+</ql-icon>
+<div class="nav-panel__item__label">
+Catalog
+</div>
+</a>
+<a title="My Learning" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_learning"><ql-icon class="nav-panel__item__icon">
+event_note
+</ql-icon>
+<div class="nav-panel__item__label">
+My Learning
+</div>
+</a>
+<div class="nav-panel__spacer"></div>
+<a title="Profile" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/profile"><ql-icon class="nav-panel__item__icon">
+account_circle
+</ql-icon>
+<div class="nav-panel__item__label">
+Profile
+</div>
+</a>
+<a title="Credits &amp; Subscriptions" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/credits"><ql-icon class="nav-panel__item__icon">
+money
+</ql-icon>
+<div class="nav-panel__item__label">
+Credits &amp; Subscriptions
+</div>
+</a>
+<a title="Security" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/security"><ql-icon class="nav-panel__item__icon">
+security
+</ql-icon>
+<div class="nav-panel__item__label">
+Security
+</div>
+</a>
+<div class="nav-panel__spacer"></div>
+<a class="nav-panel__item" tabindex="-1" href="https://www.qwiklabs.com/focuses/15604?parent=catalog#"><ql-help>
+<div class="nav-panel__help-item">
+<ql-icon class="nav-panel__item__icon">help</ql-icon>
+<div class="nav-panel__item__label">
+Help
+</div>
+</div>
+</ql-help>
+</a><div class="nav-panel__small-links">
+<a tabindex="-1" href="https://www.qwiklabs.com/privacy_policy">Privacy</a>
+<a tabindex="-1" href="https://www.qwiklabs.com/terms_of_service">Terms</a>
+</div>
+</nav>
+<div class="nav-panel__overlay js-nav-toggle"></div>
+
+<main class="js-main">
+<span class="hidden" id="flash-sibling-before"></span>
+
+<div class="l-main-wrapper" id="main-wrapper">
+
+
+
+
+
+
+
+<ql-drawer-container class="js-lab-state" data-analytics-payload="{&quot;label&quot;:&quot;Amazon DynamoDB CRUD Activities Using the AWS CLI and SDK&quot;,&quot;lab_name&quot;:&quot;Amazon DynamoDB CRUD Activities Using the AWS CLI and SDK&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;run&quot;}" data-focus-id="15604" data-lab-billing-limit="0.0" data-lab-duration="4800" data-parent="catalog" data-payment-required="" data-recaptcha-enabled="" id="lab-container">
+<ql-drawer id="terminal-drawer" slot="drawer">
+<iframe class="terminal" id="embedded-resource" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/saved_resource.html"></iframe>
+</ql-drawer>
+<ql-drawer-content class="js-lab-wrapper" id="lab-content" slot="drawer-content">
+<ql-drawer-container id="lab-content-container">
+<ql-drawer id="control-panel-drawer" open="" slot="drawer" width="320" style="width: 320px;">
+<ql-lab-control-panel class="ql-lab-control-panel__max-height control-panel js-lab-control-panel" connectionfiles="[]" labcontrolbutton="{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}" labdetails="[]" labtimer="{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:4800}" studentresources="[]">
+<script src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/api.js"></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+              grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response " style="" value="03AGdBq27ppD4-XuewE30qsReY8yUAGQ-E5fq7LVVSt3-Y2xD6nL32GvdiQD2elAO7WRSt4q7PuWqjtBBBCvAElpMVOOXqNiVctkLkBpZXe92s8Dn2bNRSl1Ol1XwebKYkKd5E-LAJZfDDDQXkvRwuYzcvSH3I2xu5C4f0LSTbAIHlRKeaKL_CA1xeA0Q8KI7lYnzkPTWTVpPtsyFz5qfjgnZZt5wpD5zDOjXfJkC9duWpoAaxsI8nfrAxGj8dckRn5w43ij2PS7E8XZw9xh68nyfmKvFxNMKsvmGIGq7JrZMDXfrK1GFNpFQ6Gq3TLEnZB9jb136Kta3QAzv_9bRp_rJ5Yusk380bY28GW2wtHoIoCoHIdka5omWSmo3RntHyGF_HCpQ3Vq4Q5WQmSo2A7ntZdJp4YGE8iPzCllSqLuRmtRCyvmIMRZ6D4vGoXPTDSeFNKesnLHS7DJzArBCF-deqYA0eg5u2k8ZN5JexHsUK4bvjs8xspZEUKCtz7R8PoWyeupfAZOXtIVTRy-YSaNTCplceg4qX4w"><div style="width: 304px; height: 78px;"><div><iframe src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/anchor.html" width="304" height="78" role="presentation" name="a-ta1044mjplcv" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></input>
+
+<div class="hidden" id="recaptcha-v2-start-lab" slot="recaptcha">
+<script src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/api(1).js" async="" defer=""></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "><div style="width: 304px; height: 78px;"><div><iframe src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/anchor(1).html" width="304" height="78" role="presentation" name="a-mfifm6f1s3s2" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response-1" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/saved_resource(1).html"></iframe></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id="lab-instructions" slot="drawer-content">
+<div class="alert alert--fake js-alert">
+<p class="alert__message js-alert-message"></p>
+<a class="alert__close js-alert-close">
+<i class="fa fa-times"></i>
+</a>
+<iframe class="l-ie-iframe-fix" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/saved_resource(2).html"></iframe>
+</div>
+<div class="js-lab-content lab-content__renderable-instructions">
+<div class="lab-preamble">
+<h1 class="lab-preamble__title">
+Amazon DynamoDB CRUD Activities Using the AWS CLI and SDK
+</h1>
+<div class="lab-preamble__details subtitle-headline-1">
+<span>1 hour 20 minutes</span>
+<span>10 Credits</span>
+<div class="lab__rating">
+<a href="https://www.qwiklabs.com/focuses/15604/reviews?parent=catalog"><div class="rateit" data-rateit-readonly="true" data-rateit-value="4.0769"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 65.2304px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+
+</a></div>
+</div>
+</div>
+
+<div class="js-markdown-instructions markdown-lab-instructions no-select" id="markdown-lab-instructions">
+<p><img src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/aws-logo.png" alt=""></p>
+
+
+
+<p><strong>SPL-TF-200-DBDYL1-10-EN - Version 1.0.0</strong></p>
+
+<p>© 2020 Amazon Web Services, Inc. and its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited. All trademarks are the property of their owners.</p>
+
+<p>Corrections, feedback, or other questions? Contact us at <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank"><em>AWS Training and Certification</em></a>.</p>
+
+<h2 id="step1">Lab overview</h2>
+
+<p>AnyCompany is developing a new movie database application. The application will allow users to search for movies by title, year they were released, actors in the movie, rating, and so on. AnyCompany chose Amazon DynamoDB as the database service to store the information about all of the movies that the application will reference.</p>
+
+<p>Amazon DynamoDB is a serverless NoSQL, also known as nonrelational, database that supports key-value and document data models. With DynamoDB, you can start small and quickly scale globally as your application and user base grows, with the ability to support petabytes of data and tens of millions of read and write requests per second. AWS manages the DynamoDB service, so there are no servers to update or maintain. For more information, refer to <em>Amazon DynamoDB Features</em> and <em>Core Components of Amazon DynamoDB</em> in the <strong>Additional resources</strong> section.</p>
+
+<p>As a newly hired senior application developer at AnyCompany, you have been asked to make yourself familiar with DynamoDB and the various ways to manage tables and data stored in the service. In the future, you will support the new movie database application, which is built using Python.</p>
+
+<h3>Topics covered</h3>
+
+<p>By the end of this lab, you will be able to:</p>
+<ul>
+<li>Create and manage a DynamoDB table using the AWS Command Line Interface (AWS CLI).</li>
+<li>Create and manage an Amazon DynamoDB table using the AWS SDK for Python.</li>
+</ul>
+<h3>Technical knowledge prerequisites</h3>
+
+<p>To successfully complete this lab, you should be familiar with basic navigation of the AWS Management Console, NoSQL database concepts, the Python programming language, and be comfortable editing scripts using a text editor.</p>
+
+<h3>Icon key</h3>
+
+<p>Various icons are used throughout this lab to call attention to certain aspects of the guide. The following list explains the purpose for each one:</p>
+<ul>
+<li>
+<i class="fas fa-keyboard"></i> The keyboard icon specifies that you must run a command.</li>
+<li>
+<i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The clipboard icon indicates that you can verify the output of a command or edited file by comparing it to the provided example.</li>
+<li>
+<i class="fas fa-sticky-note" style="color:#ec7211;"></i> The note icon specifies important hints, tips, guidance, or advice.</li>
+<li>
+<i class="fas fa-info-circle" style="color:#00a1c9;"></i> The "i" circle icon specifies where to find more information.</li>
+<li>
+<i class="fas fa-user-check" style="color:#00a1c9;"></i> The person with a check mark icon indicates an opportunity to check your knowledge and test what you have learned.</li>
+</ul>
+<p><a id="StartLab" target="_blank"></a></p>
+
+<h2 id="step2">Start Lab</h2>
+<ol start="1">
+<li>At the top of your screen, launch your lab by choosing <span style="background-color:#34A853;font-family:Google Sans;font-weight:bold;font-size:90%;color:white;border-color:#34A853;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Start Lab</span>
+</li>
+</ol>
+<p>This starts the process of provisioning your lab resources. An estimated amount of time to provision your lab resources is displayed. You must wait for your resources to be provisioned before continuing.</p>
+
+<p><i class="fas fa-info-circle"></i> If you are prompted for a token, use the one distributed to you (or credits you have purchased). </p>
+<ol start="2">
+<li>Open your lab by choosing <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span>
+</li>
+</ol>
+<p>This automatically logs you in to the AWS Management Console. </p>
+
+<p><i class="fas fa-exclamation-triangle"></i> <strong>Do not change the Region unless instructed.</strong></p>
+
+
+
+<h3>Common Login Errors</h3>
+
+<p><strong>Error: Federated login credentials</strong></p>
+
+<p><img src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/federatedloginerror.png" alt=""></p>
+
+<p>If you see this message:</p>
+<ul>
+<li>Close the browser tab to return to your initial lab window</li>
+<li>Wait a few seconds</li>
+<li>Choose <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span> again</li>
+</ul>
+<p>You should now be able to access the AWS Management Console.</p>
+
+
+
+<p><strong>Error: You must first log out</strong></p>
+
+<p><img src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/logouterror.png" alt=""></p>
+
+<p>If you see the message, <strong>You must first log out before logging into a different AWS account:</strong> </p>
+<ul>
+<li>Choose <strong>click here</strong>
+</li>
+<li>Close your browser tab to return to your initial lab window</li>
+<li>Choose <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span> again</li>
+</ul>
+
+
+<h2 id="step3">Task 1: Use the AWS CLI to create and manage a DynamoDB table</h2>
+
+<p>The AWS CLI is the first method of interacting with DynamoDB that you have decided to explore.</p>
+
+<p>In this task, you connect to the AWS Cloud9 integrated development environment (IDE) and verify it has the tools necessary to interact with DynamoDB. You then use AWS CLI to recreate the table and items from the previous task to compare the two methods.</p>
+
+<h3>Task 1.1: Connect to the AWS Cloud9 IDE and install AWS CLI version 2</h3>
+<ol start="3">
+<li><p>In the AWS Management Console, on the <span style="background-color:#232f3e;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Services <i class="fas fa-angle-down"></i></span> menu, choose <strong>Cloud9</strong>.</p></li>
+<li><p>On the <strong>Your environments</strong> page, on the <strong>Lab_Cloud9_IDE</strong> card, choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Open IDE <i class="fas fa-external-link-alt"></i></span></p></li>
+</ol>
+<p>The AWS Cloud9 environment opens in a new browser tab.</p>
+<ol start="5">
+<li><p>To the right of the <strong>Welcome</strong> tab, choose the plus <span style="background-color:#1e1f24;color:#97c878;"><i class="fas fa-plus-circle"></i></span> icon, and then select <strong>New Terminal</strong>.</p></li>
+<li><p><i class="fas fa-keyboard"></i> To verify the AWS CLI is installed and to display its version, run the following command:</p></li>
+</ol><pre class="highlight shell"><code>aws --version
+</code><button class="button button--text button--small copy-button js-copy-button-0"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> As of the writing of this lab, the default version of the AWS CLI installed on the AWS Cloud9 instance is 1.18.170. We recommend upgrading to version 2 for access to the latest features, which may not be made available in version 1. For more information, refer to <em>Installing, Updating, and Uninstalling the AWS CLI</em> in the <strong>Additional resources</strong> section.</p>
+
+<p><i class="fas fa-sticky-note" style="color:#ec7211;"></i> If the version number is 2.x.x, meaning version 2 is already installed, you can skip the next steps for installing it.</p>
+<ol start="7">
+<li>
+<i class="fas fa-keyboard"></i> To download, extract, and install the AWS CLI version 2 package, run the following command:</li>
+</ol><pre class="highlight shell"><code>curl <span class="s2">"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"</span> -o <span class="s2">"awscliv2.zip"</span>
+unzip awscliv2.zip
+sudo ./aws/install
+</code><button class="button button--text button--small copy-button js-copy-button-1"><ql-icon>content_copy</ql-icon></button></pre><ol start="8">
+<li>
+<i class="fas fa-keyboard"></i> To verify AWS CLI version 2 is now installed and is the active version, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws --version
+</code><button class="button button--text button--small copy-button js-copy-button-2"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The output should show aws-cli 2.x.x, similar to the following:</p>
+<pre class="highlight plaintext"><code>aws-cli/2.1.1 Python/3.7.3 Linux/4.14.200-116.320.amzn1.x86_64 exe/x86_64.amzn.2018
+</code><button class="button button--text button--small copy-button js-copy-button-3"><ql-icon>content_copy</ql-icon></button></pre>
+<h3>Task 1.2: Use the AWS CLI to create a DynamoDB table</h3>
+
+<p>Now that you have verified that the latest version of the AWS CLI is installed, you can start creating the DynamoDB table.</p>
+<ol start="9">
+<li>
+<i class="fas fa-keyboard"></i> To create a DynamoDB table named <strong>movies</strong>, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb create-table <span class="se">\</span>
+--table-name movies <span class="se">\</span>
+--attribute-definitions <span class="se">\</span>
+<span class="nv">AttributeName</span><span class="o">=</span>year,AttributeType<span class="o">=</span>N <span class="se">\</span>
+<span class="nv">AttributeName</span><span class="o">=</span>title,AttributeType<span class="o">=</span>S <span class="se">\</span>
+--key-schema <span class="se">\</span>
+<span class="nv">AttributeName</span><span class="o">=</span>year,KeyType<span class="o">=</span>HASH <span class="se">\</span>
+<span class="nv">AttributeName</span><span class="o">=</span>title,KeyType<span class="o">=</span>RANGE <span class="se">\</span>
+--billing-mode PROVISIONED <span class="se">\</span>
+--provisioned-throughput <span class="se">\</span>
+<span class="nv">ReadCapacityUnits</span><span class="o">=</span>10,WriteCapacityUnits<span class="o">=</span>10
+</code><button class="button button--text button--small copy-button js-copy-button-4"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The following list describes each part of the command that you entered:</p>
+<ul>
+<li>
+<input readonly="" class="copyable-inline-input" size="25" type="text" value="aws dynamodb create-table"> is the base command to create a new table.</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="12" type="text" value="--table-name"> specifies the name of the table.</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="23" type="text" value="--attribute-definitions"> specifies which initial attributes to create. You must include at least the attributes that you plan to use as the primary key for the table.
+<ul>
+<li>
+<input readonly="" class="copyable-inline-input" size="34" type="text" value="AttributeName=year,AttributeType=N"> specifies a number type attribute named <strong>year</strong>.</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="35" type="text" value="AttributeName=title,AttributeType=S"> specifies a string type attribute named <strong>title</strong>.</li>
+</ul>
+</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="12" type="text" value="--key-schema"> specifies the attributes used for the primary key.
+<ul>
+<li>
+<input readonly="" class="copyable-inline-input" size="31" type="text" value="AttributeName=year,KeyType=HASH"> specifies the attribute to use as the partition (HASH) key.</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="33" type="text" value="AttributeName=title,KeyType=RANGE"> specifies the attribute to use as the sort (RANGE) key.</li>
+</ul>
+</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="14" type="text" value="--billing-mode"> specifies how you are charged for read and write throughput. In this example, you use <strong>PROVISIONED</strong> to set Provisioned Mode because the workload is predictable. For workloads that may be unpredictable, you can use PAY_PER_REQUEST to set On-Demand Mode and pay for each read and write. For more information, refer to <em>Read/Write Capacity Mode</em> in the <strong>Additional resources</strong> section.</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="24" type="text" value="--provisioned-throughput"> specifies the provisioned throughput settings for the table. In this example, you set a low number of read and write capacity units because you will not generate a large number of requests to the table throughout the course of this lab. For more information, refer to <em>Provisioned Mode</em> in the <strong>Additional resources</strong> section.</li>
+</ul>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>create-table CLI Command</em> in the <strong>Additional resources</strong> section.</p>
+
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The output should display the details of the table in JSON format, similar to the following:</p>
+<pre class="highlight plaintext"><code>{
+    "TableDescription": {
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "title",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "year",
+                "AttributeType": "N"
+            }
+        ],
+        "TableName": "movies",
+        "KeySchema": [
+            {
+                "AttributeName": "year",
+                "KeyType": "HASH"
+            },
+            {
+                "AttributeName": "title",
+                "KeyType": "RANGE"
+            }
+        ],
+        "TableStatus": "CREATING",
+        "CreationDateTime": "2020-11-21T01:53:20.080000+00:00",
+        "ProvisionedThroughput": {
+            "NumberOfDecreasesToday": 0,
+            "ReadCapacityUnits": 10,
+            "WriteCapacityUnits": 10
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:us-west-2:012345678901:table/movies",
+        "TableId": "03bcd8c5-7d31-4c45-ba41-11e9e4487c00"
+    }
+}
+</code><button class="button button--text button--small copy-button js-copy-button-5"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The table must be <strong>active</strong> before you can add items to it.</p>
+<ol start="10">
+<li>
+<i class="fas fa-keyboard"></i> To check the status of the table, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb describe-table <span class="se">\</span>
+--table-name movies <span class="se">\</span>
+--query <span class="s2">"Table.TableStatus"</span>
+</code><button class="button button--text button--small copy-button js-copy-button-6"><ql-icon>content_copy</ql-icon></button></pre>
+<p>If the table status is not <strong>active</strong>, wait one minute and then rerun the previous command.</p>
+
+<h3>Task 1.3: Use the AWS CLI to add items to a DynamoDB table</h3>
+<ol start="11">
+<li>
+<i class="fas fa-keyboard"></i> To create a new item in the <strong>movies</strong> table with details about the movie <em>The Godfather</em>, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb put-item <span class="se">\</span>
+--table-name movies <span class="se">\</span>
+--item <span class="s1">'{
+    "year": {"N": "1972"},
+    "title": {"S": "The Godfather"},
+    "actors": {"SS": ["Marlon Brando", "Al Pacino", "James Caan"]}
+    }'</span>
+</code><button class="button button--text button--small copy-button js-copy-button-7"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>put-item CLI Command</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="12">
+<li>Repeat the previous step to create two more items with the following information:</li>
+</ol><ul>
+<li>
+<p>Item one:</p>
+<ul>
+<li>year: <input readonly="" class="copyable-inline-input" size="4" type="text" value="1972">
+</li>
+<li>title: <input readonly="" class="copyable-inline-input" size="11" type="text" value="Deliverance">
+</li>
+<li>actors: <input readonly="" class="copyable-inline-input" size="10" type="text" value="Jon Voight">, <input readonly="" class="copyable-inline-input" size="13" type="text" value="Burt Reynolds">, <input readonly="" class="copyable-inline-input" size="10" type="text" value="Ned Beatty">
+</li>
+</ul>
+</li>
+<li>
+<p>Item two:</p>
+<ul>
+<li>year: <input readonly="" class="copyable-inline-input" size="4" type="text" value="1994">
+</li>
+<li>title: <input readonly="" class="copyable-inline-input" size="24" type="text" value="The Shawshank Redemption">
+</li>
+<li>actors: <input readonly="" class="copyable-inline-input" size="11" type="text" value="Tim Robbins">, <input readonly="" class="copyable-inline-input" size="14" type="text" value="Morgan Freeman">, <input readonly="" class="copyable-inline-input" size="10" type="text" value="Bob Gunton">
+</li>
+</ul>
+</li>
+</ul>
+<h3>Task 1.4: Use the AWS CLI to fetch items with the Scan operation and filters</h3>
+
+<p>Now that the table has a few items, you can use various commands to fetch data from it, such as get-item, batch-get-item, query, and scan. In this lab, you use scan and query.</p>
+
+<p>In this task, you run a Scan operation to find specific movies.</p>
+
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> The <em>Scan</em> operation accesses every item in the table and returns results based on the filters that you select. If you do not specify a filter, all items in the table are returned. For more information, refer to <em>Working with Scans in DynamoDB</em> in the <strong>Additional resources</strong> section.</p>
+
+<p>First, perform a scan of the <strong>movies</strong> table without a filter to discover that it returns all items.</p>
+<ol start="13">
+<li>
+<i class="fas fa-keyboard"></i> To scan the entire table, which returns a list of all of the movies in the table, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb scan <span class="se">\</span>
+--table-name movies
+</code><button class="button button--text button--small copy-button js-copy-button-8"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>scan CLI Command</em> in the <strong>Additional resources</strong> section.</p>
+
+<p>Next, apply a filter to the scan results.</p>
+<ol start="14">
+<li>
+<i class="fas fa-keyboard"></i> To scan the entire table, but only return items with a <strong>title</strong> attribute of <strong>The Godfather</strong>, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb scan <span class="se">\</span>
+--table-name movies <span class="se">\</span>
+--filter-expression <span class="s2">"title = :name"</span> <span class="se">\</span>
+--expression-attribute-values <span class="s1">'{":name": {"S": "The Godfather"}}'</span>
+</code><button class="button button--text button--small copy-button js-copy-button-9"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The output should display the details of the movie <em>The Godfather</em>, similar to the following:</p>
+<pre class="highlight plaintext"><code>{
+    "Items": [
+        {
+            "year": {
+                "N": "1972"
+            },
+            "actors": {
+                "SS": [
+                    "Al Pacino",
+                    "James Caan",
+                    "Marlon Brando"
+                ]
+            },
+            "title": {
+                "S": "The Godfather"
+            }
+        }
+    ],
+    "Count": 1,
+    "ScannedCount": 3,
+    "ConsumedCapacity": null
+}
+</code><button class="button button--text button--small copy-button js-copy-button-10"><ql-icon>content_copy</ql-icon></button></pre>
+<h3>Task 1.5: Use the AWS CLI to fetch items with the Query operation</h3>
+
+<p>Next, use the Query operation to search for all movies released in 1972.</p>
+
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> The <em>Query</em> operation fetches items based on the primary key. You must provide at least the value for the partition key when performing a query. For more information, refer to <em>Working with Queries in DynamoDB</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="15">
+<li>
+<i class="fas fa-keyboard"></i> To query the table for all movies released in 1972, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb query <span class="se">\</span>
+--table-name movies <span class="se">\</span>
+--projection-expression <span class="s2">"title"</span> <span class="se">\</span>
+--key-condition-expression <span class="s2">"#y = :yr"</span> <span class="se">\</span>
+--expression-attribute-names <span class="s1">'{"#y":"year"}'</span> <span class="se">\</span>
+--expression-attribute-values <span class="s1">'{":yr":{"N":"1972"}}'</span>
+</code><button class="button button--text button--small copy-button js-copy-button-11"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The following list describes each part of the command that you entered:</p>
+<ul>
+<li>
+<input readonly="" class="copyable-inline-input" size="18" type="text" value="aws dynamodb query"> is the base command to query a table.</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="12" type="text" value="--table-name"> specifies the name of the table.</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="23" type="text" value="--projection-expression"> specifies which attributes to display in the output of the command. In this example, the output only displays the title of the movies that match the query.</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="26" type="text" value="--key-condition-expression"> specifies the partition key attribute to retrieve.</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="28" type="text" value="--expression-attribute-names"> specifies a value to use in place of the attribute name. The word <strong>year</strong> is a reserved word in DynamoDB, which means you cannot use it in any expressions. In this example, you used <strong>#y</strong> as the expression attribute name in place of <strong>year</strong>. If your table contains attribute names that are on the list of reserved words, you can use an expression attribute name in its place. For more information, refer to <em>Reserved Words in DynamoDB</em> and <em>Expression Attribute Names in DynamoDB</em> in the <strong>Additional resources</strong> section.</li>
+<li>
+<input readonly="" class="copyable-inline-input" size="29" type="text" value="--expression-attribute-values"> specifies the value of the attribute in the key condition expression to query for. In this example, you search for any item with a <strong>year</strong> value of <strong>1972</strong>.</li>
+</ul>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>query CLI Command</em> in the <strong>Additional resources</strong> section.</p>
+
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> If you added all three items to the table, the output should display the details of two movies that were released in 1972, <em>The Godfather</em> and <em>Deliverance</em>, similar to the following:</p>
+<pre class="highlight plaintext"><code>{
+    "Items": [
+        {
+            "title": {
+                "S": "Deliverance"
+            }
+        },
+        {
+            "title": {
+                "S": "The Godfather"
+            }
+        }
+    ],
+    "Count": 2,
+    "ScannedCount": 2,
+    "ConsumedCapacity": null
+}
+</code><button class="button button--text button--small copy-button js-copy-button-12"><ql-icon>content_copy</ql-icon></button></pre>
+<h3>Task 1.6: Use the AWS CLI to update an item</h3>
+
+<p>Now that you know how to add and search for items, add an attribute to track the rating of each movie.</p>
+<ol start="16">
+<li>
+<i class="fas fa-keyboard"></i> To update <em>The Godfather</em> with a new attribute named <strong>rating</strong>, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb update-item <span class="se">\</span>
+--table-name movies <span class="se">\</span>
+--key <span class="s1">'{
+  "year": {"N": "1972"},
+  "title": {"S" :"The Godfather"}
+  }'</span> <span class="se">\</span>
+--update-expression <span class="s1">'SET #rating = :rate'</span> <span class="se">\</span>
+--expression-attribute-names <span class="s1">'{
+  "#rating": "rating"
+  }'</span> <span class="se">\</span>
+--expression-attribute-values <span class="s1">'{":rate": {"N": "9.2"}}'</span>
+</code><button class="button button--text button--small copy-button js-copy-button-13"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>update-item CLI Command</em> in the <strong>Additional resources</strong> section.</p>
+
+<p><i class="fas fa-user-check" style="color:#00a1c9;"></i> Challenge yourself! Repeat the previous step to add ratings to the following movies:</p>
+
+<table>
+<tbody><tr>
+<th style="text-align: center;">Movie title</th>
+<th style="text-align: center;">Rating</th>
+</tr>
+
+<tr>
+<td style="text-align: center;">Deliverance</td>
+<td style="text-align: center;">7.8</td>
+</tr>
+<tr>
+<td style="text-align: center;">The Shawshank Redemption</td>
+<td style="text-align: center;">9.3</td>
+</tr>
+</tbody></table>
+<ol start="17">
+<li>
+<i class="fas fa-keyboard"></i> To query the table for <em>The Godfather</em>, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb get-item --table-name movies --key <span class="s1">'{"year": {"N": "1972"}, "title": {"S": "The Godfather"}}'</span>
+</code><button class="button button--text button--small copy-button js-copy-button-14"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-sticky-note" style="color:#ec7211;"></i> Notice that the returned entry now contains a <strong>rating</strong> attribute.</p>
+
+<h3>Task 1.7: Use the AWS CLI to delete an item</h3>
+
+<p>Next, delete a single item from the table.</p>
+<ol start="18">
+<li>
+<i class="fas fa-keyboard"></i> To delete <em>The Godfather</em>, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb delete-item <span class="se">\</span>
+--table-name movies <span class="se">\</span>
+--key <span class="s1">'{
+  "year": {"N": "1972"},
+  "title": {"S" :"The Godfather"}
+  }'</span>
+</code><button class="button button--text button--small copy-button js-copy-button-15"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>delete-item CLI Command</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="19">
+<li>
+<i class="fas fa-keyboard"></i> To perform a Scan of the movies table and verify <em>The Godfather</em> has been deleted, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb scan <span class="se">\</span>
+--table-name movies
+</code><button class="button button--text button--small copy-button js-copy-button-16"><ql-icon>content_copy</ql-icon></button></pre>
+<h3>Task 1.8: Use the AWS CLI to delete a table</h3>
+
+<p>In the next task, you use the AWS SDK for Python to create the same table. Therefore, you can delete the one that you just created.</p>
+<ol start="20">
+<li>
+<i class="fas fa-keyboard"></i> To delete the entire movies table, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb delete-table <span class="se">\</span>
+--table-name movies
+</code><button class="button button--text button--small copy-button js-copy-button-17"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>delete-table CLI Command</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="21">
+<li>
+<i class="fas fa-keyboard"></i> To list all DynamoDB tables and verify that the <strong>movies</strong> table was deleted, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb list-tables
+</code><button class="button button--text button--small copy-button js-copy-button-18"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-thumbs-up" style="color:#00a1c9;"></i> Congratulations! You have successfully created a DynamoDB table to store information about movies, created and updated items, performed queries to look up specific movies, deleted items, and deleted a table using the AWS CLI.</p>
+
+
+
+<h2 id="step4">Task 2: Use the AWS SDK for Python to create and manage a DynamoDB table</h2>
+
+<p>Now that you are more comfortable interacting with DynamoDB from the AWS CLI, you're ready to start creating Python scripts to interact with DynamoDB programmatically.</p>
+
+<h3>Task 2.1: Install the AWS SDK for Python (Boto3)</h3>
+
+<p>In this task, you install the AWS SDK for Python (Boto3). You then use Python scripts to recreate the table and items from the previous task to compare both methods.</p>
+<ol start="22">
+<li>
+<i class="fas fa-keyboard"></i> In the AWS Cloud9 terminal, to install Boto3, the AWS SDK for Python, run the following command:</li>
+</ol><pre class="highlight shell"><code>sudo pip install boto3
+</code><button class="button button--text button--small copy-button js-copy-button-19"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>AWS SDK for Python (Boto3)</em> in the <strong>Additional resources</strong> section.</p>
+
+<h3>Task 2.2: Use the AWS SDK to create a DynamoDB table</h3>
+
+<p>Now you are ready to create a table.</p>
+<ol start="23">
+<li><p>On the <strong>File</strong> menu, choose <strong>New File</strong>.</p></li>
+<li><p>In the <strong>Untitled1</strong> editor tab, copy and paste the following Python script, which is used to create a new DynamoDB table:</p></li>
+</ol><pre class="highlight python"><code><span class="kn">import</span> <span class="nn">boto3</span>
+
+
+<span class="k">def</span> <span class="nf">create_movie_table</span><span class="p">():</span>
+
+    <span class="n">region</span><span class="o">=</span><span class="n">boto3</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span><span class="o">.</span><span class="n">region_name</span>
+
+    <span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'dynamodb'</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">region</span><span class="p">)</span> <span class="c"># low-level client</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span>
+        <span class="n">TableName</span><span class="o">=</span><span class="s">'movies'</span><span class="p">,</span>
+        <span class="n">KeySchema</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s">'AttributeName'</span><span class="p">:</span> <span class="s">'year'</span><span class="p">,</span>
+                <span class="s">'KeyType'</span><span class="p">:</span> <span class="s">'HASH'</span>  <span class="c"># Partition key</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s">'AttributeName'</span><span class="p">:</span> <span class="s">'title'</span><span class="p">,</span>
+                <span class="s">'KeyType'</span><span class="p">:</span> <span class="s">'RANGE'</span>  <span class="c"># Sort key</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="n">AttributeDefinitions</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s">'AttributeName'</span><span class="p">:</span> <span class="s">'year'</span><span class="p">,</span>
+                <span class="s">'AttributeType'</span><span class="p">:</span> <span class="s">'N'</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s">'AttributeName'</span><span class="p">:</span> <span class="s">'title'</span><span class="p">,</span>
+                <span class="s">'AttributeType'</span><span class="p">:</span> <span class="s">'S'</span>
+            <span class="p">},</span>
+
+        <span class="p">],</span>
+        <span class="n">ProvisionedThroughput</span><span class="o">=</span><span class="p">{</span>
+            <span class="s">'ReadCapacityUnits'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s">'WriteCapacityUnits'</span><span class="p">:</span> <span class="mi">10</span>
+        <span class="p">},</span>
+        <span class="n">BillingMode</span><span class="o">=</span><span class="s">'PROVISIONED'</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">table</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">movie_table</span> <span class="o">=</span> <span class="n">create_movie_table</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Table status:"</span><span class="p">,</span> <span class="n">movie_table</span><span class="o">.</span><span class="n">table_status</span><span class="p">)</span>
+</code><button class="button button--text button--small copy-button js-copy-button-20"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>CreateTable Operation</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="25">
+<li><p>On the <strong>File</strong> menu, choose <strong>Save As...</strong> and save the file as <input readonly="" class="copyable-inline-input" size="20" type="text" value="MoviesCreateTable.py"></p></li>
+<li><p>Close the <strong>MoviesCreateTable.py</strong> tab.</p></li>
+<li><p><i class="fas fa-keyboard"></i> To run the <strong>MoviesCreateTable.py</strong> script and create the <strong>movies</strong> table, run the following command:</p></li>
+</ol><pre class="highlight shell"><code>python MoviesCreateTable.py
+</code><button class="button button--text button--small copy-button js-copy-button-21"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The output should show the current state of the table: <input readonly="" class="copyable-inline-input" size="22" type="text" value="Table status: CREATING"></p>
+<ol start="28">
+<li>
+<i class="fas fa-keyboard"></i> To list all of the DynamoDB tables and verify that the <strong>movies</strong> table was created, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb describe-table --table-name movies
+</code><button class="button button--text button--small copy-button js-copy-button-22"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The output should show the details of the <strong>movies</strong> table, including the current status, similar to the following:</p>
+<pre class="highlight plaintext"><code>{
+    "Table": {
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "title",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "year",
+                "AttributeType": "N"
+            }
+        ],
+        "TableName": "movies",
+        "KeySchema": [
+            {
+                "AttributeName": "year",
+                "KeyType": "HASH"
+            },
+            {
+                "AttributeName": "title",
+                "KeyType": "RANGE"
+            }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2020-11-17T15:50:02.642000+00:00",
+        "ProvisionedThroughput": {
+            "NumberOfDecreasesToday": 0,
+            "ReadCapacityUnits": 10,
+            "WriteCapacityUnits": 10
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:us-west-2:012345678901:table/movies",
+        "TableId": "d68bb72c-8937-4ddb-a4a9-3e76f6409109"
+    }
+}
+</code><button class="button button--text button--small copy-button js-copy-button-23"><ql-icon>content_copy</ql-icon></button></pre><ol start="29">
+<li>Verify that the <strong>movies</strong> table was created successfully and that the <strong>TableStatus</strong> value is <strong>Active</strong>.</li>
+</ol>
+<h3>Task 2.3: Use the AWS SDK to add items to a DynamoDB table</h3>
+
+<p>Now that you've created the table, you can add items to it.</p>
+<ol start="30">
+<li><p>On the <strong>File</strong> menu, choose <strong>New File</strong>.</p></li>
+<li><p>In the <strong>Untitled1</strong> editor tab, copy and paste the following Python script, which is used to add an item to the <strong>movies</strong> table:</p></li>
+</ol><pre class="highlight python"><code><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+
+
+<span class="k">def</span> <span class="nf">put_movie</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">actors</span><span class="p">):</span>
+
+    <span class="n">region</span><span class="o">=</span><span class="n">boto3</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span><span class="o">.</span><span class="n">region_name</span>
+
+    <span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'dynamodb'</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">region</span><span class="p">)</span> <span class="c"># low-level client</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">'movies'</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">put_item</span><span class="p">(</span>
+       <span class="n">Item</span><span class="o">=</span><span class="p">{</span>
+            <span class="s">'year'</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+            <span class="s">'title'</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+            <span class="s">'info'</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">'actors'</span><span class="p">:</span> <span class="n">actors</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+
+    <span class="n">movie_title</span> <span class="o">=</span> <span class="s">"The Godfather"</span>
+    <span class="n">movie_year</span> <span class="o">=</span>  <span class="mi">1972</span>
+    <span class="n">movie_actors</span> <span class="o">=</span> <span class="p">{</span><span class="s">"Marlon Brando"</span><span class="p">,</span> <span class="s">"Al Pacino"</span><span class="p">,</span> <span class="s">"James Caan"</span><span class="p">}</span>
+
+    <span class="n">movie_resp</span> <span class="o">=</span> <span class="n">put_movie</span><span class="p">(</span><span class="n">movie_title</span><span class="p">,</span> <span class="n">movie_year</span><span class="p">,</span> <span class="n">movie_actors</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Put movie succeeded:"</span><span class="p">)</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="n">movie_resp</span><span class="p">)</span>
+</code><button class="button button--text button--small copy-button js-copy-button-24"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>PutItem Operation</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="32">
+<li><p>On the <strong>File</strong> menu, choose <strong>Save As...</strong> and save the file as <input readonly="" class="copyable-inline-input" size="16" type="text" value="MoviesPutItem.py"></p></li>
+<li><p>Close the <strong>MoviesPutItem.py</strong> tab.</p></li>
+<li><p><i class="fas fa-keyboard"></i> To run the <strong>MoviesPutItem.py</strong> script to add an item for the movie <em>The Godfather</em> as defined in the file, run the following command:</p></li>
+</ol><pre class="highlight shell"><code>python MoviesPutItem.py
+</code><button class="button button--text button--small copy-button js-copy-button-25"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The output should indicate that the put operation was successful, similar to the following:</p>
+<pre class="highlight plaintext"><code>Put movie succeeded:
+{'ResponseMetadata': {'HTTPHeaders': {'connection': 'keep-alive',
+                                      'content-length': '2',
+                                      'content-type': 'application/x-amz-json-1.0',
+                                      'date': 'Thu, 05 Nov 2020 20:08:16 GMT',
+                                      'server': 'Server',
+                                      'x-amz-crc32': '2745614147',
+                                      'x-amzn-requestid': 'O3CPHI1T4V2C3MK7QPBUN8L9CVVV4KQNSO5AEMVJF66Q9ASUAAJG'},
+                      'HTTPStatusCode': 200,
+                      'RequestId': 'O3CPHI1T4V2C3MK7QPBUN8L9CVVV4KQNSO5AEMVJF66Q9ASUAAJG',
+                      'RetryAttempts': 0}}
+</code><button class="button button--text button--small copy-button js-copy-button-26"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-user-check" style="color:#00a1c9;"></i> Challenge yourself! Modify the <strong>MoviesPutItem.py</strong> script to add two more items to the table:</p>
+
+<p><strong>Hint:</strong> Use the current structure of the script. Modify it, and run it twice, one time for each new addition.</p>
+<ul>
+<li>
+<p>Item one:</p>
+<ul>
+<li>year: <input readonly="" class="copyable-inline-input" size="4" type="text" value="1972">
+</li>
+<li>title: <input readonly="" class="copyable-inline-input" size="11" type="text" value="Deliverance">
+</li>
+<li>actors: <input readonly="" class="copyable-inline-input" size="10" type="text" value="Jon Voight">, <input readonly="" class="copyable-inline-input" size="13" type="text" value="Burt Reynolds">, <input readonly="" class="copyable-inline-input" size="10" type="text" value="Ned Beatty">
+</li>
+</ul>
+</li>
+<li>
+<p>Item two:</p>
+<ul>
+<li>year: <input readonly="" class="copyable-inline-input" size="4" type="text" value="1994">
+</li>
+<li>title: <input readonly="" class="copyable-inline-input" size="24" type="text" value="The Shawshank Redemption">
+</li>
+<li>actors: <input readonly="" class="copyable-inline-input" size="11" type="text" value="Tim Robbins">, <input readonly="" class="copyable-inline-input" size="14" type="text" value="Morgan Freeman">, <input readonly="" class="copyable-inline-input" size="10" type="text" value="Bob Gunton">
+</li>
+</ul>
+</li>
+</ul>
+<h3>Task 2.4: Use the AWS SDK to fetch items with the Scan operation and filters</h3>
+
+<p>Next, use the Scan operation with filters to locate movies within a specified time frame.</p>
+<ol start="35">
+<li><p>On the <strong>File</strong> menu, choose <strong>New File</strong>.</p></li>
+<li><p>In the <strong>Untitled1</strong> editor tab, copy and paste the following Python script, which scans the table for all movies released between two specified years:</p></li>
+</ol><pre class="highlight python"><code><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+<span class="kn">from</span> <span class="nn">boto3.dynamodb.conditions</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+
+<span class="k">def</span> <span class="nf">scan_movies</span><span class="p">(</span><span class="n">year_range</span><span class="p">,</span> <span class="n">display_movies</span><span class="p">):</span>
+
+    <span class="n">region</span><span class="o">=</span><span class="n">boto3</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span><span class="o">.</span><span class="n">region_name</span>
+
+    <span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'dynamodb'</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">region</span><span class="p">)</span> <span class="c"># low-level client</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">'movies'</span><span class="p">)</span>
+    <span class="n">scan_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'FilterExpression'</span><span class="p">:</span> <span class="n">Key</span><span class="p">(</span><span class="s">'year'</span><span class="p">)</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="o">*</span><span class="n">year_range</span><span class="p">),</span>
+        <span class="s">'ProjectionExpression'</span><span class="p">:</span> <span class="s">"#yr, title, info.actors"</span><span class="p">,</span>
+        <span class="s">'ExpressionAttributeNames'</span><span class="p">:</span> <span class="p">{</span><span class="s">"#yr"</span><span class="p">:</span> <span class="s">"year"</span><span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">start_key</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">start_key</span><span class="p">:</span>
+            <span class="n">scan_kwargs</span><span class="p">[</span><span class="s">'ExclusiveStartKey'</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_key</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="o">**</span><span class="n">scan_kwargs</span><span class="p">)</span>
+        <span class="n">display_movies</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'Items'</span><span class="p">,</span> <span class="p">[]))</span>
+        <span class="n">start_key</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'LastEvaluatedKey'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="n">start_key</span> <span class="ow">is</span> <span class="bp">None</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"start_year"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">"Starting year, ex: 1950"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"end_year"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">"Ending year. ex: 1959"</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">year1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">start_year</span><span class="p">)</span>
+    <span class="n">year2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">end_year</span><span class="p">)</span>
+    <span class="n">query_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">year1</span><span class="p">,</span> <span class="n">year2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">print_movies</span><span class="p">(</span><span class="n">movies</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">movie</span> <span class="ow">in</span> <span class="n">movies</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"</span><span class="se">\n</span><span class="s">{movie['year']} : {movie['title']}"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s">'info'</span> <span class="ow">in</span> <span class="n">movie</span><span class="p">:</span>
+                <span class="n">pprint</span><span class="p">(</span><span class="n">movie</span><span class="p">[</span><span class="s">'info'</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"{'rating': NA}"</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Scanning for movies released from {query_range[0]} to {query_range[1]}..."</span><span class="p">)</span>
+    <span class="n">scan_movies</span><span class="p">(</span><span class="n">query_range</span><span class="p">,</span> <span class="n">print_movies</span><span class="p">)</span>
+</code><button class="button button--text button--small copy-button js-copy-button-27"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>Scan Operation</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="37">
+<li><p>On the <strong>File</strong> menu, choose <strong>Save As...</strong> and save the file as <input readonly="" class="copyable-inline-input" size="13" type="text" value="MoviesScan.py"></p></li>
+<li><p>Close the <strong>MoviesScan.py</strong> tab.</p></li>
+<li><p><i class="fas fa-keyboard"></i> To run the <strong>MoviesScan.py</strong> script to query the table for all movies released between 1970 and 1980, run the following command:</p></li>
+</ol><pre class="highlight shell"><code>python MoviesScan.py 1970 1980
+</code><button class="button button--text button--small copy-button js-copy-button-28"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The output should display all movies in the table with a <strong>year</strong> value between 1970 and 1980, similar to the following:</p>
+<pre class="highlight plaintext"><code>Scanning for movies released from 1970 to 1980...
+
+1972 : Deliverance
+{'actors': {'Jon Voight', 'Burt Reynolds', 'Ned Beatty'}}
+
+1972 : The Godfather
+{'actors': {'Al Pacino', 'James Caan', 'Marlon Brando'}}
+</code><button class="button button--text button--small copy-button js-copy-button-29"><ql-icon>content_copy</ql-icon></button></pre>
+<h3>Task 2.5: Use the AWS SDK to fetch items with the Query operation</h3>
+
+<p>Next, use the Query operation to locate movies released in a specific year.</p>
+<ol start="40">
+<li><p>On the <strong>File</strong> menu, choose <strong>New File</strong>.</p></li>
+<li><p>In the <strong>Untitled1</strong> editor tab, copy and paste the following Python script, which is used to query the table for all movies that were released in a specific year:</p></li>
+</ol><pre class="highlight python"><code><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+<span class="kn">from</span> <span class="nn">boto3.dynamodb.conditions</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+
+<span class="k">def</span> <span class="nf">query_movies</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
+
+    <span class="n">region</span><span class="o">=</span><span class="n">boto3</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span><span class="o">.</span><span class="n">region_name</span>
+    <span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'dynamodb'</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">region</span><span class="p">)</span> <span class="c"># low-level client</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">'movies'</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+        <span class="n">KeyConditionExpression</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">'year'</span><span class="p">)</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="s">'Items'</span><span class="p">]</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"Year"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">"Search year, ex: 1950"</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">query_year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">Year</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Movies released in {query_year}"</span><span class="p">)</span>
+
+    <span class="n">movies</span> <span class="o">=</span> <span class="n">query_movies</span><span class="p">(</span><span class="n">query_year</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">movie</span> <span class="ow">in</span> <span class="n">movies</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">movie</span><span class="p">[</span><span class="s">'year'</span><span class="p">],</span> <span class="s">":"</span><span class="p">,</span> <span class="n">movie</span><span class="p">[</span><span class="s">'title'</span><span class="p">])</span>
+</code><button class="button button--text button--small copy-button js-copy-button-30"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>Query Operation</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="42">
+<li><p>On the <strong>File</strong> menu, choose <strong>Save As...</strong> and save the file as <input readonly="" class="copyable-inline-input" size="19" type="text" value="MoviesQueryItems.py"></p></li>
+<li><p>Close the <strong>MoviesQueryItems.py</strong> tab.</p></li>
+<li><p><i class="fas fa-keyboard"></i> To run the <strong>MoviesQueryItems.py</strong> script to query the table for all movies released in 1972, run the following command:</p></li>
+</ol><pre class="highlight shell"><code>python MoviesQueryItems.py 1972
+</code><button class="button button--text button--small copy-button js-copy-button-31"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The output should display all movies in the table with a <strong>year</strong> value of 1972, similar to the following:</p>
+<pre class="highlight plaintext"><code>Movies released in 1972
+1972 : Deliverance
+1972 : The Godfather
+</code><button class="button button--text button--small copy-button js-copy-button-32"><ql-icon>content_copy</ql-icon></button></pre>
+<h3>Task 2.6: Use the AWS SDK to update an item</h3>
+
+<p>You've established a method for adding items to the table and then finding then. Now you want to add a brief summary of the plot for a movie.</p>
+<ol start="45">
+<li><p>On the <strong>File</strong> menu, choose <strong>New File</strong>.</p></li>
+<li><p>In the <strong>Untitled1</strong> editor tab, copy and paste the following Python script, which updates a movie in the table with information about the plot:</p></li>
+</ol><pre class="highlight python"><code><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">botocore.exceptions</span> <span class="kn">import</span> <span class="n">ClientError</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+
+
+<span class="k">def</span> <span class="nf">update_movie</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">rating</span><span class="p">,</span> <span class="n">plot</span><span class="p">,</span> <span class="n">actors</span><span class="p">):</span>
+
+    <span class="n">region</span><span class="o">=</span><span class="n">boto3</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span><span class="o">.</span><span class="n">region_name</span>
+    <span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'dynamodb'</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">region</span><span class="p">)</span> <span class="c"># low-level client</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">'movies'</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">update_item</span><span class="p">(</span>
+            <span class="n">Key</span><span class="o">=</span><span class="p">{</span>
+                <span class="s">'year'</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+                <span class="s">'title'</span><span class="p">:</span> <span class="n">title</span>
+            <span class="p">},</span>
+            <span class="n">UpdateExpression</span><span class="o">=</span><span class="s">"set info.rating=:r, info.plot=:p, info.actors=:a"</span><span class="p">,</span>
+            <span class="n">ExpressionAttributeValues</span><span class="o">=</span><span class="p">{</span>
+                <span class="s">':r'</span><span class="p">:</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">rating</span><span class="p">),</span>
+                <span class="s">':p'</span><span class="p">:</span> <span class="n">plot</span><span class="p">,</span>
+                <span class="s">':a'</span><span class="p">:</span> <span class="n">actors</span>
+            <span class="p">},</span>
+            <span class="n">ReturnValues</span><span class="o">=</span><span class="s">"UPDATED_NEW"</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Update movie failed:"</span><span class="p">,</span><span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s">'Error'</span><span class="p">][</span><span class="s">'Message'</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Update movie succeeded:"</span><span class="p">,</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+        <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+
+    <span class="n">movie_title</span> <span class="o">=</span> <span class="s">"The Godfather"</span>
+    <span class="n">movie_year</span> <span class="o">=</span>  <span class="mi">1972</span>
+    <span class="n">movie_rating</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">'9.2'</span><span class="p">)</span>
+    <span class="n">movie_plot</span> <span class="o">=</span> <span class="s">"The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son."</span>
+    <span class="n">movie_actors</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Marlon Brando"</span><span class="p">,</span> <span class="s">"Al Pacino"</span><span class="p">,</span> <span class="s">"James Caan"</span><span class="p">]</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="s">"Updating..."</span><span class="p">,</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="n">update_movie</span><span class="p">(</span><span class="n">movie_title</span><span class="p">,</span> <span class="n">movie_year</span><span class="p">,</span> <span class="n">movie_rating</span><span class="p">,</span> <span class="n">movie_plot</span><span class="p">,</span> <span class="n">movie_actors</span><span class="p">)</span>
+</code><button class="button button--text button--small copy-button js-copy-button-33"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>UpdateItem Operation</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="47">
+<li><p>On the <strong>File</strong> menu, choose <strong>Save As...</strong> and save the file as <input readonly="" class="copyable-inline-input" size="19" type="text" value="MoviesUpdateItem.py"></p></li>
+<li><p>Close the <strong>MoviesUpdateItem.py</strong> tab.</p></li>
+<li><p><i class="fas fa-keyboard"></i> To run the <strong>MoviesUpdateItem.py</strong> script to update the movie <em>The Godfather</em> with the plot, run the following command:</p></li>
+</ol><pre class="highlight shell"><code>python MoviesUpdateItem.py
+</code><button class="button button--text button--small copy-button js-copy-button-34"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The output should show that the update completed successfully, similar to the following:</p>
+<pre class="highlight plaintext"><code> Updating...
+
+Update movie succeeded:
+
+{'Attributes': {'info': {'actors': ['Marlon Brando', 'Al Pacino', 'James Caan'],
+                         'plot': 'The aging patriarch of an organized crime '
+                                 'dynasty transfers control of his clandestine '
+                                 'empire to his reluctant son.',
+                         'rating': Decimal('9.2')}},
+ 'ResponseMetadata': {'HTTPHeaders': {'connection': 'keep-alive',
+                                      'content-length': '259',
+                                      'content-type': 'application/x-amz-json-1.0',
+                                      'date': 'Thu, 05 Nov 2020 21:26:49 GMT',
+                                      'server': 'Server',
+                                      'x-amz-crc32': '1777035368',
+                                      'x-amzn-requestid': 'BD0T11P3TQH2QUQMMD999P3E83VV4KQNSO5AEMVJF66Q9ASUAAJG'},
+                      'HTTPStatusCode': 200,
+                      'RequestId': 'BD0T11P3TQH2QUQMMD999P3E83VV4KQNSO5AEMVJF66Q9ASUAAJG',
+                      'RetryAttempts': 0}}
+</code><button class="button button--text button--small copy-button js-copy-button-35"><ql-icon>content_copy</ql-icon></button></pre><ol start="50">
+<li>
+<i class="fas fa-keyboard"></i> To query the table for <em>The Godfather</em> and verify the plot was added successfully, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb get-item --table-name movies --key <span class="s1">'{"year": {"N": "1972"}, "title": {"S": "The Godfather"}}'</span>
+</code><button class="button button--text button--small copy-button js-copy-button-36"><ql-icon>content_copy</ql-icon></button></pre>
+<h3>Task 2.7: Use the AWS SDK to delete an item</h3>
+
+<p>Now you want to be able to delete an entire item from the table.</p>
+<ol start="51">
+<li><p>On the <strong>File</strong> menu, choose <strong>New File</strong>.</p></li>
+<li><p>In the <strong>Untitled1</strong> editor tab, copy and paste the following Python script, which is used to delete an item from a table:</p></li>
+</ol><pre class="highlight python"><code><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">botocore.exceptions</span> <span class="kn">import</span> <span class="n">ClientError</span>
+
+<span class="kn">import</span> <span class="nn">boto3</span>
+
+
+<span class="k">def</span> <span class="nf">update_movie</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+
+    <span class="n">region</span><span class="o">=</span><span class="n">boto3</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span><span class="o">.</span><span class="n">region_name</span>
+    <span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'dynamodb'</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">region</span><span class="p">)</span> <span class="c"># low-level client</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">'movies'</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">delete_item</span><span class="p">(</span>
+            <span class="n">Key</span><span class="o">=</span><span class="p">{</span>
+                <span class="s">'year'</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+                <span class="s">'title'</span><span class="p">:</span> <span class="n">title</span>
+            <span class="p">},</span>
+            <span class="n">ConditionExpression</span> <span class="o">=</span> <span class="s">"attribute_exists(info.actors)"</span><span class="p">,</span>
+            <span class="n">ReturnValues</span><span class="o">=</span><span class="s">"ALL_OLD"</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s">'Error'</span><span class="p">][</span><span class="s">'Code'</span><span class="p">]</span> <span class="o">==</span> <span class="s">"ConditionalCheckFailedException"</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Delete movie failed:"</span><span class="p">,</span><span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s">'Error'</span><span class="p">][</span><span class="s">'Message'</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">'Attributes'</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Delete movie succeeded:"</span><span class="p">,</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+            <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s">'Attributes'</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Movie not found"</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+
+    <span class="n">movie_title</span> <span class="o">=</span> <span class="s">"The Godfather"</span>
+    <span class="n">movie_year</span> <span class="o">=</span>  <span class="mi">1972</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="s">"Deleting..."</span><span class="p">,</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="n">update_movie</span><span class="p">(</span><span class="n">movie_title</span><span class="p">,</span> <span class="n">movie_year</span><span class="p">)</span>
+</code><button class="button button--text button--small copy-button js-copy-button-37"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>DeleteItem Operation</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="53">
+<li><p>On the <strong>File</strong> menu, choose <strong>Save As...</strong> and save the file as <input readonly="" class="copyable-inline-input" size="19" type="text" value="MoviesDeleteItem.py"></p></li>
+<li><p>Close the <strong>MoviesDeleteItem.py</strong> tab.</p></li>
+<li><p><i class="fas fa-keyboard"></i> To run the <strong>MoviesDeleteItem.py</strong> script to delete the movie <em>The Godfather</em> from the table, run the following command.</p></li>
+</ol><pre class="highlight shell"><code>python MoviesDeleteItem.py
+</code><button class="button button--text button--small copy-button js-copy-button-38"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The output should show that the item was deleted successfully, similar to the following:</p>
+<pre class="highlight plaintext"><code> Deleting...
+
+Delete movie succeeded:
+
+{'info': {'plot': 'The aging patriarch of an organized crime dynasty transfers '
+                  'control of his clandestine empire to his reluctant son.',
+          'rating': Decimal('9')},
+ 'title': 'The Godfather',
+ 'year': Decimal('1972')}
+</code><button class="button button--text button--small copy-button js-copy-button-39"><ql-icon>content_copy</ql-icon></button></pre><ol start="56">
+<li>
+<i class="fas fa-keyboard"></i> To re-run the <strong>MoviesQueryItems.py</strong> script that you created previously to query the table for all movies released in 1972, run the following command:</li>
+</ol><pre class="highlight shell"><code>python MoviesQueryItems.py 1972
+</code><button class="button button--text button--small copy-button js-copy-button-40"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The movie <em>The Godfather</em> should not show in the output.</p>
+
+<h3>Task 2.8: Use the AWS SDK to delete a table</h3>
+
+<p>You've finished your testing and are ready to delete the table.</p>
+<ol start="57">
+<li><p>On the <strong>File</strong> menu, choose <strong>New File</strong>.</p></li>
+<li><p>In the <strong>Untitled1</strong> editor tab, copy and paste the following Python script, which deletes a table:</p></li>
+</ol><pre class="highlight python"><code><span class="kn">import</span> <span class="nn">boto3</span>
+
+<span class="k">def</span> <span class="nf">delete_movie_table</span><span class="p">():</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">boto3</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span><span class="o">.</span><span class="n">region_name</span>
+    <span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'dynamodb'</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">region</span><span class="p">)</span> <span class="c"># low-level client</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">'movies'</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">delete_movie_table</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"movies table deleted."</span><span class="p">)</span>
+</code><button class="button button--text button--small copy-button js-copy-button-41"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> For more information, refer to <em>DeleteTable Operation</em> in the <strong>Additional resources</strong> section.</p>
+<ol start="59">
+<li><p>On the <strong>File</strong> menu, choose <strong>Save As...</strong> and save the file as <input readonly="" class="copyable-inline-input" size="20" type="text" value="MoviesDeleteTable.py"></p></li>
+<li><p>Close the <strong>MoviesDeleteTable.py</strong> tab.</p></li>
+<li><p><i class="fas fa-keyboard"></i> To run the <strong>MoviesDeleteTable.py</strong> script to delete the <strong>movies</strong> table, run the following command:</p></li>
+</ol><pre class="highlight shell"><code>python MoviesDeleteTable.py
+</code><button class="button button--text button--small copy-button js-copy-button-42"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-clipboard-check" style="color:#6aaf35;"></i> The output should show that the table was deleted successfully, similar to the following:</p>
+<pre class="highlight plaintext"><code>movies table deleted.
+</code><button class="button button--text button--small copy-button js-copy-button-43"><ql-icon>content_copy</ql-icon></button></pre><ol start="62">
+<li>
+<i class="fas fa-keyboard"></i> To list all DynamoDB tables and verify that the <strong>movies</strong> table was deleted, run the following command:</li>
+</ol><pre class="highlight shell"><code>aws dynamodb list-tables
+</code><button class="button button--text button--small copy-button js-copy-button-44"><ql-icon>content_copy</ql-icon></button></pre>
+<p><i class="fas fa-thumbs-up" style="color:#00a1c9;"></i> Congratulations! You have successfully created a DynamoDB table to store information about movies, created and updated items, performed queries to look up specific movies, deleted items, and deleted a table using the AWS SDK for Python.</p>
+
+
+
+<h2 id="step5">Task 3: Challenge activity</h2>
+
+<p>Applying everything you have learned so far, perform the following tasks:</p>
+<ul>
+<li>Use the AWS CLI to create a new DynamoDB table using a JSON file that contains the table configuration. The table should use the following parameters:
+<ul>
+<li>Table name: <input readonly="" class="copyable-inline-input" size="6" type="text" value="movies">
+</li>
+<li>Partition key: <input readonly="" class="copyable-inline-input" size="4" type="text" value="year">
+</li>
+<li>Sort key: <input readonly="" class="copyable-inline-input" size="5" type="text" value="title">
+</li>
+</ul>
+</li>
+<li>Use the AWS CLI to add items to the table using data contained in a JSON file.</li>
+<li>Create a Python script to add items to the table using data contained in a JSON file.</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ul>
+<li>Use the <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/index.html" target="_blank">AWS CLI command reference for DynamoDB</a> and the <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html" target="_blank">Boto3 documentation</a> to help inform your solution.</li>
+<li>While the <input readonly="" class="copyable-inline-input" size="21" type="text" value="aws dynamodb put-item"> command is useful to add a single item to a table, you can't use it to add multiple items from a file. Try <input readonly="" class="copyable-inline-input" size="29" type="text" value="aws dynamodb batch-write-item"> instead.</li>
+</ul>
+<p><i class="fas fa-info-circle" style="color:#00a1c9;"></i> Refer to the <strong>Answer key</strong> section for the answers to this challenge.</p>
+
+
+
+<h2 id="step6">Conclusion</h2>
+
+<p><i class="far fa-thumbs-up" style="color:#00a1c9;"></i> Congratulations! You now have successfully:</p>
+<ul>
+<li>Created and managed a DynamoDB table using the AWS CLI.</li>
+<li>Created and managed a DynamoDB table using the AWS SDK for Python.</li>
+</ul>
+<h2 id="step7">End Lab</h2>
+
+<p>Follow these steps to close the console, end your lab, and evaluate the experience.</p>
+<ol start="63">
+<li><p>Return to the AWS Management Console.</p></li>
+<li><p>On the navigation bar, choose <strong>awsstudent@&lt;AccountNumber&gt;</strong>, and then choose <strong>Sign Out</strong>.</p></li>
+<li><p>Choose <span style="background-color:#D93025;font-family:Google Sans;font-weight:bold;font-size:90%;color:white;border-color:#D93025;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">End Lab</span></p></li>
+<li><p>Choose <span style="background-color:#DEDEDE;font-family:Google Sans;font-weight:bold;font-size:90%;color:#444;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">OK</span></p></li>
+<li><p>(Optional):</p></li>
+</ol><ul>
+<li>Select the applicable number of stars <i class="far fa-star"></i>
+</li>
+<li>Type a comment</li>
+<li>
+<p>Choose <strong>Submit</strong></p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+</li>
+</ul>
+<p>You may close the window if you don't want to provide feedback.</p>
+
+<h2 id="step8">Additional resources</h2>
+<ul>
+<li><a href="https://aws.amazon.com/dynamodb/features/" target="_blank">Amazon DynamoDB Features</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html" target="_blank">Core Components of Amazon DynamoDB</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html#migrating" target="_blank">Installing, Updating, and Uninstalling the AWS CLI</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html" target="_blank">Read/Write Capacity Mode</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html#HowItWorks.ProvisionedThroughput.Manual" target="_blank">Provisioned Mode</a></li>
+<li><a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/create-table.html" target="_blank">create-table CLI Command</a></li>
+<li><a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/put-item.html" target="_blank">put-item CLI Command</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html" target="_blank">Working with Scans in DynamoDB</a></li>
+<li><a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/scan.html" target="_blank">scan CLI Command</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html" target="_blank">Working with Queries in DynamoDB</a></li>
+<li><a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/query.html" target="_blank">query CLI Command</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ReservedWords.html" target="_blank">Reserved Words in DynamoDB</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ExpressionAttributeNames.html" target="_blank">Expression Attribute Names in DynamoDB</a></li>
+<li><a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/update-item.html" target="_blank">update-item CLI Command</a></li>
+<li><a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/delete-item.html" target="_blank">delete-item CLI Command</a></li>
+<li><a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/delete-table.html" target="_blank">delete-table CLI Command</a></li>
+<li><a href="https://aws.amazon.com/sdk-for-python/" target="_blank">AWS SDK for Python (Boto3)</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html" target="_blank">CreateTable Operation</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_PutItem.html" target="_blank">PutItem Operation</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Scan.html" target="_blank">Scan Operation</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html" target="_blank">Query Operation</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_UpdateItem.html" target="_blank">UpdateItem Operation</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DeleteItem.html" target="_blank">DeleteItem Operation</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DeleteTable.html" target="_blank">DeleteTable Operation</a></li>
+</ul>
+<p>For more information about AWS Training and Certification, see <a href="http://aws.amazon.com/training/" target="_blank"><em>http://aws.amazon.com/training/</em></a>.</p>
+
+<p><em>Your feedback is welcome and appreciated.</em></p>
+
+<p>If you would like to share any feedback, suggestions, or corrections, please provide the details in our <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank"><em>AWS Training and Certification Contact Form</em></a>.</p>
+
+<p><a id="AnswerKey" target="_blank"></a></p>
+
+<h2 id="step9">Answer key</h2>
+
+<h3>Task 3</h3>
+
+<p>The following command creates a DynamoDB table from the settings in a JSON file (you can download a copy of a sample file <a href="https://s3.us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/SPL-TF-200-DBDYL1-1/1.0.0.prod/scripts/movies-table.json" target="_blank">here</a>):</p>
+<pre class="highlight shell"><code>aws dynamodb create-table --cli-input-json file://movies-table.json
+</code><button class="button button--text button--small copy-button js-copy-button-45"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The following command adds the items in a JSON file to a DynamoDB table named <em>movies</em> (you can download a copy of a sample file <a href="https://s3.us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/SPL-TF-200-DBDYL1-1/1.0.0.prod/scripts/moviedata-cli.json" target="_blank">here</a>):</p>
+<pre class="highlight shell"><code>aws dynamodb batch-write-item --request-items file://moviedata-cli.json
+</code><button class="button button--text button--small copy-button js-copy-button-46"><ql-icon>content_copy</ql-icon></button></pre>
+<p>The Python script linked <a href="https://s3.us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/SPL-TF-200-DBDYL1-1/1.0.0.prod/scripts/MoviesLoadData.py" target="_blank">here</a> can be used to add the items in a <a href="https://s3.us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/SPL-TF-200-DBDYL1-1/1.0.0.prod/scripts/moviedata.json" target="_blank">JSON file</a> to a DynamoDB table named <em>movies</em>.</p>
+
+<p><i class="fas fa-sticky-note" style="color:#ec7211;"></i> Notice the formatting difference between the JSON files that contain the movie data for the AWS CLI and Python methods.</p>
+
+</div>
+</div>
+
+
+<div class="hidden js-end-lab-button-container lab-content__end-lab-button">
+<ql-lab-control-button class="js-end-lab-button" running=""></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class="lab-content__renderable-instructions">
+<div class="lab-content__recommendation">
+<h4 class="headline-3">
+Ready for more?
+<p>Here's another lab we think you'll like.</p>
+<div class="content-card-grid">
+<div class="card-content-wrapper js-content-card" data-id="2543" data-level="Introductory" data-name="Introduction to Amazon Simple Storage Service (S3)" data-type="Lab">
+<a class="card card--content elevation-0 content-lab" href="https://www.qwiklabs.com/focuses/15683?parent=catalog"><div class="card__image">
+<div class="card__image__inner" style="background-image: url(https://cdn.qwiklabs.com/assets/fractal2-a4905334374c9d90765c63535f0fc66eb81d5f18f7416db5bea58901744cc5d0.jpg)"></div>
+</div>
+<div class="card__body">
+<div class="overline card--content__type">
+Lab
+</div>
+<h3 class="card--content__title">
+Introduction to Amazon Simple Storage Service (S3)
+</h3>
+<div class="card--content__description body-1">
+<p>
+This lab demonstrates how to use an Amazon S3 bucket and manage files, or object, that are stored in the bucket. You will practice how to create a bucket, add an object, view an object, move an object, and delete an object and bucket in the AWS Management Console.
+</p>
+</div>
+</div>
+<div class="card__footer">
+<div class="card__footer__left">
+<span>Introductory</span>
+</div>
+<div class="card__footer__right">
+<div class="rateit" data-rateit-readonly="true" data-rateit-value="4.533"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 72.528px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+</div>
+</div>
+</a></div>
+
+</div>
+</h4>
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end="" id="outline-drawer" open="" slot="drawer" width="320" style="width: 320px;">
+<div class="js-lab-content-outline lab-content__outline">
+<a href="https://www.qwiklabs.com/focuses/15604?parent=catalog#step1">Lab overview</a><a href="https://www.qwiklabs.com/focuses/15604?parent=catalog#step2">Start Lab</a><a href="https://www.qwiklabs.com/focuses/15604?parent=catalog#step3">Task 1: Use the AWS CLI to create and manage a DynamoDB table</a><a href="https://www.qwiklabs.com/focuses/15604?parent=catalog#step4">Task 2: Use the AWS SDK for Python to create and manage a DynamoDB table</a><a href="https://www.qwiklabs.com/focuses/15604?parent=catalog#step5">Task 3: Challenge activity</a><a href="https://www.qwiklabs.com/focuses/15604?parent=catalog#step6">Conclusion</a><a href="https://www.qwiklabs.com/focuses/15604?parent=catalog#step7">End Lab</a><a href="https://www.qwiklabs.com/focuses/15604?parent=catalog#step8">Additional resources</a><a href="https://www.qwiklabs.com/focuses/15604?parent=catalog#step9">Answer key</a>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+<div class="lab-introduction js-lab-introduction is-hidden">
+<div class="lab-introduction__inner">
+<h1 class="headline-1">Welcome to Your First Lab!</h1>
+<ql-icon-button class="js-skip-button">close</ql-icon-button>
+<div class="lab-introduction__video">
+<iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" id="lab-introduction" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/yF7EDXKTmoQ.html"></iframe>
+</div>
+<a class="js-skip-button button button--outline">Skip this video</a>
+</div>
+</div>
+
+
+
+</div>
+</main>
+<div class="modal fade" id="lab-details-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<div class="modal-body">
+<p class="l-mbm">
+This lab teaches you the basics of creating and managing an Amazon DynamoDB table using the AWS CLI and the AWS SDK for Python (Boto3).
+</p>
+<p class="small-label l-mbs">
+<strong>
+Duration:
+</strong>
+1m setup
+·
+80m access
+·
+80m completion
+</p>
+<p class="small-label l-mbs">
+<strong>AWS Region:</strong>
+[us-west-2] <strong>US West (Oregon)</strong>
+</p>
+<p class="small-label l-mbs">
+
+</p>
+<p class="small-label">
+<strong>
+Permalink:
+</strong>
+<a href="https://www.qwiklabs.com/catalog_lab/3275">https://www.qwiklabs.com/catalog_lab/3275</a>
+</p>
+</div>
+<div class="modal-actions">
+<a class="button button--text" data-dismiss="modal">
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/saved_resource(3).html"></iframe>
+</div>
+<div class="modal fade" id="lab-review-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="https://www.qwiklabs.com/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><div class="modal-body">
+<p class="label">
+How satisfied are you with this lab?*
+</p>
+<div class="rateit js-rateit" data-rateit-max="5" data-rateit-min="0" data-rateit-resetable="false" data-rateit-step="1" data-rateit-value="0"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 0px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+<div class="l-mtm">
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" type="hidden" value="4265112" name="lab_review[user_id]" id="lab_review_user_id"></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id"></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" type="hidden" value="3275" name="lab_review[lab_id]" id="lab_review_lab_id"></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id"></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" type="hidden" name="lab_review[rating]" id="lab_review_rating"></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Comment</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment"></textarea></div></div>
+</div>
+</div>
+<div class="modal-actions">
+<a class="button button--text" data-dismiss="modal">
+Cancel
+</a>
+<input type="submit" name="commit" value="Submit" disabled="disabled" id="submit" data-disabled="false" class="button" data-disable-with="Submit">
+</div>
+</form>
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/saved_resource(4).html"></iframe>
+</div>
+<div class="modal fade" id="lab-access-modal" style="display: none;">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<a class="lab-access-modal-close" data-analytics-action="dismissed_lab_payment_modal" data-dismiss="modal">
+<i class="material-icons">close</i>
+</a>
+<form class="js-lab-access-form" action="https://www.qwiklabs.com/lab_onetime_coupons/activate?parent=catalog" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓">
+<div class="modal-body">
+<div class="lab-access-modal">
+<input type="hidden" name="id" id="id" value="15604">
+<input type="hidden" name="user_id" id="user_id" value="4265112">
+<input type="hidden" name="launch_with_credits" id="launch_with_credits" value="0" class="js-launch-with-credits-input">
+<input type="hidden" name="launch_with_subs" id="launch_with_subs" value="1" class="js-launch-with-subscription-input">
+<div class="lab-access-modal__method">
+<p>
+This lab costs
+10 Credits.
+</p>
+<p>
+You have a valid subscription package. Would you like to charge this lab to your subscription?
+
+</p>
+<a class="button js-launch-with-subscription-button js-lab-access-modal-button" data-analytics-action="clicked_launch_with_subscription_button">
+Use Subscription
+</a>
+</div>
+<div class="lab-access-modal__method">
+<p>
+Enter Lab Access Code:
+</p>
+<div class="lab-access-modal__code js-access-code">
+<input type="text" name="uuid_1" id="uuid_1" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_2" id="uuid_2" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_3" id="uuid_3" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_4" id="uuid_4" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+</div>
+<a class="button js-launch-with-access-code-button js-lab-access-modal-button" data-analytics-action="clicked_launch_with_access_code_button">
+Launch with Access Code
+</a>
+</div>
+</div>
+</div>
+</form>
+
+
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/saved_resource(5).html"></iframe>
+</div>
+
+<script>
+  $( function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabAccessModal();
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?\n","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.\n","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.chat.init();
+  ql.initHeader();
+  ql.navigation.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+<style>
+  .mdl-layout__container {
+    position: static
+  }
+</style>
+
+
+<div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/anchor(2).html" width="256" height="60" role="presentation" name="a-4e5aca4dju1j" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></div><iframe data-product="web_widget" title="No content" tabindex="-1" aria-hidden="true" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/saved_resource(6).html" style="width: 0px; height: 0px; border: 0px; position: absolute; top: -9999px;"></iframe><div><iframe title="Opens a widget where you can chat to one of our agents" id="launcher" tabindex="-1" style="width: 109px; height: 50px; padding: 0px; margin: 10px 20px; position: fixed; bottom: 30px; overflow: visible; opacity: 0; border: 0px; z-index: 999998; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; top: -9999px; visibility: hidden;" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/saved_resource(7).html"></iframe><iframe title="Find more information here" id="webWidget" tabindex="-1" style="width: 374px; max-height: calc(100vh - 32px); height: 572px; position: fixed; opacity: 0; border: 0px; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; top: -9999px; visibility: hidden; z-index: 999999;" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/saved_resource(8).html"></iframe></div><div style="background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px; position: absolute; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0; visibility: hidden; z-index: 2000000000; left: 0px; top: -10000px;"><div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.05;"></div><div class="g-recaptcha-bubble-arrow" style="border: 11px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -11px; z-index: 2000000000;"></div><div class="g-recaptcha-bubble-arrow" style="border: 10px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -10px; z-index: 2000000000;"></div><div style="z-index: 2000000000; position: relative;"><iframe title="recaptcha challenge" src="./DynamoDB CRUD Activities Using the AWS CLI and SDK_files/bframe.html" name="c-mfifm6f1s3s2" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox" style="width: 100%; height: 100%;"></iframe></div></div></body></html>
