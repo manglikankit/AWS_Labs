@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://www.qwiklabs.com/focuses/14618?parent=catalog -->
+<html lang="en" data-lt-installed="true" class="mdl-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="[]" name="active-experiments">
+<meta content="{&quot;userId&quot;:4265112}" name="help-api-product-data">
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="IaeOmeF3IxHBE8L9p+EGqJdHltdC12wEn3XZzIEhldE+Cin4enRYGMxIXnqw3IXj6NI/JY0qEe4ARdkTV/IxLg==">
+<title>Programming Amazon SQS and Amazon SNS with .NET | Qwiklabs</title>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" name="viewport">
+<meta content="1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0" name="google-site-verification">
+<meta content="#3681E4" property="msapplication-TileColor">
+<meta content="/favicon-144.png" property="msapplication-TileImage">
+<meta content="This lab will provide a basic understanding of using the AWS Toolkit for .NET. It will demonstrate the basic steps required to install Visual Studio Community Edition and the AWS Toolkit for Visual Studio and to run a simple console application in C# using the AWS SDK for .NET.  To successfully complete this lab, you should be familiar with Visual Studio for C# and have a basic knowledge of launching and connecting to Windows systems in AWS." name="description">
+<meta content="Qwiklabs" name="author">
+<meta content="Programming Amazon SQS and Amazon SNS with .NET | Qwiklabs" property="og:title">
+<meta content="website" property="og:type">
+<meta content="/favicon-144.png" property="og:image">
+<meta content="Qwiklabs" property="og:site_name">
+<meta content="This lab will provide a basic understanding of using the AWS Toolkit for .NET. It will demonstrate the basic steps required to install Visual Studio Community Edition and the AWS Toolkit for Visual Studio and to run a simple console application in C# using the AWS SDK for .NET.  To successfully complete this lab, you should be familiar with Visual Studio for C# and have a basic knowledge of launching and connecting to Windows systems in AWS." property="og:description">
+<meta content="/qwiklabs_logo_900x887.png" property="og:logo" size="900x887">
+<meta content="/qwiklabs_logo_994x187.png" property="og:logo" size="994x187">
+<link href="https://www.qwiklabs.com/favicon-32.png" rel="shortcut icon">
+<link color="#3681E4" href="https://www.qwiklabs.com/favicon-svg.svg" rel="mask-icon">
+<link href="https://www.qwiklabs.com/favicon-180.png" rel="apple-touch-icon-precomposed">
+<link rel="stylesheet" media="screen" href="./Programming Amazon SQS &amp; SNS with .NET_files/css">
+
+
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script type="text/javascript" async="" src="./Programming Amazon SQS &amp; SNS with .NET_files/js"></script><script type="text/javascript" async="" src="./Programming Amazon SQS &amp; SNS with .NET_files/analytics.js"></script><script type="text/javascript" async="" src="./Programming Amazon SQS &amp; SNS with .NET_files/analytics.min.js"></script><script type="text/javascript" async="" src="./Programming Amazon SQS &amp; SNS with .NET_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-Cx10SI4nRyIf/4CfTL8bj2s8I5ccz18HDscUBxSzsbe1SPnhchceoHtCw2m0nc/h"></script><script type="text/javascript" async="" src="./Programming Amazon SQS &amp; SNS with .NET_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-Cx10SI4nRyIf/4CfTL8bj2s8I5ccz18HDscUBxSzsbe1SPnhchceoHtCw2m0nc/h"></script><script type="text/javascript" id="www-widgetapi-script" src="./Programming Amazon SQS &amp; SNS with .NET_files/www-widgetapi.js" async=""></script><script>
+//<![CDATA[
+window.gon={};gon.current_user={"firstname":"Ankit","lastname":"Manglik","fullname":"Ankit Manglik","company":"Incedo","email":"amanglik2010@gmail.com","origin":"run, direct","subscriptions":1,"id":"40881afb3090073a11cc87d2eff56386","qlCreatedAt":"2021-02-01 08:29:26 UTC","optIn":true};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run";
+//]]>
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "url": "https://www.qwiklabs.com/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.qwiklabs.com/catalog?keywords={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<script id="ze-snippet" src="./Programming Amazon SQS &amp; SNS with .NET_files/snippet.js"></script>
+
+
+
+
+<link rel="stylesheet" media="all" href="./Programming Amazon SQS &amp; SNS with .NET_files/application-970073e5b46f4630d4ec8cb8a2b1192838eb654177e4e7d2a8a82e4fc31930a8.css">
+<script>
+  EVENT_SOURCE_BASE_URL = "https://run.qwiklabs.com/nchan-sub?id=";
+</script>
+<script src="./Programming Amazon SQS &amp; SNS with .NET_files/webcomponents-loader-408088dc333247a761de5f2b2a4ba1cabd2bc36579f83ba92a559eb3682a9b77.js"></script>
+<script src="./Programming Amazon SQS &amp; SNS with .NET_files/hallofmirrors-31ad91021e55b64d370891210d6e30d3790a1e6f4bf9e3eca92b9dd159bc8a6d.js"></script>
+<custom-style>
+  <style is="custom-style">[hidden] {
+  display: none !important;
+}
+
+</style>
+</custom-style>
+<custom-style>
+  <style is="custom-style">html {
+  --layout_-_display:  flex;;
+
+      --layout-inline_-_display:  inline-flex;;
+
+      --layout-horizontal_-_display:  var(--layout_-_display); --layout-horizontal_-_-ms-flex-direction:  row; --layout-horizontal_-_-webkit-flex-direction:  row; --layout-horizontal_-_flex-direction:  row;;
+
+      --layout-horizontal-reverse_-_display:  var(--layout_-_display); --layout-horizontal-reverse_-_-ms-flex-direction:  row-reverse; --layout-horizontal-reverse_-_-webkit-flex-direction:  row-reverse; --layout-horizontal-reverse_-_flex-direction:  row-reverse;;
+
+      --layout-vertical_-_display:  var(--layout_-_display); --layout-vertical_-_-ms-flex-direction:  column; --layout-vertical_-_-webkit-flex-direction:  column; --layout-vertical_-_flex-direction:  column;;
+
+      --layout-vertical-reverse_-_display:  var(--layout_-_display); --layout-vertical-reverse_-_-ms-flex-direction:  column-reverse; --layout-vertical-reverse_-_-webkit-flex-direction:  column-reverse; --layout-vertical-reverse_-_flex-direction:  column-reverse;;
+
+      --layout-wrap_-_-ms-flex-wrap:  wrap; --layout-wrap_-_-webkit-flex-wrap:  wrap; --layout-wrap_-_flex-wrap:  wrap;;
+
+      --layout-wrap-reverse_-_-ms-flex-wrap:  wrap-reverse; --layout-wrap-reverse_-_-webkit-flex-wrap:  wrap-reverse; --layout-wrap-reverse_-_flex-wrap:  wrap-reverse;;
+
+      --layout-flex-auto_-_-ms-flex:  1 1 auto; --layout-flex-auto_-_-webkit-flex:  1 1 auto; --layout-flex-auto_-_flex:  1 1 auto;;
+
+      --layout-flex-none_-_-ms-flex:  none; --layout-flex-none_-_-webkit-flex:  none; --layout-flex-none_-_flex:  none;;
+
+      --layout-flex_-_-ms-flex:  1 1 0.000000001px; --layout-flex_-_-webkit-flex:  1; --layout-flex_-_flex:  1; --layout-flex_-_-webkit-flex-basis:  0.000000001px; --layout-flex_-_flex-basis:  0.000000001px;;
+
+      --layout-flex-2_-_-ms-flex:  2; --layout-flex-2_-_-webkit-flex:  2; --layout-flex-2_-_flex:  2;;
+
+      --layout-flex-3_-_-ms-flex:  3; --layout-flex-3_-_-webkit-flex:  3; --layout-flex-3_-_flex:  3;;
+
+      --layout-flex-4_-_-ms-flex:  4; --layout-flex-4_-_-webkit-flex:  4; --layout-flex-4_-_flex:  4;;
+
+      --layout-flex-5_-_-ms-flex:  5; --layout-flex-5_-_-webkit-flex:  5; --layout-flex-5_-_flex:  5;;
+
+      --layout-flex-6_-_-ms-flex:  6; --layout-flex-6_-_-webkit-flex:  6; --layout-flex-6_-_flex:  6;;
+
+      --layout-flex-7_-_-ms-flex:  7; --layout-flex-7_-_-webkit-flex:  7; --layout-flex-7_-_flex:  7;;
+
+      --layout-flex-8_-_-ms-flex:  8; --layout-flex-8_-_-webkit-flex:  8; --layout-flex-8_-_flex:  8;;
+
+      --layout-flex-9_-_-ms-flex:  9; --layout-flex-9_-_-webkit-flex:  9; --layout-flex-9_-_flex:  9;;
+
+      --layout-flex-10_-_-ms-flex:  10; --layout-flex-10_-_-webkit-flex:  10; --layout-flex-10_-_flex:  10;;
+
+      --layout-flex-11_-_-ms-flex:  11; --layout-flex-11_-_-webkit-flex:  11; --layout-flex-11_-_flex:  11;;
+
+      --layout-flex-12_-_-ms-flex:  12; --layout-flex-12_-_-webkit-flex:  12; --layout-flex-12_-_flex:  12;;
+
+      
+
+      --layout-start_-_-ms-flex-align:  start; --layout-start_-_-webkit-align-items:  flex-start; --layout-start_-_align-items:  flex-start;;
+
+      --layout-center_-_-ms-flex-align:  center; --layout-center_-_-webkit-align-items:  center; --layout-center_-_align-items:  center;;
+
+      --layout-end_-_-ms-flex-align:  end; --layout-end_-_-webkit-align-items:  flex-end; --layout-end_-_align-items:  flex-end;;
+
+      --layout-baseline_-_-ms-flex-align:  baseline; --layout-baseline_-_-webkit-align-items:  baseline; --layout-baseline_-_align-items:  baseline;;
+
+      
+
+      --layout-start-justified_-_-ms-flex-pack:  start; --layout-start-justified_-_-webkit-justify-content:  flex-start; --layout-start-justified_-_justify-content:  flex-start;;
+
+      --layout-center-justified_-_-ms-flex-pack:  center; --layout-center-justified_-_-webkit-justify-content:  center; --layout-center-justified_-_justify-content:  center;;
+
+      --layout-end-justified_-_-ms-flex-pack:  end; --layout-end-justified_-_-webkit-justify-content:  flex-end; --layout-end-justified_-_justify-content:  flex-end;;
+
+      --layout-around-justified_-_-ms-flex-pack:  distribute; --layout-around-justified_-_-webkit-justify-content:  space-around; --layout-around-justified_-_justify-content:  space-around;;
+
+      --layout-justified_-_-ms-flex-pack:  justify; --layout-justified_-_-webkit-justify-content:  space-between; --layout-justified_-_justify-content:  space-between;;
+
+      --layout-center-center_-_-ms-flex-align:  var(--layout-center_-_-ms-flex-align); --layout-center-center_-_-webkit-align-items:  var(--layout-center_-_-webkit-align-items); --layout-center-center_-_align-items:  var(--layout-center_-_align-items); --layout-center-center_-_-ms-flex-pack:  var(--layout-center-justified_-_-ms-flex-pack); --layout-center-center_-_-webkit-justify-content:  var(--layout-center-justified_-_-webkit-justify-content); --layout-center-center_-_justify-content:  var(--layout-center-justified_-_justify-content);;
+
+      
+
+      --layout-self-start_-_-ms-align-self:  flex-start; --layout-self-start_-_-webkit-align-self:  flex-start; --layout-self-start_-_align-self:  flex-start;;
+
+      --layout-self-center_-_-ms-align-self:  center; --layout-self-center_-_-webkit-align-self:  center; --layout-self-center_-_align-self:  center;;
+
+      --layout-self-end_-_-ms-align-self:  flex-end; --layout-self-end_-_-webkit-align-self:  flex-end; --layout-self-end_-_align-self:  flex-end;;
+
+      --layout-self-stretch_-_-ms-align-self:  stretch; --layout-self-stretch_-_-webkit-align-self:  stretch; --layout-self-stretch_-_align-self:  stretch;;
+
+      --layout-self-baseline_-_-ms-align-self:  baseline; --layout-self-baseline_-_-webkit-align-self:  baseline; --layout-self-baseline_-_align-self:  baseline;;
+
+      
+
+      --layout-start-aligned_-_-ms-flex-line-pack:  start; --layout-start-aligned_-_-ms-align-content:  flex-start; --layout-start-aligned_-_-webkit-align-content:  flex-start; --layout-start-aligned_-_align-content:  flex-start;;
+
+      --layout-end-aligned_-_-ms-flex-line-pack:  end; --layout-end-aligned_-_-ms-align-content:  flex-end; --layout-end-aligned_-_-webkit-align-content:  flex-end; --layout-end-aligned_-_align-content:  flex-end;;
+
+      --layout-center-aligned_-_-ms-flex-line-pack:  center; --layout-center-aligned_-_-ms-align-content:  center; --layout-center-aligned_-_-webkit-align-content:  center; --layout-center-aligned_-_align-content:  center;;
+
+      --layout-between-aligned_-_-ms-flex-line-pack:  justify; --layout-between-aligned_-_-ms-align-content:  space-between; --layout-between-aligned_-_-webkit-align-content:  space-between; --layout-between-aligned_-_align-content:  space-between;;
+
+      --layout-around-aligned_-_-ms-flex-line-pack:  distribute; --layout-around-aligned_-_-ms-align-content:  space-around; --layout-around-aligned_-_-webkit-align-content:  space-around; --layout-around-aligned_-_align-content:  space-around;;
+
+      
+
+      --layout-block_-_display:  block;;
+
+      --layout-invisible_-_visibility:  hidden !important;;
+
+      --layout-relative_-_position:  relative;;
+
+      --layout-fit_-_position:  absolute; --layout-fit_-_top:  0; --layout-fit_-_right:  0; --layout-fit_-_bottom:  0; --layout-fit_-_left:  0;;
+
+      --layout-scroll_-_-webkit-overflow-scrolling:  touch; --layout-scroll_-_overflow:  auto;;
+
+      --layout-fullbleed_-_margin:  0; --layout-fullbleed_-_height:  100vh;;
+
+      
+
+      --layout-fixed-top_-_position:  fixed; --layout-fixed-top_-_top:  0; --layout-fixed-top_-_left:  0; --layout-fixed-top_-_right:  0;;
+
+      --layout-fixed-right_-_position:  fixed; --layout-fixed-right_-_top:  0; --layout-fixed-right_-_right:  0; --layout-fixed-right_-_bottom:  0;;
+
+      --layout-fixed-bottom_-_position:  fixed; --layout-fixed-bottom_-_right:  0; --layout-fixed-bottom_-_bottom:  0; --layout-fixed-bottom_-_left:  0;;
+
+      --layout-fixed-left_-_position:  fixed; --layout-fixed-left_-_top:  0; --layout-fixed-left_-_bottom:  0; --layout-fixed-left_-_left:  0;;
+}
+
+</style>
+</custom-style><style>[hidden] { display: none !important; }</style><custom-style>
+  <style is="custom-style">html {
+  --google-red-100: #f4c7c3;
+      --google-red-300: #e67c73;
+      --google-red-500: #db4437;
+      --google-red-700: #c53929;
+
+      --google-blue-100: #c6dafc;
+      --google-blue-300: #7baaf7;
+      --google-blue-500: #4285f4;
+      --google-blue-700: #3367d6;
+
+      --google-green-100: #b7e1cd;
+      --google-green-300: #57bb8a;
+      --google-green-500: #0f9d58;
+      --google-green-700: #0b8043;
+
+      --google-yellow-100: #fce8b2;
+      --google-yellow-300: #f7cb4d;
+      --google-yellow-500: #f4b400;
+      --google-yellow-700: #f09300;
+
+      --google-grey-100: #f5f5f5;
+      --google-grey-300: #e0e0e0;
+      --google-grey-500: #9e9e9e;
+      --google-grey-700: #616161;
+
+      
+
+      --paper-red-50: #ffebee;
+      --paper-red-100: #ffcdd2;
+      --paper-red-200: #ef9a9a;
+      --paper-red-300: #e57373;
+      --paper-red-400: #ef5350;
+      --paper-red-500: #f44336;
+      --paper-red-600: #e53935;
+      --paper-red-700: #d32f2f;
+      --paper-red-800: #c62828;
+      --paper-red-900: #b71c1c;
+      --paper-red-a100: #ff8a80;
+      --paper-red-a200: #ff5252;
+      --paper-red-a400: #ff1744;
+      --paper-red-a700: #d50000;
+
+      --paper-pink-50: #fce4ec;
+      --paper-pink-100: #f8bbd0;
+      --paper-pink-200: #f48fb1;
+      --paper-pink-300: #f06292;
+      --paper-pink-400: #ec407a;
+      --paper-pink-500: #e91e63;
+      --paper-pink-600: #d81b60;
+      --paper-pink-700: #c2185b;
+      --paper-pink-800: #ad1457;
+      --paper-pink-900: #880e4f;
+      --paper-pink-a100: #ff80ab;
+      --paper-pink-a200: #ff4081;
+      --paper-pink-a400: #f50057;
+      --paper-pink-a700: #c51162;
+
+      --paper-purple-50: #f3e5f5;
+      --paper-purple-100: #e1bee7;
+      --paper-purple-200: #ce93d8;
+      --paper-purple-300: #ba68c8;
+      --paper-purple-400: #ab47bc;
+      --paper-purple-500: #9c27b0;
+      --paper-purple-600: #8e24aa;
+      --paper-purple-700: #7b1fa2;
+      --paper-purple-800: #6a1b9a;
+      --paper-purple-900: #4a148c;
+      --paper-purple-a100: #ea80fc;
+      --paper-purple-a200: #e040fb;
+      --paper-purple-a400: #d500f9;
+      --paper-purple-a700: #aa00ff;
+
+      --paper-deep-purple-50: #ede7f6;
+      --paper-deep-purple-100: #d1c4e9;
+      --paper-deep-purple-200: #b39ddb;
+      --paper-deep-purple-300: #9575cd;
+      --paper-deep-purple-400: #7e57c2;
+      --paper-deep-purple-500: #673ab7;
+      --paper-deep-purple-600: #5e35b1;
+      --paper-deep-purple-700: #512da8;
+      --paper-deep-purple-800: #4527a0;
+      --paper-deep-purple-900: #311b92;
+      --paper-deep-purple-a100: #b388ff;
+      --paper-deep-purple-a200: #7c4dff;
+      --paper-deep-purple-a400: #651fff;
+      --paper-deep-purple-a700: #6200ea;
+
+      --paper-indigo-50: #e8eaf6;
+      --paper-indigo-100: #c5cae9;
+      --paper-indigo-200: #9fa8da;
+      --paper-indigo-300: #7986cb;
+      --paper-indigo-400: #5c6bc0;
+      --paper-indigo-500: #3f51b5;
+      --paper-indigo-600: #3949ab;
+      --paper-indigo-700: #303f9f;
+      --paper-indigo-800: #283593;
+      --paper-indigo-900: #1a237e;
+      --paper-indigo-a100: #8c9eff;
+      --paper-indigo-a200: #536dfe;
+      --paper-indigo-a400: #3d5afe;
+      --paper-indigo-a700: #304ffe;
+
+      --paper-blue-50: #e3f2fd;
+      --paper-blue-100: #bbdefb;
+      --paper-blue-200: #90caf9;
+      --paper-blue-300: #64b5f6;
+      --paper-blue-400: #42a5f5;
+      --paper-blue-500: #2196f3;
+      --paper-blue-600: #1e88e5;
+      --paper-blue-700: #1976d2;
+      --paper-blue-800: #1565c0;
+      --paper-blue-900: #0d47a1;
+      --paper-blue-a100: #82b1ff;
+      --paper-blue-a200: #448aff;
+      --paper-blue-a400: #2979ff;
+      --paper-blue-a700: #2962ff;
+
+      --paper-light-blue-50: #e1f5fe;
+      --paper-light-blue-100: #b3e5fc;
+      --paper-light-blue-200: #81d4fa;
+      --paper-light-blue-300: #4fc3f7;
+      --paper-light-blue-400: #29b6f6;
+      --paper-light-blue-500: #03a9f4;
+      --paper-light-blue-600: #039be5;
+      --paper-light-blue-700: #0288d1;
+      --paper-light-blue-800: #0277bd;
+      --paper-light-blue-900: #01579b;
+      --paper-light-blue-a100: #80d8ff;
+      --paper-light-blue-a200: #40c4ff;
+      --paper-light-blue-a400: #00b0ff;
+      --paper-light-blue-a700: #0091ea;
+
+      --paper-cyan-50: #e0f7fa;
+      --paper-cyan-100: #b2ebf2;
+      --paper-cyan-200: #80deea;
+      --paper-cyan-300: #4dd0e1;
+      --paper-cyan-400: #26c6da;
+      --paper-cyan-500: #00bcd4;
+      --paper-cyan-600: #00acc1;
+      --paper-cyan-700: #0097a7;
+      --paper-cyan-800: #00838f;
+      --paper-cyan-900: #006064;
+      --paper-cyan-a100: #84ffff;
+      --paper-cyan-a200: #18ffff;
+      --paper-cyan-a400: #00e5ff;
+      --paper-cyan-a700: #00b8d4;
+
+      --paper-teal-50: #e0f2f1;
+      --paper-teal-100: #b2dfdb;
+      --paper-teal-200: #80cbc4;
+      --paper-teal-300: #4db6ac;
+      --paper-teal-400: #26a69a;
+      --paper-teal-500: #009688;
+      --paper-teal-600: #00897b;
+      --paper-teal-700: #00796b;
+      --paper-teal-800: #00695c;
+      --paper-teal-900: #004d40;
+      --paper-teal-a100: #a7ffeb;
+      --paper-teal-a200: #64ffda;
+      --paper-teal-a400: #1de9b6;
+      --paper-teal-a700: #00bfa5;
+
+      --paper-green-50: #e8f5e9;
+      --paper-green-100: #c8e6c9;
+      --paper-green-200: #a5d6a7;
+      --paper-green-300: #81c784;
+      --paper-green-400: #66bb6a;
+      --paper-green-500: #4caf50;
+      --paper-green-600: #43a047;
+      --paper-green-700: #388e3c;
+      --paper-green-800: #2e7d32;
+      --paper-green-900: #1b5e20;
+      --paper-green-a100: #b9f6ca;
+      --paper-green-a200: #69f0ae;
+      --paper-green-a400: #00e676;
+      --paper-green-a700: #00c853;
+
+      --paper-light-green-50: #f1f8e9;
+      --paper-light-green-100: #dcedc8;
+      --paper-light-green-200: #c5e1a5;
+      --paper-light-green-300: #aed581;
+      --paper-light-green-400: #9ccc65;
+      --paper-light-green-500: #8bc34a;
+      --paper-light-green-600: #7cb342;
+      --paper-light-green-700: #689f38;
+      --paper-light-green-800: #558b2f;
+      --paper-light-green-900: #33691e;
+      --paper-light-green-a100: #ccff90;
+      --paper-light-green-a200: #b2ff59;
+      --paper-light-green-a400: #76ff03;
+      --paper-light-green-a700: #64dd17;
+
+      --paper-lime-50: #f9fbe7;
+      --paper-lime-100: #f0f4c3;
+      --paper-lime-200: #e6ee9c;
+      --paper-lime-300: #dce775;
+      --paper-lime-400: #d4e157;
+      --paper-lime-500: #cddc39;
+      --paper-lime-600: #c0ca33;
+      --paper-lime-700: #afb42b;
+      --paper-lime-800: #9e9d24;
+      --paper-lime-900: #827717;
+      --paper-lime-a100: #f4ff81;
+      --paper-lime-a200: #eeff41;
+      --paper-lime-a400: #c6ff00;
+      --paper-lime-a700: #aeea00;
+
+      --paper-yellow-50: #fffde7;
+      --paper-yellow-100: #fff9c4;
+      --paper-yellow-200: #fff59d;
+      --paper-yellow-300: #fff176;
+      --paper-yellow-400: #ffee58;
+      --paper-yellow-500: #ffeb3b;
+      --paper-yellow-600: #fdd835;
+      --paper-yellow-700: #fbc02d;
+      --paper-yellow-800: #f9a825;
+      --paper-yellow-900: #f57f17;
+      --paper-yellow-a100: #ffff8d;
+      --paper-yellow-a200: #ffff00;
+      --paper-yellow-a400: #ffea00;
+      --paper-yellow-a700: #ffd600;
+
+      --paper-amber-50: #fff8e1;
+      --paper-amber-100: #ffecb3;
+      --paper-amber-200: #ffe082;
+      --paper-amber-300: #ffd54f;
+      --paper-amber-400: #ffca28;
+      --paper-amber-500: #ffc107;
+      --paper-amber-600: #ffb300;
+      --paper-amber-700: #ffa000;
+      --paper-amber-800: #ff8f00;
+      --paper-amber-900: #ff6f00;
+      --paper-amber-a100: #ffe57f;
+      --paper-amber-a200: #ffd740;
+      --paper-amber-a400: #ffc400;
+      --paper-amber-a700: #ffab00;
+
+      --paper-orange-50: #fff3e0;
+      --paper-orange-100: #ffe0b2;
+      --paper-orange-200: #ffcc80;
+      --paper-orange-300: #ffb74d;
+      --paper-orange-400: #ffa726;
+      --paper-orange-500: #ff9800;
+      --paper-orange-600: #fb8c00;
+      --paper-orange-700: #f57c00;
+      --paper-orange-800: #ef6c00;
+      --paper-orange-900: #e65100;
+      --paper-orange-a100: #ffd180;
+      --paper-orange-a200: #ffab40;
+      --paper-orange-a400: #ff9100;
+      --paper-orange-a700: #ff6500;
+
+      --paper-deep-orange-50: #fbe9e7;
+      --paper-deep-orange-100: #ffccbc;
+      --paper-deep-orange-200: #ffab91;
+      --paper-deep-orange-300: #ff8a65;
+      --paper-deep-orange-400: #ff7043;
+      --paper-deep-orange-500: #ff5722;
+      --paper-deep-orange-600: #f4511e;
+      --paper-deep-orange-700: #e64a19;
+      --paper-deep-orange-800: #d84315;
+      --paper-deep-orange-900: #bf360c;
+      --paper-deep-orange-a100: #ff9e80;
+      --paper-deep-orange-a200: #ff6e40;
+      --paper-deep-orange-a400: #ff3d00;
+      --paper-deep-orange-a700: #dd2c00;
+
+      --paper-brown-50: #efebe9;
+      --paper-brown-100: #d7ccc8;
+      --paper-brown-200: #bcaaa4;
+      --paper-brown-300: #a1887f;
+      --paper-brown-400: #8d6e63;
+      --paper-brown-500: #795548;
+      --paper-brown-600: #6d4c41;
+      --paper-brown-700: #5d4037;
+      --paper-brown-800: #4e342e;
+      --paper-brown-900: #3e2723;
+
+      --paper-grey-50: #fafafa;
+      --paper-grey-100: #f5f5f5;
+      --paper-grey-200: #eeeeee;
+      --paper-grey-300: #e0e0e0;
+      --paper-grey-400: #bdbdbd;
+      --paper-grey-500: #9e9e9e;
+      --paper-grey-600: #757575;
+      --paper-grey-700: #616161;
+      --paper-grey-800: #424242;
+      --paper-grey-900: #212121;
+
+      --paper-blue-grey-50: #eceff1;
+      --paper-blue-grey-100: #cfd8dc;
+      --paper-blue-grey-200: #b0bec5;
+      --paper-blue-grey-300: #90a4ae;
+      --paper-blue-grey-400: #78909c;
+      --paper-blue-grey-500: #607d8b;
+      --paper-blue-grey-600: #546e7a;
+      --paper-blue-grey-700: #455a64;
+      --paper-blue-grey-800: #37474f;
+      --paper-blue-grey-900: #263238;
+
+      
+      --dark-divider-opacity: 0.12;
+      --dark-disabled-opacity: 0.38; 
+      --dark-secondary-opacity: 0.54;
+      --dark-primary-opacity: 0.87;
+
+      
+      --light-divider-opacity: 0.12;
+      --light-disabled-opacity: 0.3; 
+      --light-secondary-opacity: 0.7;
+      --light-primary-opacity: 1.0;
+}
+
+</style>
+</custom-style><custom-style>
+  <style is="custom-style">html {
+  --primary-text-color: var(--light-theme-text-color);
+      --primary-background-color: var(--light-theme-background-color);
+      --secondary-text-color: var(--light-theme-secondary-color);
+      --disabled-text-color: var(--light-theme-disabled-color);
+      --divider-color: var(--light-theme-divider-color);
+      --error-color: var(--paper-deep-orange-a700);
+
+      
+      --primary-color: var(--paper-indigo-500);
+      --light-primary-color: var(--paper-indigo-100);
+      --dark-primary-color: var(--paper-indigo-700);
+
+      --accent-color: var(--paper-pink-a200);
+      --light-accent-color: var(--paper-pink-a100);
+      --dark-accent-color: var(--paper-pink-a400);
+
+
+      
+      --light-theme-background-color: #ffffff;
+      --light-theme-base-color: #000000;
+      --light-theme-text-color: var(--paper-grey-900);
+      --light-theme-secondary-color: #737373;  
+      --light-theme-disabled-color: #9b9b9b;  
+      --light-theme-divider-color: #dbdbdb;
+
+      
+      --dark-theme-background-color: var(--paper-grey-900);
+      --dark-theme-base-color: #ffffff;
+      --dark-theme-text-color: #ffffff;
+      --dark-theme-secondary-color: #bcbcbc;  
+      --dark-theme-disabled-color: #646464;  
+      --dark-theme-divider-color: #3c3c3c;
+
+      
+      --text-primary-color: var(--dark-theme-text-color);
+      --default-primary-color: var(--primary-color);
+}
+
+</style>
+</custom-style><script async="" src="./Programming Amazon SQS &amp; SNS with .NET_files/lazy.min.js"></script><script src="./Programming Amazon SQS &amp; SNS with .NET_files/loader.js"></script>
+<script src="./Programming Amazon SQS &amp; SNS with .NET_files/iframe_api"></script>
+<script src="./Programming Amazon SQS &amp; SNS with .NET_files/vendor-45d462772c30000424907184f70c7157e95fb6227698d1671c5051818a6f60d8.js"></script>
+<script src="./Programming Amazon SQS &amp; SNS with .NET_files/application-cd976ff3e60dd82e021a124c13a5f4fbfbf568d7453af855e2b275938d66d1b4.js"></script>
+</head>
+<body class="application-new focuses focuses-show l-full lab-show no-nav">
+<div class="header-container light-theme">
+<div class="header">
+<ql-icon-button class="js-nav-toggle header__nav-panel-button l-mrm">menu</ql-icon-button>
+<div class="header__title">
+<a class="icon-button" href="javascript:history.back()"><ql-icon>arrow_back</ql-icon></a>
+
+<h1 class="headline-5">
+Programming Amazon SQS and Amazon SNS with .NET
+</h1>
+</div>
+<div class="header__actions">
+<ql-icon-button class="header__button--search js-header-search-bar-button">search</ql-icon-button>
+<a class="icon-button js-favorite-button favorite-button" id="CatalogItem-14618-favorite-button" data-type="CatalogItem" data-id="14618" data-name="Programming Amazon SQS and Amazon SNS with .NET" href="https://www.qwiklabs.com/favorite.json?item_id=14618&amp;item_type=CatalogItem" tabindex="0"><ql-icon>favorite_border</ql-icon>
+</a><div class="mdl-tooltip js-tooltip" for="CatalogItem-14618-favorite-button" data-upgraded=",MaterialTooltip">
+Add to favorites
+</div>
+
+
+<ql-icon-button id="control-panel-target" style="display: none;">
+dashboard
+</ql-icon-button>
+<ql-menu for="control-panel-target" id="control-panel-menu" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="control-panel-target"></ql-menu>
+
+<ql-icon-button id="help-menu-button" tabindex="0">help</ql-icon-button>
+<div class="mdl-tooltip js-tooltip" data-mdl-for="help-menu-button" data-upgraded=",MaterialTooltip">
+Help
+</div>
+<ql-menu for="help-menu-button" id="help-menu" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="help-menu-button">
+<ql-menu-item>
+<ql-help context="lab" data-analytics-action="opened_help" data-analytics-label="lab" productdata="{&quot;userId&quot;:4265112}">
+Help Center
+</ql-help>
+</ql-menu-item>
+<ql-menu-item>
+<a target="_blank" class="ql-body-1" href="https://support.google.com/qwiklabs/contact/contact_us" tabindex="-1" role="menuitem">Email support</a>
+</ql-menu-item>
+<ql-menu-item>
+<a class="ql-body-1" onclick="ql.chat.open()" tabindex="-1" role="menuitem">Chat support</a>
+</ql-menu-item>
+</ql-menu>
+
+<button class="icon-button" id="my_account" aria-haspopup="true" aria-controls="">
+<ql-avatar></ql-avatar>
+</button>
+<ql-menu for="my_account" open="" style="left: -1000px; top: -1000px; opacity: 0; visibility: hidden;" role="menu" aria-labelledby="my_account">
+<div class="my-account-menu">
+<ql-avatar class="l-mtl l-mbl" size="120"></ql-avatar>
+<div class="my-account-menu__user-info l-mbl">
+<h4 class="ql-subhead-1">Ankit Manglik</h4>
+<p class="ql-body-2 text--light">amanglik2010@gmail.com</p>
+<p class="ql-body-2 text--light">
+</p>
+<a class="text--green ql-subhead-2" href="https://www.qwiklabs.com/my_account/payments"><ql-chip positive="">
+Monthly Subscription
+</ql-chip>
+</a></div>
+<div class="buttons l-mbl">
+<a class="button button--hairline" id="settings" href="https://www.qwiklabs.com/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action="clicked_sign_out" href="/users/sign_out" method="delete">
+Sign Out
+</ql-button>
+<div class="privacy l-mtl">
+<a class="ql-caption text--light" href="https://www.qwiklabs.com/privacy_policy">Privacy</a>
+<span class="ql-caption text--light l-mls l-mrs">·</span>
+<a class="ql-caption text--light" href="https://www.qwiklabs.com/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</div>
+<div class="header__search-bar js-header-search-bar">
+<form class="js-search-form-mobile" onsubmit="ql.searchFilter(); return false;" action="https://www.qwiklabs.com/searches/elasticsearch" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="IaeOmeF3IxHBE8L9p+EGqJdHltdC12wEn3XZzIEhldE+Cin4enRYGMxIXnqw3IXj6NI/JY0qEe4ARdkTV/IxLg==">
+<input type="text" name="keywords" id="keywords" placeholder="Search" maxlength="255" aria-label="catalog search bar">
+</form>
+
+<ql-icon-button class="js-close-search-bar">close</ql-icon-button>
+</div>
+</div>
+
+<nav class="nav-bar">
+<a class="nav-bar__item js-navigation-button" href="https://www.qwiklabs.com/"><ql-icon class="nav-bar__item__icon">
+home
+</ql-icon>
+<span class="nav-bar__item__label">
+Home
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button  active" aria-current="page" href="https://www.qwiklabs.com/catalog"><ql-icon class="nav-bar__item__icon">
+school
+</ql-icon>
+<span class="nav-bar__item__label">
+Catalog
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button" href="https://www.qwiklabs.com/my_learning"><ql-icon class="nav-bar__item__icon">
+event_note
+</ql-icon>
+<span class="nav-bar__item__label">
+My Learning
+</span>
+</a>
+</nav>
+
+<nav class="nav-panel js-nav-panel">
+<div class="nav-panel__logo">
+<div class="logo logo--blue"></div>
+</div>
+<a title="Home" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/"><ql-icon class="nav-panel__item__icon">
+home
+</ql-icon>
+<div class="nav-panel__item__label">
+Home
+</div>
+</a>
+<a title="Catalog" tabindex="-1" class="nav-panel__item js-navigation-button active" aria-current="page" href="https://www.qwiklabs.com/catalog"><ql-icon class="nav-panel__item__icon">
+school
+</ql-icon>
+<div class="nav-panel__item__label">
+Catalog
+</div>
+</a>
+<a title="My Learning" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_learning"><ql-icon class="nav-panel__item__icon">
+event_note
+</ql-icon>
+<div class="nav-panel__item__label">
+My Learning
+</div>
+</a>
+<div class="nav-panel__spacer"></div>
+<a title="Profile" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/profile"><ql-icon class="nav-panel__item__icon">
+account_circle
+</ql-icon>
+<div class="nav-panel__item__label">
+Profile
+</div>
+</a>
+<a title="Credits &amp; Subscriptions" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/credits"><ql-icon class="nav-panel__item__icon">
+money
+</ql-icon>
+<div class="nav-panel__item__label">
+Credits &amp; Subscriptions
+</div>
+</a>
+<a title="Security" tabindex="-1" class="nav-panel__item js-navigation-button" href="https://www.qwiklabs.com/my_account/security"><ql-icon class="nav-panel__item__icon">
+security
+</ql-icon>
+<div class="nav-panel__item__label">
+Security
+</div>
+</a>
+<div class="nav-panel__spacer"></div>
+<a class="nav-panel__item" tabindex="-1" href="https://www.qwiklabs.com/focuses/14618?parent=catalog#"><ql-help>
+<div class="nav-panel__help-item">
+<ql-icon class="nav-panel__item__icon">help</ql-icon>
+<div class="nav-panel__item__label">
+Help
+</div>
+</div>
+</ql-help>
+</a><div class="nav-panel__small-links">
+<a tabindex="-1" href="https://www.qwiklabs.com/privacy_policy">Privacy</a>
+<a tabindex="-1" href="https://www.qwiklabs.com/terms_of_service">Terms</a>
+</div>
+</nav>
+<div class="nav-panel__overlay js-nav-toggle"></div>
+
+<main class="js-main">
+<span class="hidden" id="flash-sibling-before"></span>
+
+<div class="l-main-wrapper" id="main-wrapper">
+
+
+
+
+
+
+
+<ql-drawer-container class="js-lab-state" data-analytics-payload="{&quot;label&quot;:&quot;Programming Amazon SQS and Amazon SNS with .NET&quot;,&quot;lab_name&quot;:&quot;Programming Amazon SQS and Amazon SNS with .NET&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;run&quot;}" data-focus-id="14618" data-lab-billing-limit="0.0" data-lab-duration="6000" data-parent="catalog" data-payment-required="" data-recaptcha-enabled="" id="lab-container">
+<ql-drawer id="terminal-drawer" slot="drawer">
+<iframe class="terminal" id="embedded-resource" src="./Programming Amazon SQS &amp; SNS with .NET_files/saved_resource(2).html"></iframe>
+</ql-drawer>
+<ql-drawer-content class="js-lab-wrapper" id="lab-content" slot="drawer-content">
+<ql-drawer-container id="lab-content-container">
+<ql-drawer id="control-panel-drawer" open="" slot="drawer" width="320" style="width: 320px;">
+
+<ql-lab-control-panel class="ql-lab-control-panel__max-height control-panel js-lab-control-panel" connectionfiles="[]" labcontrolbutton="{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}" labdetails="[]" labtimer="{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:6000}" studentresources="[]">
+<script src="./Programming Amazon SQS &amp; SNS with .NET_files/api.js"></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+              grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response " style="" value="03AGdBq25mZ7s84h5Sctn7wAOBtYIEwbc5NaF5TiE83lNGqxz533Eg-SrodTn3bVfWPAbJuEZydbaM4R2-gIj9vnFFd8-gedEcioUQgOeetZJ2_je1GI59K_GEOrKKt479Idx6eprs2aviz13icOnPJGSj26FTwMlw2eKzU6JrKJr_lJRlP4MO0b-1tASHJo_YUGyGYLi7wi-0ZlHE3ky7n3QtFs6yq04NHAUGPBoYoYzBLzXAb4KoGDx7dK7y3krANKRMHz35YT9Tw4Avy53SsKI2IfP6YVZLxP68CcliwiBCjlIMJ71H5I7Wy3B9Gv9xRy6TjI2dqnX9YVJ6ouebWnRXb7JUeIG7_qbowfwsrNc8O6caxCl3fXlS1RhJjT1Jbe9ZX-54dXFOJYVlIaeU_zePH9cv8eLOvbXX6sjGWfMRQP9Do_7wo6dRUetAPecLVPLejCrmTW4wrSBovPYQz7yZmEYyv-OdZMbysTWvrjeBUq6FA9v-tuWMWnpjp6DzC3OvTJTKydJGV4hEfyYvfvfHjDIljV7BWA"><div style="width: 304px; height: 78px;"><div><iframe src="./Programming Amazon SQS &amp; SNS with .NET_files/anchor.html" width="304" height="78" role="presentation" name="a-qhu6l6o2d4k8" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></input>
+
+<div class="hidden" id="recaptcha-v2-start-lab" slot="recaptcha">
+<script src="./Programming Amazon SQS &amp; SNS with .NET_files/api(1).js" async="" defer=""></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "><div style="width: 304px; height: 78px;"><div><iframe src="./Programming Amazon SQS &amp; SNS with .NET_files/anchor(1).html" width="304" height="78" role="presentation" name="a-jmsj0kv6eklc" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response-1" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;" src="./Programming Amazon SQS &amp; SNS with .NET_files/saved_resource(3).html"></iframe></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel></ql-drawer>
+<ql-drawer-content id="lab-instructions" slot="drawer-content">
+<div class="alert alert--fake js-alert">
+<p class="alert__message js-alert-message"></p>
+<a class="alert__close js-alert-close">
+<i class="fa fa-times"></i>
+</a>
+<iframe class="l-ie-iframe-fix" src="./Programming Amazon SQS &amp; SNS with .NET_files/saved_resource(4).html"></iframe>
+</div>
+<div class="js-lab-content lab-content__renderable-instructions">
+<div class="lab-preamble">
+<h1 class="lab-preamble__title">
+Programming Amazon SQS and Amazon SNS with .NET
+</h1>
+<div class="lab-preamble__details subtitle-headline-1">
+<span>1 hour 40 minutes</span>
+<span>10 Credits</span>
+<div class="lab__rating">
+<a href="https://www.qwiklabs.com/focuses/14618/reviews?parent=catalog"><div class="rateit" data-rateit-readonly="true" data-rateit-value="4.2237"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 67.5792px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+
+</a></div>
+</div>
+</div>
+
+<div class="js-markdown-instructions markdown-lab-instructions no-select" id="markdown-lab-instructions">
+<p><img src="./Programming Amazon SQS &amp; SNS with .NET_files/aws-logo.png" alt=""></p>
+
+
+
+<p><strong>SPL-106 - Version 1.4.0</strong></p>
+
+<p>© 2020 Amazon Web Services, Inc. and its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited. All trademarks are the property of their owners.</p>
+
+<p>Corrections, feedback, or other questions? Contact us at <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank"><em>AWS Training and Certification</em></a>.</p>
+
+<h2 id="step1">Overview</h2>
+
+<p>This lab will provide a basic understanding of using the AWS Toolkit for .NET. It will demonstrate the basic steps required to install Visual Studio Community Edition and the AWS Toolkit for .NET and to run a simple console application in C# using the AWS SDK for .NET.</p>
+
+<h3>Topics covered</h3>
+
+<p>By the end of this lab you will be able to:</p>
+<ul>
+<li>Connect to an Amazon EC2 instance running Windows Server</li>
+<li>Install AWS Toolkit for .NET</li>
+<li>Configure Visual Studio for AWS.</li>
+<li>Create an AWS project in Visual Studio</li>
+<li>Build a Windows console application to create and read Amazon SQS queues and send notification messages with Amazon SNS</li>
+</ul>
+<h2 id="step2">Prerequisites</h2>
+
+<p>To successfully complete this lab, you should be familiar with Visual Studio for C# and have a basic knowledge of AWS.</p>
+
+<h3>Mac Users: Download Remote Desktop client software</h3>
+
+<p>If you are running <strong>Windows</strong> on your local machine, you can use <strong>Remote Desktop Connection</strong> to access your Amazon EC2 instance.</p>
+
+<p>If you are on a Mac, you will require <strong>Microsoft Remote Desktop</strong> (with the red icon):</p>
+
+<p><img src="./Programming Amazon SQS &amp; SNS with .NET_files/mac-icon.png" alt="Microsoft Remote Desktop"></p>
+
+<p>Mac users can <a href="https://itunes.apple.com/au/app/microsoft-remote-desktop/id715768417?mt=12" target="_blank">download Microsoft Remote Desktop from the Mac App Store</a>.</p>
+
+<p>If you do not have access to the Mac App Store, you can use <a href="http://cord.sourceforge.net/" target="_blank">CoRD for Mac</a>, but please note that the instructions for this lab assume you are using Microsoft Remote Desktop.</p>
+
+
+
+<h2 id="step3">Start Lab</h2>
+<ol start="1">
+<li>At the top of your screen, launch your lab by choosing <span style="background-color:#34A853;font-family:Google Sans;font-weight:bold;font-size:90%;color:white;border-color:#34A853;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Start Lab</span>
+</li>
+</ol>
+<p>This starts the process of provisioning your lab resources. An estimated amount of time to provision your lab resources is displayed. You must wait for your resources to be provisioned before continuing.</p>
+
+<p><i class="fas fa-info-circle"></i> If you are prompted for a token, use the one distributed to you (or credits you have purchased). </p>
+<ol start="2">
+<li>Open your lab by choosing <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span>
+</li>
+</ol>
+<p>This automatically logs you in to the AWS Management Console. </p>
+
+<p><i class="fas fa-exclamation-triangle"></i> <strong>Do not change the Region unless instructed.</strong></p>
+
+
+
+<h3>Common Login Errors</h3>
+
+<p><strong>Error: Federated login credentials</strong></p>
+
+<p><img src="./Programming Amazon SQS &amp; SNS with .NET_files/federatedloginerror.png" alt=""></p>
+
+<p>If you see this message:</p>
+<ul>
+<li>Close the browser tab to return to your initial lab window</li>
+<li>Wait a few seconds</li>
+<li>Choose <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span> again</li>
+</ul>
+<p>You should now be able to access the AWS Management Console.</p>
+
+
+
+<p><strong>Error: You must first log out</strong></p>
+
+<p><img src="./Programming Amazon SQS &amp; SNS with .NET_files/logouterror.png" alt=""></p>
+
+<p>If you see the message, <strong>You must first log out before logging into a different AWS account:</strong> </p>
+<ul>
+<li>Choose <strong>click here</strong>
+</li>
+<li>Close your browser tab to return to your initial lab window</li>
+<li>Choose <span style="background-color:white;font-family:Google Sans;font-weight:bold;font-size:90%;color:#1a73e8;border-color:#dadce0;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">Open Console</span> again</li>
+</ul>
+
+
+<h2 id="step4">Task 1: Connect to your EC2 development instance</h2>
+
+<p>In this task, you will connect to your Windows Development EC2 instance.</p>
+
+<p><i class="fa fa-info-circle"></i> What is Amazon Elastic Compute Cloud (EC2)? EC2 is a web service that provides resizable compute capacity in the cloud. It's designed to make web-scale cloud computing easier for developers. Amazon EC2 reduces the time required to obtain and boot a new server instance to minutes, allowing you to quickly scale capacity, both up-and-down, as your computing requirements change.</p>
+<ol start="3">
+<li>In the <strong>AWS Management Console</strong>, on the <span style="background-color:#232f3e;font-weight:bold;font-size:90%;color:white;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Services</span> menu, choose <strong>EC2</strong>.</li>
+</ol>
+<p><i class="fas fa-exclamation-triangle"></i> If you see <strong>New EC2 Experience</strong> at the top-left of your screen, ensure <i class="fas fa-toggle-on"></i> <strong>New EC2 Experience</strong> is selected. This lab is designed to use the new EC2 Console.</p>
+<ol start="4">
+<li><p>In the left navigation pane, choose <strong>Instances</strong>.</p></li>
+<li><p>Select the <i class="fas fa-square" style="color:blue;"></i> <strong>Development Server</strong> instance.</p></li>
+<li><p>In the <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Actions <i class="fas fa-angle-down"></i></span> menu, choose <strong>Connect</strong>.</p></li>
+<li><p>In the <strong>Connect To instance</strong> window, select <strong>RDP client</strong>.</p></li>
+<li><p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">Download remote desktop file</span></p></li>
+</ol>
+<p>Save the file to your computer and make a note of its location.</p>
+<ol start="9">
+<li><p>Open the .rdp file that you downloaded.</p></li>
+<li><p>In the <strong>Remote Desktop Connection</strong> dialog box, choose <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">Connect</span> then configure:</p></li>
+</ol><ul>
+<li>
+<strong>Password:</strong> Paste the value of <strong>AdministratorPassword</strong> located to the left of these instructions</li>
+<li>Choose <span style="background-color:#DEDEDE;font-weight:bold;font-size:90%;color:#444;border-radius:1px;border-width:1px;border-style:solid;border-color:#444;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;white-space: nowrap;">OK</span>
+</li>
+</ul><ol start="11">
+<li>In the <strong>Remote Desktop Connection</strong> dialog box, choose <strong>Yes</strong> to continue to your Windows EC2 instance. It will take a moment to display the Windows Server desktop.</li>
+</ol>
+
+
+<h2 id="step5">Task 2: Install and configure the required software</h2>
+
+<p>In this task, you will configure Visual Studio which is used to modify your AWS code. You will also install and configure the AWS Toolkit for Visual Studio.</p>
+
+<p><i class="fa fa-info-circle"></i> The AWS Toolkit for Visual Studio is a plug-in for Microsoft Visual Studio that makes it easier for developers to develop, debug, and deploy .NET applications that use Amazon Web Services. With the AWS Toolkit for Visual Studio, you can get started faster and be more productive when building AWS applications. The AWS Toolkit for Visual Studio conveniently includes the AWS SDK for .NET, so you can start building .NET applications on AWS infrastructure services in Visual Studio, including Amazon Simple Queue Service (SQS), Amazon Simple Notification Service (SNS), Amazon S3, Amazon EC2, AWS Elastic Beanstalk, and Amazon DynamoDB.</p>
+
+<h3>Configure Visual Studio 2019 Community Edition</h3>
+<ol start="12">
+<li><p>Once you are connected to your instance, choose the <strong>Windows Start</strong> button and select <strong>Visual Studio 2019</strong>.</p></li>
+<li><p>At the <strong>Visual Studio Welcome</strong> page, choose <strong>Not now, maybe later</strong> at the bottom of the window.</p></li>
+</ol>
+<p>In this lab, you do not need an account.</p>
+<ol start="14">
+<li>At the <strong>Visual Studio - Start with a familiar environment</strong> window, do the following:</li>
+</ol><ul>
+<li>In <strong>Development Settings:</strong> choose the dropdown arrow and select <strong>Visual C#</strong>
+</li>
+<li>Choose <strong>Start Visual Studio</strong>
+</li>
+</ul>
+<p><i class="fa fa-info-circle"></i> C# is an elegant and type-safe object-oriented language developed by Microsoft that enables developers to build a variety of secure and robust applications that run on the .NET Framework. You can use C# to create Windows applications, web services, distributed components, client-server applications, database applications, and much more. Visual Studio provides an advanced C# code editor, convenient user interface designers, integrated debugger, and many other tools to simplify development of applications based on the C# language and the .NET Framework.</p>
+<ol start="15">
+<li>At the <strong>Visual Studio 2019</strong> page, choose <strong>Continue without code</strong>.</li>
+</ol>
+<h3>Install the AWS Toolkit</h3>
+
+<p>You will now install the AWS Toolkit for .NET which allows you to interact directly with your AWS environment from inside Visual Studio.</p>
+<ol start="16">
+<li><p>On the <strong>Extensions</strong> menu in the top tool bar, choose <strong>Manage Extensions</strong></p></li>
+<li><p>Expand <i class="fa fa-caret-right"></i> <strong>Online</strong>.</p></li>
+<li><p>In the search window on the top right, enter <input readonly="" class="copyable-inline-input" size="11" type="text" value="AWS Toolkit"></p></li>
+<li><p>Select the <strong>Download</strong> button next to <strong>AWS Toolkit for Visual Studio 2017 and 2019</strong>.</p></li>
+<li><p>Close the <strong>Manage Extensions</strong> window.</p></li>
+<li><p>Close Microsoft Visual Studio.</p></li>
+<li><p>The <strong>VSIX Installer</strong> window will appear.</p></li>
+<li><p>In the <strong>VSIX Installer</strong> window, choose <strong>Modify</strong>.</p></li>
+</ol>
+<p>The VSIX Installer will finish installing the AWS Toolkit for Visual Studio 2017 and 2019.</p>
+<ol start="24">
+<li>Once the installation is complete, choose <strong>Close</strong>.</li>
+</ol>
+<p>This will complete the installation.</p>
+
+<h3>Configure the AWS Toolkit</h3>
+
+<p>You must configure the AWS Toolkit for .NET to get access to your AWS environment. This allows you to add, edit, and delete components in your AWS environment, such as Amazon EC2 instances, Amazon SQS queues, and Amazon SNS topics from the Visual Studio environment.</p>
+<ol start="25">
+<li><p>Choose the <strong>Windows Start</strong> button and select <strong>Visual Studio 2019</strong>.</p></li>
+<li><p>At the <strong>Visual Studio 2019</strong> page, choose <strong>Continue without code</strong>.</p></li>
+<li><p>On the <strong>View</strong> menu, choose <strong>AWS Explorer</strong>.</p></li>
+<li><p>In the <strong>AWS Explorer</strong> for <strong>Profile</strong>, select <strong>Toolkit</strong>.</p></li>
+<li><p>In the <strong>AWS Explorer</strong> for <strong>Region</strong>, select the same region that matches the <strong>RegionCode</strong> to the left of these instructions.</p></li>
+</ol>
+<p>In AWS Explorer, you can set the <strong>Region</strong> drop-down list to the AWS region you want to browse. When you develop code to run in AWS, always ensure that the region used by your code is the same region you are viewing in the AWS Management Console and in AWS Explorer. If you don't see resources that you expect to be in your account, ensure the correct region is selected.</p>
+
+<p>Use this page: <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html" target="_blank">https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html</a> to identify which region to select based on the region code.</p>
+
+<p>You can now use AWS Explorer to navigate through your AWS environment. For example, in AWS Explorer, expand Amazon S3 to see the Amazon S3 buckets associated with this lab account.</p>
+<ol start="30">
+<li>Close <strong>Microsoft Visual Studio</strong>.</li>
+</ol>
+
+
+<h2 id="step6">Task 3: Open the AWS SDK console application</h2>
+
+<p>In this task, you will open a prebuilt Visual Studio solution that has a command-line application ready for you to use.</p>
+
+<p><i class="fa fa-info-circle"></i> The AWS SDK for .NET provides the AWS Resource APIs for .NET. These resource APIs provide a resource-level programming model that enables you to write code to work more directly with resources that are managed by AWS services. A resource is a logical object that enables you to control AWS services through APIs. For example, AWS Identity and Access Management (IAM) exposes users and groups as resources that can be programmatically accessed more directly by these resource APIs than by other means.</p>
+<ol start="31">
+<li><p>Open (double-click) the <strong>SQSConsoleApplication</strong> folder located on the desktop.</p></li>
+<li><p>Open (double-click) the <strong>SQSConsoleApplication</strong> solution file.</p></li>
+<li><p>In the <strong>How do you want to open this file?</strong> window, choose <strong>OK</strong>.</p></li>
+</ol>
+<p>This will open the solution file in Visual Studio.</p>
+
+
+
+<h2 id="step7">Task 4: Verify that your application is using the correct region</h2>
+
+<p>In this task, you need to ensure that the region code in your project (App.config) matches the region code of your deployed lab.</p>
+<ol start="34">
+<li><p>On the right side, in the <strong>Solution Explorer</strong> pane, expand <i class="fa fa-caret-right"></i> <strong>SQSConsoleApplication</strong>.</p></li>
+<li><p>Open (double-click) <strong>App.config</strong>.</p></li>
+</ol>
+<p>This opens the App.config file in the edit pane (center screen). The region displayed in the <strong>App.config</strong> file is <strong>us-west-2</strong>. This region code was hard-coded into the application when it was developed. This is the region that the application will use when it runs. The region code in this file needs to match the region code that your lab was launched in.</p>
+<ol start="36">
+<li>To the left of these instructions, look at the value of <strong>RegionCode</strong>.</li>
+</ol>
+<p>This is the region that your lab was launched in.</p>
+<ol start="37">
+<li>If the <strong>RegionCode</strong> value is <strong>us-west-2</strong>, you can skip to the next task.</li>
+</ol>
+<p>This means that your application will use the correct region when running.</p>
+<ol start="38">
+<li>In the line &lt;add key="AWSRegion" value="us-west-2" /&gt; change the region from <strong>us-west-2</strong> to the value of <strong>RegionCode</strong>.</li>
+</ol>
+<p>Changing the region in your application is for lab demonstration purposes only. In a production setting, you can also pass the region to each function call you make to the AWS API using the SDK.</p>
+<ol start="39">
+<li><p>Save the change you made to App.config by pressing <strong>Control + S</strong> or by choosing the save icon <i class="fa fa-save"></i>.</p></li>
+<li><p>Close the <strong>App.config</strong> file.</p></li>
+</ol>
+
+
+<h2 id="step8">Task 5: Resolve code issues caused by missing AWS SDK DLL references</h2>
+
+<p>This solution is currently only a skeleton application, and it contains errors. In this task, you will resolve the errors so that the basic console application runs by adding references to the correct AWS SDK DLLs and adding the correct using statement to the code in AWSManager.cs.</p>
+<ol start="41">
+<li><p>In the Solution Explorer pane, open the context menu (right-click) for <strong>References</strong>, then choose <strong>Add Reference</strong>.</p></li>
+<li><p>In the <strong>Reference Manager</strong> dialog box, choose the <strong>Browse</strong> button.</p></li>
+<li><p>Browse to: <input readonly="" class="copyable-inline-input" size="49" type="text" value="C:\Program Files (x86)\AWS SDK for .NET\bin\Net45"></p></li>
+<li><p>Multi-select <strong>AWSSDK.Core.dll</strong>, <strong>AWSSDK.SQS.dll</strong>, and <strong>AWSSDK.SimpleNotificationService.dll</strong>, then choose <strong>Add</strong>.</p></li>
+<li><p>Choose <strong>OK</strong>.</p></li>
+</ol>
+<p>This is how you add any of the AWS .NET DLLs to your project. The core functionality in the SDK is provided by the AWSSDK.Core.dll and it is usually required for all code using the AWS .NET SDK.</p>
+<ol start="46">
+<li><p>In the Solution Explorer pane, open (double-click) <strong>AWSManager.cs</strong>.</p></li>
+<li><p>In the <strong>AWSManager.cs</strong> edit pane, expand <i class="far fa-plus-square"></i> <strong>Fields</strong>.</p></li>
+<li><p>Hover over the code <strong>IAmazonSQS</strong> which is underlined in red, denoting an error.</p></li>
+<li><p>In the pop-up box, choose <strong>Show potential fixes</strong>.</p></li>
+</ol>
+<p>This error occurs because you have added the reference for the Amazon SQS DLL to your solution, but have not added the correct <strong>using</strong> statements in your AWSManager.cs file.</p>
+<ol start="50">
+<li>In the drop-down list, select <strong>using Amazon.SQS;</strong>.</li>
+</ol>
+<p>This will eliminate the errors.</p>
+
+<p>The line <strong>using Amazon.SQS;</strong> is added near the top of AWSManager.cs. The errors should now be resolved because this line instructs the compiler to use the Amazon SQS namespace in the AWSSDK.SQS DLL you referenced earlier. You are now ready to start adding code to the application.</p>
+
+
+
+<h2 id="step9">Task 6: Run the application</h2>
+
+<p>In this task, you will add code to complete the console application and then test the functionality of the application, both interactively and using the AWS Explorer.</p>
+
+<h3>Add CreateQueue Code</h3>
+
+<p><i class="fa fa-info-circle"></i> Amazon SQS is a fast, reliable, scalable, fully managed message queuing service. Amazon SQS makes it simple and cost-effective to decouple the components of a cloud application. You can use Amazon SQS to transmit up to 2 GB of data, at any level of throughput, without losing messages or requiring other services to be always available. With Amazon SQS, you can offload the administrative burden of operating and scaling a highly available messaging cluster, while paying a low price for only what you use.</p>
+<ol start="51">
+<li>In <strong>AWSManager.cs</strong>, do the following:</li>
+</ol><ul>
+<li>Press <strong>Control</strong> + <strong>F</strong>
+</li>
+<li>In the search box, enter: <input readonly="" class="copyable-inline-input" size="11" type="text" value="CreateQueue">
+</li>
+</ul><ol start="52">
+<li><p>In the lines below, delete the code between the <strong>// BEGIN METHOD REPLACE BLOCK</strong> and <strong>// END METHOD REPLACE BLOCK</strong> comments. It should say <strong>return null;</strong>.</p></li>
+<li><p>Paste the following code snippet between the comment blocks.</p></li>
+</ol><pre class="highlight csharp"><code><span class="c1">//this method will create an sqs queue</span>
+<span class="c1">//read more at https://docs.aws.amazon.com/sdkfornet/v3/apidocs/index.html?page=SQS/MSQSCreateQueueString.html</span>
+
+<span class="n">CreateQueueResponse</span> <span class="n">result</span> <span class="p">=</span> <span class="n">sqsClient</span><span class="p">.</span><span class="nf">CreateQueue</span><span class="p">(</span><span class="n">queueName</span><span class="p">);</span>
+<span class="nf">feedBackMessageAction</span><span class="p">(</span><span class="n">Sucessfully_Created</span><span class="p">.</span><span class="nf">Fmt</span><span class="p">(</span><span class="s">"Queue"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">QueueUrl</span><span class="p">));</span>
+
+<span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</code><button class="button button--text button--small copy-button js-copy-button-0" title="" data-original-title="Copied"><ql-icon>content_copy</ql-icon></button></pre><ul>
+<li><p><strong>Before adding code</strong>\<br>
+<img src="./Programming Amazon SQS &amp; SNS with .NET_files/before.png" alt="before"></p></li>
+<li><p><strong>After adding code</strong>\<br>
+<img src="./Programming Amazon SQS &amp; SNS with .NET_files/after.png" alt="after"></p></li>
+</ul>
+<h3>Create a Queue</h3>
+<ol start="54">
+<li><p>Run your application by choosing the <i class="fa fa-play"></i> <strong>Start</strong> option on the top toolbar.</p></li>
+<li><p>In the <strong>SQS and SNS AWS Using the .NET SDK and C#</strong> window, do the following:</p></li>
+</ol><ul>
+<li>Press <strong>A</strong>
+</li>
+<li>
+<strong>Input a queue name:</strong> <input readonly="" class="copyable-inline-input" size="7" type="text" value="MyQueue">
+</li>
+<li>Press <strong>Enter</strong>
+</li>
+</ul><ol start="56">
+<li>Return to the application code by pressing <strong>ESC</strong>.</li>
+</ol>
+<h3>Add CreateTopic Code</h3>
+
+<p><i class="fa fa-info-circle"></i> Amazon SNS provides significant advantages over the complexity of developing custom messaging solutions or the expense of licensed software for systems that need to be managed and maintained on site. It runs within Amazon’s proven network infrastructure and data centers, so topics will be available whenever applications need them. To prevent messages from being lost, all messages published to Amazon SNS are stored redundantly across multiple servers and data centers. It allows applications and end users on different devices to receive notifications via mobile push notification (Apple, Google and Kindle Fire Devices), HTTP/HTTPS, Email/Email-JSON, SMS or Amazon SQS queues, or AWS Lambda functions. One common design pattern is called “fanout.” In this pattern, a message published to an SNS topic is distributed to several SQS queues in parallel. This allows you to build applications that take advantage of parallel, asynchronous processing.</p>
+<ol start="57">
+<li>In <strong>AWSManager.cs</strong>, do the following:</li>
+</ol><ul>
+<li>Press <strong>Control</strong> + <strong>F</strong>
+</li>
+<li>In the search box, enter: <input readonly="" class="copyable-inline-input" size="11" type="text" value="CreateTopic">
+</li>
+</ul><ol start="58">
+<li><p>Delete the code between the <strong>// BEGIN METHOD REPLACE BLOCK</strong> and <strong>// END METHOD REPLACE BLOCK</strong> comments.</p></li>
+<li><p>Paste the following code snippet between the comment blocks.</p></li>
+</ol><pre class="highlight csharp"><code><span class="c1">//this method will create an sns topic</span>
+<span class="c1">//read more at https://docs.aws.amazon.com/sdkfornet/v3/apidocs/index.html?page=SNS/MSNSCreateTopicString.html</span>
+
+<span class="n">CreateTopicResponse</span> <span class="n">result</span> <span class="p">=</span> <span class="n">snsClient</span><span class="p">.</span><span class="nf">CreateTopic</span><span class="p">(</span><span class="n">topicName</span><span class="p">);</span>
+<span class="nf">feedbackMessageAction</span><span class="p">(</span> <span class="n">Sucessfully_Created</span><span class="p">.</span><span class="nf">Fmt</span><span class="p">(</span><span class="s">"Topic"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">TopicArn</span><span class="p">));</span>
+
+<span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</code><button class="button button--text button--small copy-button js-copy-button-1" title="" data-original-title="Copied"><ql-icon>content_copy</ql-icon></button></pre>
+<h3>Create a Topic</h3>
+<ol start="60">
+<li><p>Run your application by choosing the <i class="fa fa-play"></i> <strong>Start</strong> option on the top toolbar.</p></li>
+<li><p>In the <strong>SQS and SNS AWS Using the .NET SDK and C#</strong> window, do the following:</p></li>
+</ol><ul>
+<li>Press <strong>B</strong>
+</li>
+<li>
+<strong>Input a topic name:</strong> <input readonly="" class="copyable-inline-input" size="7" type="text" value="MyTopic">
+</li>
+<li>Press <strong>Enter</strong>
+</li>
+</ul><ol start="62">
+<li>Return to the application code by pressing <strong>ESC</strong>.</li>
+</ol>
+<h3>Add the code for your remaining methods</h3>
+
+<p>The remaining methods to be added in <strong>AWSManager.cs</strong> are<br>
+<strong>SendMessageToQueue, ReceiveMessagesFromQueue, SubscribeTheQueue, SendMessageToTopic, DeleteQueue, and DeleteTopic</strong>.</p>
+<ul>
+<li>For each of these, press <strong>Control</strong> + <strong>F</strong>.</li>
+<li>In the search box, enter the name of the method you are adding, for example <input readonly="" class="copyable-inline-input" size="18" type="text" value="SendMessageToQueue"> or <input readonly="" class="copyable-inline-input" size="24" type="text" value="ReceiveMessagesFromQueue">.</li>
+<li>Delete the code between the <strong>// BEGIN METHOD REPLACE BLOCK</strong> and <strong>// END METHOD REPLACE BLOCK</strong> comments.</li>
+<li>Paste the corresponding code snippet between the comment blocks.</li>
+</ul>
+<p>Methods to add:</p>
+<ul>
+<li><input readonly="" class="copyable-inline-input" size="18" type="text" value="SendMessageToQueue"></li>
+</ul><pre class="highlight csharp"><code><span class="c1">//this method will send a message to an sqs queue</span>
+<span class="c1">//read more at https://docs.aws.amazon.com/sdkfornet/v3/apidocs/index.html?page=SQS/MSQSSendMessageStringString.html</span>
+
+<span class="n">SendMessageResponse</span> <span class="n">result</span> <span class="p">=</span> <span class="n">sqsClient</span><span class="p">.</span><span class="nf">SendMessage</span><span class="p">(</span>
+    <span class="nf">ChooseQueueFromList</span><span class="p">(</span><span class="n">createHeaderAction</span><span class="p">,</span> <span class="n">getNumericInputAction</span><span class="p">),</span>
+    <span class="n">message</span>
+<span class="p">);</span>
+<span class="nf">feedbackMessageAction</span><span class="p">(</span><span class="n">Sucessfully_Created</span><span class="p">.</span><span class="nf">Fmt</span><span class="p">(</span><span class="s">"Message"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">MessageId</span><span class="p">));</span>
+
+<span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</code><button class="button button--text button--small copy-button js-copy-button-2" title="" data-original-title="Copied"><ql-icon>content_copy</ql-icon></button></pre><ul>
+<li><input readonly="" class="copyable-inline-input" size="24" type="text" value="ReceiveMessagesFromQueue"></li>
+</ul><pre class="highlight csharp"><code><span class="c1">//this method will receive a number of messages from an sqs queue</span>
+<span class="c1">//read more at https://docs.aws.amazon.com/sdkfornet/v3/apidocs/index.html?page=SQS/MSQSReceiveMessageString.html</span>
+
+<span class="n">ReceiveMessageResponse</span> <span class="n">messages</span> <span class="p">=</span> <span class="n">sqsClient</span><span class="p">.</span><span class="nf">ReceiveMessage</span><span class="p">(</span><span class="n">queue</span><span class="p">);</span> <span class="c1">// listen to all message</span>
+
+<span class="c1">// walks on messages and refresh user input through the delegate</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">messages</span><span class="p">.</span><span class="n">Messages</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+<span class="p">{</span>
+    <span class="nf">showStatusAction</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">"{0} - {1}"</span><span class="p">,</span> <span class="n">i</span> <span class="p">+</span> <span class="m">1</span><span class="p">,</span> <span class="n">messages</span><span class="p">.</span><span class="n">Messages</span><span class="p">.</span><span class="nf">ElementAt</span><span class="p">(</span><span class="n">i</span><span class="p">).</span><span class="n">Body</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="k">return</span> <span class="n">messages</span><span class="p">;</span>
+</code><button class="button button--text button--small copy-button js-copy-button-3" title="" data-original-title="Copied"><ql-icon>content_copy</ql-icon></button></pre><ul>
+<li><input readonly="" class="copyable-inline-input" size="17" type="text" value="SubscribeTheQueue"></li>
+</ul><pre class="highlight csharp"><code><span class="c1">//this method will subscribe an sqs queue to an sns topic</span>
+<span class="c1">//read more at https://docs.aws.amazon.com/sdkfornet/v3/apidocs/index.html?page=SNS/MSNSSubscribeQueueStringICoreSQSString.html</span>
+
+<span class="n">String</span> <span class="n">result</span> <span class="p">=</span> <span class="n">snsClient</span><span class="p">.</span><span class="nf">SubscribeQueue</span><span class="p">(</span>
+    <span class="nf">ChooseTopicFromList</span><span class="p">(</span><span class="n">createHeaderAction</span><span class="p">,</span> <span class="n">getNumericInputAction</span><span class="p">),</span> <span class="c1">// to choose topic</span>
+    <span class="n">sqsClient</span><span class="p">,</span>
+    <span class="nf">ChooseQueueFromList</span><span class="p">(</span><span class="n">createHeaderAction</span><span class="p">,</span> <span class="n">getNumericInputAction</span><span class="p">)</span> <span class="c1">// to choose queue</span>
+<span class="p">);</span>
+
+<span class="nf">feedbackMessageAction</span><span class="p">(</span><span class="n">Sucessfully_Subscribed_To_Topic</span><span class="p">.</span><span class="nf">Fmt</span><span class="p">(</span><span class="s">"Queue"</span><span class="p">,</span> <span class="n">result</span><span class="p">));</span>
+
+<span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+</code><button class="button button--text button--small copy-button js-copy-button-4" title="" data-original-title="Copied"><ql-icon>content_copy</ql-icon></button></pre><ul>
+<li><input readonly="" class="copyable-inline-input" size="18" type="text" value="SendMessageToTopic"></li>
+</ul><pre class="highlight csharp"><code><span class="c1">//this method will publish a message to an sns topic</span>
+<span class="c1">//read more at https://docs.aws.amazon.com/sdkfornet/v3/apidocs/index.html?page=SNS/MSNSPublishStringString.html</span>
+
+<span class="n">PublishResponse</span> <span class="n">result</span> <span class="p">=</span> <span class="n">snsClient</span><span class="p">.</span><span class="nf">Publish</span><span class="p">(</span>
+    <span class="nf">ChooseTopicFromList</span><span class="p">(</span><span class="n">createHeaderAction</span><span class="p">,</span> <span class="n">getNumericInputAction</span><span class="p">),</span> <span class="c1">// to choose topic</span>
+    <span class="n">message</span>
+<span class="p">);</span>
+<span class="nf">feedbackMessageAction</span><span class="p">(</span><span class="n">Message_Sent_To_Topic</span><span class="p">.</span><span class="nf">Fmt</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">MessageId</span><span class="p">));</span>
+
+<span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</code><button class="button button--text button--small copy-button js-copy-button-5" title="" data-original-title="Copied"><ql-icon>content_copy</ql-icon></button></pre><ul>
+<li><input readonly="" class="copyable-inline-input" size="11" type="text" value="DeleteQueue"></li>
+</ul><pre class="highlight csharp"><code><span class="c1">//this method will delete an sqs queue</span>
+<span class="c1">//read more at https://docs.aws.amazon.com/sdkfornet/v3/apidocs/index.html?page=SQS/MSQSDeleteQueueString.html</span>
+
+<span class="nf">feedbackMessageAction</span><span class="p">(</span><span class="n">Sucessfully_Deleted</span><span class="p">.</span><span class="nf">Fmt</span><span class="p">(</span><span class="s">"Queue"</span><span class="p">));</span>
+<span class="n">AmazonWebServiceResponse</span> <span class="n">result</span> <span class="p">=</span> <span class="n">sqsClient</span><span class="p">.</span><span class="nf">DeleteQueue</span><span class="p">(</span><span class="nf">ChooseQueueFromList</span><span class="p">(</span><span class="n">createHeaderAction</span><span class="p">,</span> <span class="n">getNumericInputAction</span><span class="p">));</span>
+
+<span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</code><button class="button button--text button--small copy-button js-copy-button-6" title="" data-original-title="Copied"><ql-icon>content_copy</ql-icon></button></pre><ul>
+<li><input readonly="" class="copyable-inline-input" size="11" type="text" value="DeleteTopic"></li>
+</ul><pre class="highlight csharp"><code><span class="c1">//this method will delete an sns topic queue</span>
+<span class="c1">//read more at https://docs.aws.amazon.com/sdkfornet/v3/apidocs/index.html?page=SNS/MSNSDeleteTopicString.html</span>
+
+<span class="nf">feedbackMessageAction</span><span class="p">(</span><span class="n">Sucessfully_Deleted</span><span class="p">.</span><span class="nf">Fmt</span><span class="p">(</span><span class="s">"Topic"</span><span class="p">));</span>
+<span class="n">AmazonWebServiceResponse</span> <span class="n">result</span> <span class="p">=</span> <span class="n">snsClient</span><span class="p">.</span><span class="nf">DeleteTopic</span><span class="p">(</span><span class="nf">ChooseTopicFromList</span><span class="p">(</span><span class="n">createHeaderAction</span><span class="p">,</span> <span class="n">getNumericInputAction</span><span class="p">));</span>
+
+<span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</code><button class="button button--text button--small copy-button js-copy-button-7" title="" data-original-title="Copied"><ql-icon>content_copy</ql-icon></button></pre><ol start="63">
+<li>Choose <strong>Save</strong>.</li>
+</ol>
+<h3>View your Topic</h3>
+<ol start="64">
+<li>In the <strong>AWS Explorer</strong> do the following:</li>
+</ol><ul>
+<li>Choose the <strong>Refresh</strong> <i class="fas fa-sync"></i> icon located to the right of the <strong>Region:</strong> drop down.</li>
+<li>In the list below, expand <i class="fa fa-caret-right"></i> <strong>Amazon SNS</strong>.</li>
+</ul>
+<p>MyTopic, should be displayed. If the new topic is not visible, check that the correct region, US East (N. Virginia) is selected.</p>
+
+<h3>View your Queue and send a message</h3>
+<ol start="65">
+<li>Expand <i class="fa fa-caret-right"></i> <strong>Amazon SQS</strong>.</li>
+</ol>
+<p>MyQueue should be displayed.</p>
+<ol start="66">
+<li><p>Open the context menu (right-click) for <strong>MyQueue</strong>, then choose <strong>View Queue</strong>.</p></li>
+<li><p>In the top of the console window, choose <strong>Send</strong>.</p></li>
+<li><p>In the <strong>Send Message</strong> dialog box, do the following:</p></li>
+</ol><ul>
+<li>Enter: <input readonly="" class="copyable-inline-input" size="22" type="text" value="Hello from AWS Toolkit">
+</li>
+<li>Choose <strong>OK</strong>
+</li>
+</ul>
+<h3>Send a message to your Queue</h3>
+<ol start="69">
+<li><p>Run your application by choosing the <i class="fa fa-play"></i> <strong>Start</strong> option on the top toolbar.</p></li>
+<li><p>In the <strong>SQS and SNS AWS Using the .NET SDK and C#</strong> window, do the following:</p></li>
+</ol><ul>
+<li>Press <strong>C</strong>
+</li>
+<li>
+<strong>Input the message:</strong> <input readonly="" class="copyable-inline-input" size="22" type="text" value="Hello from application">
+</li>
+<li>Press <strong>Enter</strong>
+</li>
+<li>Enter the number that represents <strong>MyQueue</strong>.</li>
+</ul>
+<p>This will send the message to <strong>MyQueue</strong>.</p>
+<ol start="71">
+<li>Return to the main menu by pressing <strong>Enter</strong>.</li>
+</ol>
+<h3>Retrieve messages from your Queue</h3>
+<ol start="72">
+<li>In the <strong>SQS and SNS AWS Using the .NET SDK and C#</strong> window, do the following:</li>
+</ol><ul>
+<li>Press <strong>D</strong>
+</li>
+<li>Enter the number that represents <strong>MyQueue</strong>.</li>
+</ul>
+<p>The messages sent to the queue from AWS Explorer and the console application should both be visible in your application.</p>
+
+<p>The messages might not be visible immediately. It can take up to 60 seconds.</p>
+<ol start="73">
+<li>Press any key, then press <strong>Enter</strong> to the return to the main menu.</li>
+</ol>
+<h3>Subscribe your Queue to your Topic</h3>
+<ol start="74">
+<li>In the <strong>SQS and SNS AWS Using the .NET SDK and C#</strong> window, do the following:</li>
+</ol><ul>
+<li>Press <strong>E</strong>
+</li>
+<li>Enter the number that represents <strong>MyTopic</strong>.</li>
+<li>Enter the number that represents <strong>MyQueue</strong>.</li>
+</ul><ol start="75">
+<li>Return to the application code by pressing <strong>ESC</strong>.</li>
+</ol>
+<h3>Subscribe to your Topic using your email address</h3>
+<ol start="76">
+<li><p>In the <strong>AWS Explorer</strong>, expand <i class="fa fa-caret-right"></i> <strong>Amazon SNS</strong>.</p></li>
+<li><p>Open the context menu (right-click) for <strong>MyTopic</strong>, then choose <strong>View Topic</strong>.</p></li>
+<li><p>Choose <strong>Create New Subscription</strong>, then configure:</p></li>
+</ol><ul>
+<li>
+<strong>Protocol:</strong> Email</li>
+<li>
+<strong>Endpoint:</strong> Enter your email address</li>
+<li>Choose <strong>OK</strong>
+</li>
+</ul><ol start="79">
+<li>Open your email to confirm the subscription was sent using the Amazon SNS service.</li>
+</ol>
+<p>It might take a couple of minutes to see the email.</p>
+<ol start="80">
+<li><p>In your email, confirm the subscription by choosing <strong>Confirm subscription</strong>.</p></li>
+<li><p>After you confirm the subscription, in the <strong>Topic: MyTopic</strong> window, choose the <strong>Refresh</strong> <i class="fas fa-sync"></i> button.</p></li>
+</ol>
+<p>You should see a new value for the Subscription ID appear beside your email address.</p>
+
+<h3>Send a message to your Topic</h3>
+<ol start="82">
+<li><p>Run your application by choosing the <i class="fa fa-play"></i> <strong>Start</strong> option on the top toolbar.</p></li>
+<li><p>In the <strong>SQS and SNS AWS Using the .NET SDK and C#</strong> window, do the following:</p></li>
+</ol><ul>
+<li>Press <strong>F</strong>
+</li>
+<li>
+<strong>Input the message:</strong> <input readonly="" class="copyable-inline-input" size="14" type="text" value="my SNS message">
+</li>
+<li>Press <strong>Enter</strong>
+</li>
+</ul><ol start="84">
+<li><p>Enter the number that represents <strong>MyTopic</strong>.</p></li>
+<li><p>Return to the main menu by pressing <strong>Enter</strong>.</p></li>
+<li><p>Open your email to confirm that you received a new email with your message in the body.</p></li>
+</ol>
+<h3>Delete your Queue</h3>
+<ol start="87">
+<li>In the <strong>SQS and SNS AWS Using the .NET SDK and C#</strong> window, do the following:</li>
+</ol><ul>
+<li>Press <strong>G</strong>
+</li>
+<li>Enter the number that represents <strong>MyQueue</strong>.</li>
+</ul>
+<p>The queue should now be deleted.</p>
+<ol start="88">
+<li>Return to the main menu by pressing <strong>Enter</strong>.</li>
+</ol>
+<h3>Delete your Topic</h3>
+<ol start="89">
+<li>In the <strong>SQS and SNS AWS Using the .NET SDK and C#</strong> window, do the following:</li>
+</ol><ul>
+<li>Press <strong>H</strong>
+</li>
+<li>Enter the number that represents <strong>MyTopic</strong>.</li>
+</ul>
+<p>The topic should now be deleted.</p>
+<ol start="90">
+<li>Return to the application code by pressing <strong>ESC</strong>.</li>
+</ol>
+<h3>Verify that your Topic and Queue have been deleted</h3>
+<ol start="91">
+<li><p>In <strong>AWS Explorer</strong>, choose <strong>Refresh</strong> <i class="fas fa-sync"></i>.</p></li>
+<li><p>Expand <i class="fa fa-caret-right"></i> <strong>Amazon SNS</strong>.</p></li>
+</ol>
+<p>Your topic has been deleted.</p>
+<ol start="93">
+<li>Expand <i class="fa fa-caret-right"></i> <strong>Amazon SQS</strong>.</li>
+</ol>
+<p>You queue has been deleted.</p>
+
+<h2 id="step10">Conclusion</h2>
+
+<p><span style="color:blue;"><i class="fa fa-thumbs-o-up"></i></span> Congratulations! You have now successfully:</p>
+<ul>
+<li>Connected to an Amazon EC2 instance running Windows Server</li>
+<li>Installed AWS Toolkit for .NET</li>
+<li>Configured Visual Studio for AWS</li>
+<li>Created an AWS project in Visual Studio</li>
+<li>Built a Windows console application to create and read Amazon SQS queues and send notification messages with Amazon SNS.</li>
+</ul>
+<h2 id="step11">End Lab</h2>
+
+<p>Follow these steps to close the console, end your lab, and evaluate the experience.</p>
+<ol start="94">
+<li><p>Return to the AWS Management Console.</p></li>
+<li><p>On the navigation bar, choose <strong>awsstudent@&lt;AccountNumber&gt;</strong>, and then choose <strong>Sign Out</strong>.</p></li>
+<li><p>Choose <span style="background-color:#D93025;font-family:Google Sans;font-weight:bold;font-size:90%;color:white;border-color:#D93025;border-radius:4px;border-width:2px;border-style:solid;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;">End Lab</span></p></li>
+<li><p>Choose <span style="background-color:#DEDEDE;font-family:Google Sans;font-weight:bold;font-size:90%;color:#444;border-width:1px;border-style:solid;border-color:#444;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;">OK</span></p></li>
+<li><p>(Optional):</p></li>
+</ol><ul>
+<li>Select the applicable number of stars <i class="far fa-star"></i>
+</li>
+<li>Type a comment</li>
+<li>
+<p>Choose <strong>Submit</strong></p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+</li>
+</ul>
+<p>You may close the window if you don't want to provide feedback.</p>
+
+<h2 id="step12">Additional resources</h2>
+
+<p>For more information about AWS Training and Certification, see <a href="http://aws.amazon.com/training/" target="_blank"><em>http://aws.amazon.com/training/</em></a>.</p>
+
+<p><em>Your feedback is welcome and appreciated.</em></p>
+
+<p>If you would like to share any feedback, suggestions, or corrections, please provide the details in our <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank"><em>AWS Training and Certification Contact Form</em></a>.</p>
+
+</div>
+</div>
+
+
+<div class="hidden js-end-lab-button-container lab-content__end-lab-button">
+<ql-lab-control-button class="js-end-lab-button" running=""></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class="lab-content__renderable-instructions">
+<div class="lab-content__recommendation">
+<h4 class="headline-3">
+Ready for more?
+<p>Here's another lab we think you'll like.</p>
+<div class="content-card-grid">
+<div class="card-content-wrapper js-content-card" data-id="2543" data-level="Introductory" data-name="Introduction to Amazon Simple Storage Service (S3)" data-type="Lab">
+<a class="card card--content elevation-0 content-lab" href="https://www.qwiklabs.com/focuses/15683?parent=catalog"><div class="card__image">
+<div class="card__image__inner" style="background-image: url(https://cdn.qwiklabs.com/assets/fractal2-a4905334374c9d90765c63535f0fc66eb81d5f18f7416db5bea58901744cc5d0.jpg)"></div>
+</div>
+<div class="card__body">
+<div class="overline card--content__type">
+Lab
+</div>
+<h3 class="card--content__title">
+Introduction to Amazon Simple Storage Service (S3)
+</h3>
+<div class="card--content__description body-1">
+<p>
+This lab demonstrates how to use an Amazon S3 bucket and manage files, or object, that are stored in the bucket. You will practice how to create a bucket, add an object, view an object, move an object, and delete an object and bucket in the AWS Management Console.
+</p>
+</div>
+</div>
+<div class="card__footer">
+<div class="card__footer__left">
+<span>Introductory</span>
+</div>
+<div class="card__footer__right">
+<div class="rateit" data-rateit-readonly="true" data-rateit-value="4.5335"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 72.536px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+</div>
+</div>
+</a></div>
+
+</div>
+</h4>
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end="" id="outline-drawer" open="" slot="drawer" width="320" style="width: 320px;">
+<div class="js-lab-content-outline lab-content__outline">
+<a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step1" class="">Overview</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step2" class="">Prerequisites</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step3" class="">Start Lab</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step4" class="">Task 1: Connect to your EC2 development instance</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step5" class="">Task 2: Install and configure the required software</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step6" class="">Task 3: Open the AWS SDK console application</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step7" class="">Task 4: Verify that your application is using the correct region</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step8" class="">Task 5: Resolve code issues caused by missing AWS SDK DLL references</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step9" class="">Task 6: Run the application</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step10" class="is-active">Conclusion</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step11" class="">End Lab</a><a href="https://www.qwiklabs.com/focuses/14618?parent=catalog#step12">Additional resources</a>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+<div class="lab-introduction js-lab-introduction is-hidden">
+<div class="lab-introduction__inner">
+<h1 class="headline-1">Welcome to Your First Lab!</h1>
+<ql-icon-button class="js-skip-button">close</ql-icon-button>
+<div class="lab-introduction__video">
+<iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" id="lab-introduction" src="./Programming Amazon SQS &amp; SNS with .NET_files/yF7EDXKTmoQ.html"></iframe>
+</div>
+<a class="js-skip-button button button--outline">Skip this video</a>
+</div>
+</div>
+
+
+
+</div>
+</main>
+<div class="modal fade" id="lab-details-modal">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<div class="modal-body">
+<p class="l-mbm">
+This lab will provide a basic understanding of using the AWS Toolkit for .NET. It will demonstrate the basic steps required to install Visual Studio Community Edition and the AWS Toolkit for Visual Studio and to run a simple console application in C# using the AWS SDK for .NET.  To successfully complete this lab, you should be familiar with Visual Studio for C# and have a basic knowledge of launching and connecting to Windows systems in AWS.
+</p>
+<p>
+This lab is included in the quest
+<a href="https://www.qwiklabs.com/quests/15">Programming Windows on AWS</a>.
+If you complete this lab you'll receive credit for it when you enroll in this quest.
+</p>
+<p class="small-label l-mbs">
+<strong>
+Duration:
+</strong>
+10m setup
+·
+100m access
+·
+100m completion
+</p>
+<p class="small-label l-mbs">
+<strong>AWS Region:</strong>
+[us-west-2] <strong>US West (Oregon)</strong>
+</p>
+<p class="small-label l-mbs">
+<span><strong>Levels: </strong>Intermediate</span>
+</p>
+<p class="small-label">
+<strong>
+Permalink:
+</strong>
+<a href="https://www.qwiklabs.com/catalog_lab/3135">https://www.qwiklabs.com/catalog_lab/3135</a>
+</p>
+</div>
+<div class="modal-actions">
+<a class="button button--text" data-dismiss="modal">
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Programming Amazon SQS &amp; SNS with .NET_files/saved_resource(5).html"></iframe>
+</div>
+<div class="modal fade" id="lab-review-modal" style="display: none;">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="https://www.qwiklabs.com/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><div class="modal-body">
+<p class="label">
+How satisfied are you with this lab?*
+</p>
+<div class="rateit js-rateit" data-rateit-max="5" data-rateit-min="0" data-rateit-resetable="false" data-rateit-step="1" data-rateit-value="0"><div class="rateit-reset" style="display: none;"></div><div class="rateit-range" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 0px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+<div class="l-mtm">
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" type="hidden" value="4265112" name="lab_review[user_id]" id="lab_review_user_id"></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id"></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" type="hidden" value="3135" name="lab_review[lab_id]" id="lab_review_lab_id"></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id"></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" type="hidden" name="lab_review[rating]" id="lab_review_rating"></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Comment</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment"></textarea></div></div>
+</div>
+</div>
+<div class="modal-actions">
+<a class="button button--text" data-dismiss="modal">
+Cancel
+</a>
+<input type="submit" name="commit" value="Submit" disabled="disabled" id="submit" data-disabled="false" class="button" data-disable-with="Submit">
+</div>
+</form>
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Programming Amazon SQS &amp; SNS with .NET_files/saved_resource(6).html"></iframe>
+</div>
+<div class="modal fade" id="lab-access-modal" style="display: none;">
+<div class="modal-container">
+<div class="mdl-shadow--24dp modal-content">
+<a class="lab-access-modal-close" data-analytics-action="dismissed_lab_payment_modal" data-dismiss="modal">
+<i class="material-icons">close</i>
+</a>
+<form class="js-lab-access-form" action="https://www.qwiklabs.com/lab_onetime_coupons/activate?parent=catalog" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓">
+<div class="modal-body">
+<div class="lab-access-modal">
+<input type="hidden" name="id" id="id" value="14618">
+<input type="hidden" name="user_id" id="user_id" value="4265112">
+<input type="hidden" name="launch_with_credits" id="launch_with_credits" value="0" class="js-launch-with-credits-input">
+<input type="hidden" name="launch_with_subs" id="launch_with_subs" value="1" class="js-launch-with-subscription-input">
+<div class="lab-access-modal__method">
+<p>
+This lab costs
+10 Credits.
+</p>
+<p>
+You have a valid subscription package. Would you like to charge this lab to your subscription?
+
+</p>
+<a class="button js-launch-with-subscription-button js-lab-access-modal-button" data-analytics-action="clicked_launch_with_subscription_button">
+Use Subscription
+</a>
+</div>
+<div class="lab-access-modal__method">
+<p>
+Enter Lab Access Code:
+</p>
+<div class="lab-access-modal__code js-access-code">
+<input type="text" name="uuid_1" id="uuid_1" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_2" id="uuid_2" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_3" id="uuid_3" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+<input type="text" name="uuid_4" id="uuid_4" value="" maxlength="4" placeholder="1234" class="js-access-code-input">
+</div>
+<a class="button js-launch-with-access-code-button js-lab-access-modal-button" data-analytics-action="clicked_launch_with_access_code_button">
+Launch with Access Code
+</a>
+</div>
+</div>
+</div>
+</form>
+
+
+
+</div>
+</div>
+<iframe class="l-ie-iframe-fix" src="./Programming Amazon SQS &amp; SNS with .NET_files/saved_resource(7).html"></iframe>
+</div>
+
+<script>
+  $( function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabAccessModal();
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?\n","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.\n","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.chat.init();
+  ql.initHeader();
+  ql.navigation.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+<style>
+  .mdl-layout__container {
+    position: static
+  }
+</style>
+
+
+<iframe data-product="web_widget" title="No content" tabindex="-1" aria-hidden="true" src="./Programming Amazon SQS &amp; SNS with .NET_files/saved_resource(8).html" style="width: 0px; height: 0px; border: 0px; position: absolute; top: -9999px;"></iframe><div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe src="./Programming Amazon SQS &amp; SNS with .NET_files/anchor(2).html" width="256" height="60" role="presentation" name="a-r0a4g1civytp" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></div><div><iframe title="Opens a widget where you can chat to one of our agents" id="launcher" tabindex="-1" style="width: 109px; height: 50px; padding: 0px; margin: 10px 20px; position: fixed; bottom: 30px; overflow: visible; opacity: 0; border: 0px; z-index: 999998; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; top: -9999px; visibility: hidden;" src="./Programming Amazon SQS &amp; SNS with .NET_files/saved_resource(9).html"></iframe><iframe title="Find more information here" id="webWidget" tabindex="-1" style="width: 374px; max-height: calc(100vh - 32px); height: 572px; position: fixed; opacity: 0; border: 0px; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; top: -9999px; visibility: hidden; z-index: 999999;" src="./Programming Amazon SQS &amp; SNS with .NET_files/saved_resource(10).html"></iframe></div><div style="background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px; position: absolute; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0; visibility: hidden; z-index: 2000000000; left: 0px; top: -10000px;"><div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.05;"></div><div class="g-recaptcha-bubble-arrow" style="border: 11px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -11px; z-index: 2000000000;"></div><div class="g-recaptcha-bubble-arrow" style="border: 10px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -10px; z-index: 2000000000;"></div><div style="z-index: 2000000000; position: relative;"><iframe title="recaptcha challenge" src="./Programming Amazon SQS &amp; SNS with .NET_files/bframe.html" name="c-jmsj0kv6eklc" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox" style="width: 100%; height: 100%;"></iframe></div></div></body></html>
